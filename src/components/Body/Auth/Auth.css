@@ -1,0 +1,60 @@
+.SignUp {
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 3px #ccc;
+  border: 1px solid #eee;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.input-label {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 10px 0;
+  font: inherit;
+  text-align: center;
+  padding: 6px 10px;
+  width: 80%;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.input-label-invalid {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: rgb(230, 91, 91);
+  margin: 10px 0;
+  font: inherit;
+  text-align: center;
+  padding: 6px 10px;
+  width: 80%;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.Button {
+  border: 1px #ff8a84;
+  font: inherit;
+  background-color: #ff8a84;
+  text-align: center;
+  margin: 10px 10px;
+  padding: 10px;
+  width: 30%;
+  height: 20%;
+  border-radius: 25px;
+}
+
+.Button-SignIn {
+  border: 1px #84ffda;
+  font: inherit;
+  background-color: #84ffa9;
+  text-align: center;
+  margin: 10px 10px;
+  padding: 10px;
+  width: 30%;
+  height: 20%;
+  border-radius: 25px;
+}

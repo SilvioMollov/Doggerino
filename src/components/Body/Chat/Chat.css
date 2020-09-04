@@ -1,0 +1,61 @@
+.Chat {
+  position: relative;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 30px;
+  width: 60%;
+  height: 80vh;
+}
+
+.Chat-Log {
+  border: 1px solid #ccc;
+  overflow: auto;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 20px auto;
+  left: 0;
+  width: 85%;
+  height: 50vh;
+}
+
+.Chat-Input {
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  left: 0;
+  bottom: 5%;
+}
+
+.Input {
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 25px 0px 0px 25px;
+  bottom: 0px;
+  padding: 5px;
+  height: 5vh;
+}
+
+.Submit {
+  border: 1px solid #ccc;
+  border-radius: 0px 25px 25px 0px;
+  height: 6.7vh;
+  padding: 5px;
+}
+
+.Sender {
+  background-color: #bbdefb;
+  margin-left: auto;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 40%;
+  word-wrap: break-word;
+}
+
+.Reciever {
+  background-color: #bbfbe2;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 40%;
+  word-wrap: break-word;
+}

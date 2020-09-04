@@ -1,0 +1,23 @@
+.Liked {
+    display: inline-block;
+    margin: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 30px;
+    width: 60%
+
+}
+
+.Matched {
+    display: inline-block;
+    margin: 5px 8px;
+    background-color: green;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 30px;
+    width: 60%
+}
+
+.FirstName {
+    margin: 30px;
+}
