@@ -32,7 +32,7 @@ const setUserChatData = (state, action) => {
   const updatedUserChat = { [userId]: chatUserData };
   return updateObject(state, {
     userChatData: updatedUserChat,
-    loading: true,
+    
   });
 };
 
@@ -42,7 +42,7 @@ const setMessagedUserChatData = (state, action) => {
 
   return updateObject(state, {
     messagedUserChatData: updatedMessagedUserChat,
-    loading: true,
+    
   });
 };
 

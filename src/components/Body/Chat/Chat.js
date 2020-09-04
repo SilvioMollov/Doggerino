@@ -43,10 +43,15 @@ export class Chat extends Component {
     this.props.onClearState();
   }
 
+  scrollToBottom = (element) => {
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   render() {
     const { messagedUser, loading, chatData } = this.props;
     let chat = null;
-
 
     if (!loading) {
       chat = (
@@ -55,7 +60,22 @@ export class Chat extends Component {
           <form onSubmit={this.onSubmitHandler} className="Chat-Input">
             <div className="Chat-Log">
               {chatData.map((message) => {
-                return <p key={message.formatedDate} className={message.isSender ? "Sender" : "Reciever"}>{message.message}</p>;
+                return (
+                  <div key={message.currentDate} ref={this.scrollToBottom}>
+                    <p className={message.isSender ? "Sender" : "Reciever"}>
+                      {message.message}
+                    </p>
+                    <p
+                      className={
+                        message.isSender
+                          ? "Message-Date-Sender"
+                          : "Message-Date-Reciever"
+                      }
+                    >
+                      {message.formatedDate}
+                    </p>
+                  </div>
+                );
               })}
             </div>
 

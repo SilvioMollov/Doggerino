@@ -11,6 +11,7 @@ import {
   Switch,
   Route,
   withRouter,
+  Redirect,
 } from "react-router-dom";
 import Logout from "./components/Body/Logout/logout";
 import * as actions from "./store/actions/index";
@@ -34,6 +35,8 @@ class App extends Component {
           <Route path="/chat" component={Chat} />
         </Switch>
       );
+    } else {
+      routes = <Redirect to={this.props.redirectPath}></Redirect>
     }
 
     return (

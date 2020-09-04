@@ -5,7 +5,7 @@
   border-radius: 25px;
   padding: 30px;
   width: 60%;
-  height: 80vh;
+  height: 67vh;
 }
 
 .Chat-Log {
@@ -24,7 +24,6 @@
   margin: auto;
   width: 100%;
   left: 0;
-  bottom: 5%;
 }
 
 .Input {
@@ -45,6 +44,7 @@
 
 .Sender {
   background-color: #bbdefb;
+  margin-bottom: 0px;
   margin-left: auto;
   padding: 10px;
   border-radius: 4px;
@@ -54,8 +54,62 @@
 
 .Reciever {
   background-color: #bbfbe2;
+  margin-bottom: 0px;
   padding: 10px;
   border-radius: 4px;
   max-width: 40%;
   word-wrap: break-word;
+}
+
+.Message-Date-Sender {
+  margin-left: auto;
+  font-size: 10px;
+  margin-top: 0px;
+  text-align: right;
+  border-radius: 4px;
+  max-width: 40%;
+  right: 0;
+}
+
+.Message-Date-Reciever {
+  
+  font-size: 10px;
+  margin-top: 0px;
+  text-align: left;
+  border-radius: 4px;
+  max-width: 40%;
+  right: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: ;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background:transparent;
+  border-radius: 25px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 25px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 20px; 
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 20px;
 }

@@ -24,9 +24,7 @@ class navigationItems extends Component {
               <NavLink to="/matched" className="NavLinks">
                 Matched
               </NavLink>
-              <NavLink to="chat" className= "NavLinks">
-                Chat
-              </NavLink>
+              
             </span>
           ) : null}
 
