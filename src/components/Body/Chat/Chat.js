@@ -12,11 +12,20 @@ export class Chat extends Component {
   };
 
   componentDidMount() {
-    const { messagedUser } = this.props;
+    const { messagedUser, onFetchChatData } = this.props;
+    const { token, userId } = this.state;
+    onFetchChatData(token, userId, messagedUser.userId);
+    this.updateChatData()
+  }
+
+  updateChatData = () => {
+    const { messagedUser, onFetchChatData } = this.props;
     const { token, userId } = this.state;
 
-    this.props.onFetchChatData(token, userId, messagedUser.userId);
-  }
+    setInterval(() => {
+      onFetchChatData(token, userId, messagedUser.userId);
+    }, 7000);
+  };
 
   onSubmitHandler = (e) => {
     e.preventDefault();
@@ -51,6 +60,7 @@ export class Chat extends Component {
 
   render() {
     const { messagedUser, loading, chatData } = this.props;
+
     let chat = null;
 
     if (!loading) {
