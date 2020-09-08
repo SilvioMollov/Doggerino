@@ -12,28 +12,57 @@ export class Chat extends Component {
   };
 
   componentDidMount() {
-    const { messagedUser, onFetchChatData } = this.props;
+    const {
+      onFetchMatches,
+      onFetchChatData,
+      match: { params },
+    } = this.props;
+
     const { token, userId } = this.state;
-    onFetchChatData(token, userId, messagedUser.userId);
-    this.updateChatData()
+
+    onFetchMatches(userId);
+
+    onFetchChatData(token, userId, params.id);
+    this.updateChatData();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      onMessagedUser,
+      matches,
+      match: { params },
+    } = this.props;
+
+    if (prevProps.matches.length && this.props.matches !== prevProps.matches) {
+      onMessagedUser(params.id, matches);
+    }
   }
 
   updateChatData = () => {
-    const { messagedUser, onFetchChatData } = this.props;
+    const {
+      onFetchChatData,
+      match: { params },
+    } = this.props;
+
     const { token, userId } = this.state;
 
-    setInterval(() => {
-      onFetchChatData(token, userId, messagedUser.userId);
+    this.timerId = setInterval(() => {
+      onFetchChatData(token, userId, params.id);
     }, 7000);
   };
 
   onSubmitHandler = (e) => {
     e.preventDefault();
-    const { onPostMessage, messagedUser } = this.props;
+    const {
+      onPostMessage,
+      messagedUser,
+      match: { params },
+    } = this.props;
+
     const { message, token, userId } = this.state;
 
     if (messagedUser.userId) {
-      onPostMessage(token, userId, messagedUser.userId, message);
+      onPostMessage(token, userId, params.id, message);
       this.setState({ message: "" });
     }
   };
@@ -50,6 +79,7 @@ export class Chat extends Component {
 
   componentWillUnmount() {
     this.props.onClearState();
+    clearInterval(this.timerId);
   }
 
   scrollToBottom = (element) => {
@@ -59,11 +89,13 @@ export class Chat extends Component {
   };
 
   render() {
-    const { messagedUser, loading, chatData } = this.props;
+    const { messagedUser, loading, chatData, matches } = this.props;
+
+    console.log();
 
     let chat = null;
 
-    if (!loading) {
+    if (!loading && matches.length) {
       chat = (
         <div className="Chat">
           <div>User: {messagedUser.firstName} </div>
@@ -115,16 +147,20 @@ const mapStateToProps = (state) => {
     messagedUser: state.chat.messagedUser,
     chatData: state.chat.chatData,
     loading: state.chat.loading,
+    matches: state.matches.matches,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
     onPostMessage: (token, userId, messagedUserId, message) =>
       dispatch(actions.postChatMessage(token, userId, messagedUserId, message)),
     onClearState: () => dispatch(actions.clearChatState()),
     onFetchChatData: (token, userId, messagedUserId) =>
       dispatch(actions.fetchChatData(token, userId, messagedUserId)),
+    onMessagedUser: (user, matches) =>
+      dispatch(actions.messagedUser(user, matches)),
   };
 };
 

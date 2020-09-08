@@ -21,10 +21,23 @@ import "./App.css";
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignUp();
+    const { onTryAutoSignUp } = this.props;
+
+    onTryAutoSignUp();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { onFetchMatches } = this.props;
+
+    if (!prevProps.isAuthenticated && this.props.isAuthenticated) {
+      onFetchMatches(localStorage.getItem("userId"));
+      console.log("im in")
+    }
   }
 
   render() {
+    const { history } = this.props;
+
     let routes = null;
     if (this.props.isAuthenticated) {
       routes = (
@@ -32,11 +45,12 @@ class App extends Component {
           <Route path="/match" component={Match} />
           <Route path="/logout" component={Logout} />
           <Route path="/matched" component={Matched} />
-          <Route path="/chat" component={Chat} />
+          <Route path="/chat/:id" component={Chat} />
+          <Redirect to={history.location.pathname} />
         </Switch>
       );
     } else {
-      routes = <Redirect to={this.props.redirectPath}></Redirect>
+      routes = <Redirect to={this.props.redirectPath}></Redirect>;
     }
 
     return (
@@ -68,7 +82,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignUp: () => dispatch(actions.authCheckState()),
+    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

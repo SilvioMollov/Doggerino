@@ -19,14 +19,12 @@ export class Matched extends Component {
       localStorage.getItem("userId"),
       localStorage.getItem("token")
     );
-    // this.props.onSetLikedUsers(this.props.matches, this.props.likedUsers);
   }
 
   onClickHandler = (clickedUser) => {
-    const { onMessagedUser } = this.props;
+    const { history } = this.props;
 
-    this.props.history.push(this.state.chatPathName);
-    onMessagedUser(clickedUser);
+    history.push(`${this.state.chatPathName}/${clickedUser.userId}`);
   };
 
   render() {
@@ -67,7 +65,9 @@ const mapDispatchToProps = (dispatch) => {
     onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
     onFetchLikedUsers: (userId, token) =>
       dispatch(actions.fetchLikedUsers(userId, token)),
-    onMessagedUser: (user) => dispatch(actions.messagedUser(user)),
+    onMessagedUser: (user, matches) =>
+      dispatch(actions.messagedUser(user, matches)),
+    onRedirectPath: (path) => dispatch(actions.authRedirectPath(path)),
   };
 };
 

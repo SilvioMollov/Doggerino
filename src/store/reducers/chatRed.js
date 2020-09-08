@@ -10,10 +10,14 @@ const inittialState = {
 };
 
 const messagedUser = (state, action) => {
-  const { messagedUserData } = action;
+  const { messagedUserId, allUsers } = action;
+
+  const [messagedUser] = allUsers.filter(
+    (user) => user.userId === messagedUserId
+  );
 
   return updateObject(state, {
-    messagedUser: messagedUserData,
+    messagedUser: messagedUser,
   });
 };
 
@@ -32,7 +36,6 @@ const setUserChatData = (state, action) => {
   const updatedUserChat = { [userId]: chatUserData };
   return updateObject(state, {
     userChatData: updatedUserChat,
-    
   });
 };
 
@@ -42,7 +45,6 @@ const setMessagedUserChatData = (state, action) => {
 
   return updateObject(state, {
     messagedUserChatData: updatedMessagedUserChat,
-    
   });
 };
 

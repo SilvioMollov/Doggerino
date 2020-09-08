@@ -11,49 +11,57 @@ const initialState = {
 };
 
 const authStart = (state, action) => {
-  return updateObject(state, { 
+  return updateObject(state, {
     error: null,
-    loading: true 
+    loading: true,
   });
 };
 
 const authSuccess = (state, action) => {
+  const { idToken, userId, path } = action;
+
   return updateObject(state, {
-    token: action.idToken,
-    userId: action.userId,
+    token: idToken,
+    userId: userId,
     loading: false,
     error: null,
-    authRedirectPath: action.path
+    authRedirectPath: path,
   });
 };
 
 const authFail = (state, action) => {
+  const { error } = action;
+
   return updateObject(state, {
-    error: action.error,
+    error: error,
   });
 };
 
 const authLogout = (state, action) => {
+  const { path } = action;
+
   return updateObject(state, {
     token: null,
     userId: null,
-    authRedirectPath: action.path
+    authRedirectPath: path,
   });
 };
 
 const setAuthRedirectPath = (state, action) => {
+  const { path } = action;
+
   return updateObject(state, {
-    authRedirectPath: action.path,
+    authRedirectPath: path,
   });
 };
 
 const authIsSignUpHandler = (state, action) => {
-    return updateObject(state, {
-        isSignUp: !state.isSignUp
-    })
-}
+  const { isSignUp } = state;
 
-
+  return updateObject(state, {
+    isSignUp: !isSignUp,
+  });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -68,9 +76,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
     case actionTypes.AUTH_IS_SING_UP:
-        return authIsSignUpHandler(state, action)
+      return authIsSignUpHandler(state, action);
     default:
-        
       return state;
   }
 };

@@ -23,6 +23,7 @@ export const postChatMessage = (token, userId, messagedUserId, message) => {
 };
 
 export const fetchChatData = (token, userId, messagedUserId) => {
+
   return (dispatch) => {
     axios
       .get(
@@ -82,10 +83,11 @@ export const setMessagedUserChatData = (messagedUserId, chatData) => {
   };
 };
 
-export const messagedUser = (userData) => {
+export const messagedUser = (messagedUserId, matches) => {
   return {
     type: actionTypes.MESSAGED_USER,
-    messagedUserData: userData,
+    messagedUserId: messagedUserId,
+    allUsers: matches
   };
 };
 
