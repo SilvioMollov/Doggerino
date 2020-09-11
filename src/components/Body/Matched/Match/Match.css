@@ -15,7 +15,25 @@
     border: 1px solid #ccc;
     border-radius: 25px;
     padding: 30px;
-    width: 60%
+    width: 60%;
+    cursor: pointer;
+}
+
+
+.Match-AdminView {
+    display: inline-block;
+    margin: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 5px;
+    width: 60%;
+    height: 10vh;
+    cursor: pointer;
+}
+
+.Match-FirstName {
+   margin-top: 1vh;
+   
 }
 
 .FirstName {

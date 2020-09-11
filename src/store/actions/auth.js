@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
-import { fetchMatches, fetchLikedUsers } from "./maches";
+import { fetchMatches, fetchLikedUsers, clearStateMatches } from "./maches";
 
 export const signUp = (
   email,
@@ -65,7 +65,7 @@ export const signIn = (email, password) => {
         localStorage.setItem("expirationDate", expirationDate);
         localStorage.setItem("userId", response.data.localId);
         dispatch(authSuccess(response.data.idToken, response.data.localId, '/match'));
-        dispatch(fetchMatches(response.data.localId))
+        dispatch(fetchMatches(response.data.localId, response.data.idToken))
         // dispatch(authRedirectPath('/match'))
         dispatch(checkAuthTimeout(response.data.expiresIn));
         dispatch(fetchLikedUsers(response.data.localId, response.data.idToken))
@@ -110,10 +110,12 @@ export const authCheckState = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       dispatch(logout("/auth"));
+      dispatch(clearStateMatches())
     } else {
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
       if (expirationDate <= new Date()) {
-        dispatch(logout('/auth'));
+      dispatch(clearStateMatches())
+      dispatch(logout('/auth'));
       } else {
         const userId = localStorage.getItem("userId");
         dispatch(authSuccess(token, userId));

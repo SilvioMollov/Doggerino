@@ -7,32 +7,44 @@ import "./NavigationItems.css";
 
 class navigationItems extends Component {
   render() {
+    const { isAuth, isSignUp, userData } = this.props;
+
     let logout = (
       <NavLink to="/logout" className="NavLinks">
         Logout
       </NavLink>
     );
 
+    let matchAndMatched = null;
+
+
+    if (isAuth && Object.entries(userData).length > 1) {
+      if (userData.isAdmin) {
+        matchAndMatched = null;
+      } else {
+        matchAndMatched = (
+          <span className="WrappingSpan">
+            <NavLink to="/match" className="NavLinks">
+              Matches
+            </NavLink>
+            <NavLink to="/matched" className="NavLinks">
+              Matched
+            </NavLink>
+          </span>
+        );
+      }
+    }
+
     return (
       <ul className="NavigationItems">
         <li className="li">
-          {this.props.isAuth ? (
-            <span className="WrappingSpan">
-              <NavLink to="/match" className="NavLinks">
-                Matches
-              </NavLink>
-              <NavLink to="/matched" className="NavLinks">
-                Matched
-              </NavLink>
-              
-            </span>
-          ) : null}
+          {matchAndMatched}
 
-          {this.props.isAuth ? (
+          {isAuth ? (
             <span className="WrappingSpan">{logout}</span>
           ) : (
             <NavLink to="/auth" className="NavLinks">
-              {!this.props.isSignUp ? "Sing in" : "Sing Up"}
+              {!isSignUp ? "Sing in" : "Sing Up"}
             </NavLink>
           )}
         </li>
@@ -46,6 +58,7 @@ const mapStateToProps = (state) => {
     authRedirectPath: state.auth.authRedirectPath,
     isAuth: state.auth.token !== null,
     isSignUp: state.auth.isSignUp,
+    userData: state.matches.userData,
   };
 };
 

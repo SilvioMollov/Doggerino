@@ -8,14 +8,14 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import authReducer from "./store/reducers/authRed";
 import matchesReducer from "./store/reducers/matchesRed";
-// import matchedReducer from './store/reducers/matchedRed'
 import chatReducer from './store/reducers/chatRed'
+import adminReducer from './store/reducers/adminRed'
 import { BrowserRouter } from "react-router-dom";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  // matched: matchedReducer,
+  admin: adminReducer,
   chat: chatReducer,
   auth: authReducer,
   matches: matchesReducer,

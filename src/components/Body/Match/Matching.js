@@ -98,7 +98,10 @@ export class Match extends Component {
   };
 
   componentDidMount() {
-    this.props.onFetchMatches(localStorage.getItem("userId"));
+    this.props.onFetchMatches(
+      localStorage.getItem("userId"),
+      localStorage.getItem("token")
+    );
     this.props.onFetchLikedUsers(
       localStorage.getItem("userId"),
       localStorage.getItem("token")
@@ -116,7 +119,6 @@ export class Match extends Component {
     const { matchIndex, transition } = this.state;
 
     let form = <Spinner />;
-
 
     const cardHolder = filteredMatches.length ? (
       <SwitchTransition mode={"out-in"}>
@@ -206,7 +208,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
+    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
     onFilterMatches: (matches, filterValue) =>
       dispatch(actions.matchesFilter(matches, filterValue)),
     onPostLikedUsers: (token, userId, likedUserId) =>

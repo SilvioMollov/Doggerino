@@ -27,7 +27,6 @@ const fetchMatches = (state, action) => {
 
   updatedMachesArray = matches.filter((match) => match.userId !== userId);
 
-  // const newArray = state.matches.concat(updatedMachesArray);
 
   return updateObject(state, {
     matches: updatedMachesArray,

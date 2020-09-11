@@ -4,6 +4,7 @@ import Auth from "./components/Body/Auth/Auth";
 import NavigationItems from "./components/Navigation/NavigationItems";
 import Matched from "./components/Body/Matched/Matched";
 import Chat from "./components/Body/Chat/Chat";
+import Admin from "./components/Admin/Admin";
 import { CSSTransition } from "react-transition-group";
 
 import {
@@ -27,28 +28,39 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { onFetchMatches } = this.props;
+    const { onFetchMatches, isAuthenticated } = this.props;
 
-    if (!prevProps.isAuthenticated && this.props.isAuthenticated) {
-      onFetchMatches(localStorage.getItem("userId"));
-      console.log("im in")
+    if (!prevProps.isAuthenticated && isAuthenticated) {
+      onFetchMatches(localStorage.getItem("userId"), localStorage.getItem("token"));
     }
   }
 
   render() {
-    const { history } = this.props;
+    const { history, userData } = this.props;
 
     let routes = null;
+
+    
     if (this.props.isAuthenticated) {
-      routes = (
-        <Switch>
-          <Route path="/match" component={Match} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/matched" component={Matched} />
-          <Route path="/chat/:id" component={Chat} />
-          <Redirect to={history.location.pathname} />
-        </Switch>
-      );
+      if (userData.isAdmin) {
+        routes = (
+          <Switch>
+            <Route path="/admin" component={Admin} />
+            <Route path="/logout" component={Logout} />
+            <Redirect to={"admin"} />
+          </Switch>
+        );
+      } else {
+        routes = (
+          <Switch>
+            <Route path="/match" component={Match} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/matched" component={Matched} />
+            <Route path="/chat/:id" component={Chat} />
+            <Redirect to={history.location.pathname} />
+          </Switch>
+        );
+      }
     } else {
       routes = <Redirect to={this.props.redirectPath}></Redirect>;
     }
@@ -76,13 +88,14 @@ const mapStateToProps = (state) => {
   return {
     redirectPath: state.auth.authRedirectPath,
     isAuthenticated: state.auth.token !== null,
+    userData: state.matches.userData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignUp: () => dispatch(actions.authCheckState()),
-    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
+    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
   };
 };
 

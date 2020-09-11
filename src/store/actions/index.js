@@ -19,9 +19,8 @@ export {
   fetchLikedUsers,
   addingLikedUsers,
   fetchAllLikedUsers,
-  setLikedUsersData
+  setLikedUsersData,
 } from "./maches";
-
 
 export {
   postChatMessage,
@@ -30,7 +29,7 @@ export {
   fetchChatData,
   setUserChatData,
   setMessagedUserChatData,
-  formatChatData
-}  from './chat'
+  formatChatData,
+} from "./chat";
 
-// export { setLikedUsers, fetchAllUserData } from "./matched";
+export { setAllUsers, deleteUserFromDb } from "./admin";

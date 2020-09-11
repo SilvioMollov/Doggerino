@@ -14,7 +14,10 @@ export class Matched extends Component {
   componentDidMount() {
     const { onFetchMatches, onFetchLikedUsers } = this.props;
 
-    onFetchMatches(localStorage.getItem("userId"));
+    onFetchMatches(
+      localStorage.getItem("userId"),
+      localStorage.getItem("token")
+    );
     onFetchLikedUsers(
       localStorage.getItem("userId"),
       localStorage.getItem("token")
@@ -62,7 +65,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
+    onFetchMatches: (userId, token) =>
+      dispatch(actions.fetchMatches(userId, token)),
     onFetchLikedUsers: (userId, token) =>
       dispatch(actions.fetchLikedUsers(userId, token)),
     onMessagedUser: (user, matches) =>

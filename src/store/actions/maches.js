@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+import { setAllUsers } from "./admin";
 
 export const fetchMatchesSuccess = (matches, userId) => {
   return {
@@ -44,10 +45,10 @@ export const matchesFilter = (selectedLocation) => {
   };
 };
 
-export const fetchMatches = (userId) => {
+export const fetchMatches = (userId, token) => {
   return (dispatch) => {
     axios
-      .get("https://doggerino-79ffd.firebaseio.com/users.json")
+      .get(`https://doggerino-79ffd.firebaseio.com/users.json/?auth=${token}`)
       .then((response) => {
         const fetchData = [];
 
@@ -58,10 +59,8 @@ export const fetchMatches = (userId) => {
         console.log("[FetchMatches]", response);
         dispatch(userData(fetchData, userId));
         dispatch(fetchMatchesSuccess(fetchData, userId));
+        dispatch(setAllUsers(response.data))
         dispatch(matchesLocationsData(fetchData));
-        // dispatch(fetchAllUserData(localStorage.getItem('token'), fetchData, userId))
-        //send to auth
-        // dispatch(fetchLikedUsers(userId, localStorage.getItem('token')))
         dispatch(matchesFilter());
       })
       .catch((error) => {
@@ -94,7 +93,7 @@ export const fetchLikedUsers = (userId, token) => {
       .then((response) => {
         console.log("[FetchLikedUsers]", response);
         dispatch(updatedLikedUsers(response.data));
-        dispatch(fetchAllLikedUsers(token))
+        dispatch(fetchAllLikedUsers(token));
       })
       .catch((error) => {
         console.log("[FetchLikedUsers]", error);
@@ -111,7 +110,7 @@ export const addingLikedUsers = (likedUserId) => {
 
 export const postLikedUsers = (token, userId, likedUserId) => {
   const userData = { likedUserId };
-  
+
   return (dispatch) => {
     axios
       .post(
@@ -138,9 +137,8 @@ export const fetchAllLikedUsers = (token) => {
       .then((response) => {
         console.log("[FetchAllLikedUsers]", response);
         // figure out where to dispatch this
-        dispatch(setLikedBackUsers(response.data))
-        dispatch(setLikedUsersData())
-
+        dispatch(setLikedBackUsers(response.data));
+        dispatch(setLikedUsersData());
       })
       .catch((error) => {
         console.log("[FetchAllLikedUsers]", error);
@@ -151,9 +149,8 @@ export const fetchAllLikedUsers = (token) => {
 export const setLikedUsersData = () => {
   return {
     type: actionTypes.SET_LIKED_USERS_DATA,
-
-  }
-}
+  };
+};
 
 export const setLikedBackUsers = (likedUsersId) => {
   return {
