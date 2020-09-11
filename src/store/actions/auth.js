@@ -64,7 +64,8 @@ export const signIn = (email, password) => {
         localStorage.setItem("token", response.data.idToken);
         localStorage.setItem("expirationDate", expirationDate);
         localStorage.setItem("userId", response.data.localId);
-        dispatch(authSuccess(response.data.idToken, response.data.localId, '/match'));
+        // needs Work, when in admin pannel it redirects me to the same pathway as here "/Match"
+        dispatch(authSuccess(response.data.idToken, response.data.localId, "/match"));
         dispatch(fetchMatches(response.data.localId, response.data.idToken))
         // dispatch(authRedirectPath('/match'))
         dispatch(checkAuthTimeout(response.data.expiresIn));

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Match from "./components/Body/Match/Matching";
-import Auth from "./components/Body/Auth/Auth";
-import NavigationItems from "./components/Navigation/NavigationItems";
-import Matched from "./components/Body/Matched/Matched";
-import Chat from "./components/Body/Chat/Chat";
-import Admin from "./components/Admin/Admin";
-import { CSSTransition } from "react-transition-group";
+import React, { Component } from 'react';
+import Match from './components/Body/Match/Matching';
+import Auth from './components/Body/Auth/Auth';
+import NavigationItems from './components/Navigation/NavigationItems';
+import Matched from './components/Body/Matched/Matched';
+import Chat from './components/Body/Chat/Chat';
+import Admin from './components/Admin/Admin';
+import { CSSTransition } from 'react-transition-group';
 
 import {
   BrowserRouter as Router,
@@ -13,12 +13,12 @@ import {
   Route,
   withRouter,
   Redirect,
-} from "react-router-dom";
-import Logout from "./components/Body/Logout/logout";
-import * as actions from "./store/actions/index";
-import { connect } from "react-redux";
+} from 'react-router-dom';
+import Logout from './components/Body/Logout/logout';
+import * as actions from './store/actions/index';
+import { connect } from 'react-redux';
 
-import "./App.css";
+import './App.css';
 
 class App extends Component {
   componentDidMount() {
@@ -31,7 +31,10 @@ class App extends Component {
     const { onFetchMatches, isAuthenticated } = this.props;
 
     if (!prevProps.isAuthenticated && isAuthenticated) {
-      onFetchMatches(localStorage.getItem("userId"), localStorage.getItem("token"));
+      onFetchMatches(
+        localStorage.getItem('userId'),
+        localStorage.getItem('token')
+      );
     }
   }
 
@@ -40,20 +43,19 @@ class App extends Component {
 
     let routes = null;
 
-    
     if (this.props.isAuthenticated) {
       if (userData.isAdmin) {
         routes = (
           <Switch>
             <Route path="/admin" component={Admin} />
             <Route path="/logout" component={Logout} />
-            <Redirect to={"admin"} />
+            <Redirect to={'admin'} />
           </Switch>
         );
       } else {
         routes = (
           <Switch>
-            <Route path="/match" component={Match} />
+            <Route exact path="/match" component={Match} />
             <Route path="/logout" component={Logout} />
             <Route path="/matched" component={Matched} />
             <Route path="/chat/:id" component={Chat} />
@@ -95,7 +97,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignUp: () => dispatch(actions.authCheckState()),
-    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
+    onFetchMatches: (userId, token) =>
+      dispatch(actions.fetchMatches(userId, token)),
   };
 };
 

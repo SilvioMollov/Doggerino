@@ -6,7 +6,7 @@ export {
   dataPost,
   signUp,
   signIn,
-} from "./auth";
+} from './auth';
 
 export {
   fetchMatchesSuccess,
@@ -20,7 +20,7 @@ export {
   addingLikedUsers,
   fetchAllLikedUsers,
   setLikedUsersData,
-} from "./maches";
+} from './maches';
 
 export {
   postChatMessage,
@@ -30,6 +30,11 @@ export {
   setUserChatData,
   setMessagedUserChatData,
   formatChatData,
-} from "./chat";
+} from './chat';
 
-export { setAllUsers, deleteUserFromDb } from "./admin";
+export {
+  setAllUsers,
+  deleteUserFromDb,
+  setEditedUser,
+  updateEditedUser,
+} from './admin';

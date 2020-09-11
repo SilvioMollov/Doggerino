@@ -20,7 +20,7 @@ export class Chat extends Component {
 
     const { token, userId } = this.state;
 
-    onFetchMatches(userId);
+    onFetchMatches(userId, token);
 
     onFetchChatData(token, userId, params.id);
     this.updateChatData();
@@ -153,7 +153,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMatches: (userId) => dispatch(actions.fetchMatches(userId)),
+    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
     onPostMessage: (token, userId, messagedUserId, message) =>
       dispatch(actions.postChatMessage(token, userId, messagedUserId, message)),
     onClearState: () => dispatch(actions.clearChatState()),

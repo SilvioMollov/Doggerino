@@ -3,3 +3,45 @@
   height: 85vh;
   overflow: auto;
 }
+
+.input-label {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 10px 0;
+  font: inherit;
+  text-align: center;
+  padding: 6px 10px;
+  width: 80%;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.Admin-Modal-Header {
+  border-bottom: 1px solid black;
+  padding-bottom: 5%;
+}
+
+.Admin-Modal-Eddit-Button {
+  border: 1px #84ffda;
+  font: inherit;
+  background-color: #84ffa9;
+  text-align: center;
+  margin: 10px 10px;
+  padding: 10px;
+  width: 30%;
+  height: 20%;
+  border-radius: 25px;
+}
+
+.Admin-Modal-Delete-Button {
+  border: 1px #ff8a84;
+  font: inherit;
+  background-color: #ff8a84;
+  text-align: center;
+  margin: 10px 10px;
+  padding: 10px;
+  width: 30%;
+  height: 20%;
+  border-radius: 25px;
+}

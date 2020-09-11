@@ -96,7 +96,7 @@ class Auth extends Component {
         this.setState((state) => {
           state.user[obj].value = "";
         });
-      }
+      } 
     }
   };
 
