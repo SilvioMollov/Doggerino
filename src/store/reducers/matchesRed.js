@@ -27,7 +27,6 @@ const fetchMatches = (state, action) => {
 
   updatedMachesArray = matches.filter((match) => match.userId !== userId);
 
-
   return updateObject(state, {
     matches: updatedMachesArray,
   });
@@ -80,7 +79,13 @@ const matchesLocationsData = (state, action) => {
   const locationsData = [];
   const locationsSelectData = [];
 
-  matchesArray.forEach((element) => locationsData.push(element.location));
+  matchesArray.forEach((element) => {
+    if (element.location !== "") {
+      locationsData.push(element.location);
+    }
+  });
+
+
   const uniqueLocations = new Set(locationsData);
 
   uniqueLocations.forEach((el) => {
@@ -184,9 +189,6 @@ const setLikedBackUsers = (state, action) => {
 
   let allUserLikes = {};
 
-  
-
-
   for (let userId in likedUsersId) {
     // console.log(Object.values(likedUsersId[userId]).map(el => el.likedUserId))
     allUserLikes[userId] = Object.values(likedUsersId[userId]).map(
@@ -198,7 +200,7 @@ const setLikedBackUsers = (state, action) => {
     (matchId) => allUserLikes[matchId] && allUserLikes[matchId].includes(userId)
   );
 
-  // is all the userIds and their data properties 
+  // is all the userIds and their data properties
   // const likedBackUsersData = matches.filter((match) =>
   //   likedBackMatches.includes(match.userId)
   // );
@@ -220,9 +222,11 @@ const setLikedUsersData = (state, action) => {
   );
 
   const likedUsersDataUpdated = likedUsersData.map((likedUser) => {
-      return { ...likedUser, matched: likedBackUsersData.includes(likedUser.userId) };
+    return {
+      ...likedUser,
+      matched: likedBackUsersData.includes(likedUser.userId),
+    };
   });
-
 
   return updateObject(state, {
     likedUsersData: likedUsersDataUpdated,

@@ -9,47 +9,47 @@ class navigationItems extends Component {
   render() {
     const { isAuth, isSignUp, userData } = this.props;
 
-    let logout = (
-      <NavLink to="/logout" className="NavLinks">
-        Logout
-      </NavLink>
-    );
-
-    let matchAndMatched = null;
-
+    let userRoutes = null;
 
     if (isAuth && Object.entries(userData).length > 1) {
       if (userData.isAdmin) {
-        matchAndMatched = null;
+        userRoutes = (
+          <li>
+            <NavLink to="/logout" className="NavLinks">
+              Logout
+            </NavLink>
+          </li>
+        );
       } else {
-        matchAndMatched = (
-          <span className="WrappingSpan">
-            <NavLink to="/match" className="NavLinks">
-              Matches
-            </NavLink>
-            <NavLink to="/matched" className="NavLinks">
-              Matched
-            </NavLink>
-          </span>
+        userRoutes = (
+          <>
+            <li>
+              <NavLink to="/match" className="NavLinks">
+                Matches
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/matched" className="NavLinks">
+                Matched
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/logout" className="NavLinks">
+                Logout
+              </NavLink>
+            </li>
+          </>
         );
       }
+    } else {
+      userRoutes = (
+        <NavLink to="/auth" className="NavLinks">
+          {!isSignUp ? "Sing in" : "Sing Up"}
+        </NavLink>
+      );
     }
 
-    return (
-      <ul className="NavigationItems">
-        <li className="li">
-          {matchAndMatched}
-
-          {isAuth ? (
-            <span className="WrappingSpan">{logout}</span>
-          ) : (
-            <NavLink to="/auth" className="NavLinks">
-              {!isSignUp ? "Sing in" : "Sing Up"}
-            </NavLink>
-          )}
-        </li>
-      </ul>
-    );
+    return <ul className="NavigationItems">{userRoutes}</ul>;
   }
 }
 

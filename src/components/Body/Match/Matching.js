@@ -149,10 +149,10 @@ export class Match extends Component {
 
     if (!loading) {
       form = (
-        <form className="Form">
-          <span className="UserName">Welcome {userData.firstName}</span>
+        <form className="Match-Form">
+          <h3 className="Match-Header">Welcome {userData.firstName}</h3>
           <Select
-            className="SelectBar"
+            className="Match-SelectBar"
             options={locationOptions}
             value={
               selectedLocation
@@ -173,14 +173,14 @@ export class Match extends Component {
         <div>
           <button
             disabled={!filteredMatches.length}
-            className="Button"
+            className="Match-Button-Like"
             onClick={this.likeClickHandler}
           >
             Like
           </button>
           <button
             disabled={filteredMatches.length <= 1}
-            className="Button"
+            className="Button-Button-Next"
             onClick={this.nextClickHandler}
           >
             Next

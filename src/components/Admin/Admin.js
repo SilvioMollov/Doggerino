@@ -187,7 +187,7 @@ export class Admin extends Component {
               </p>
 
               <input
-                className={'input-label'}
+                className={'Admin-Input-Label'}
                 value={editedUserState.firstName.value}
                 type="text"
                 id="firstName"
@@ -203,7 +203,7 @@ export class Admin extends Component {
               </p>
 
               <input
-                className={'input-label'}
+                className={'Admin-Input-Label'}
                 value={editedUserState.lastName.value}
                 type="text"
                 id="lastName"
@@ -218,7 +218,7 @@ export class Admin extends Component {
                 <strong>Location:</strong> {editedUser.location}
               </p>
               <input
-                className={'input-label'}
+                className={'Admin-Input-Label'}
                 value={editedUserState.location.value}
                 type="text"
                 id="location"

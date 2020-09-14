@@ -96,7 +96,7 @@ class Auth extends Component {
         this.setState((state) => {
           state.user[obj].value = "";
         });
-      } 
+      }
     }
   };
 
@@ -122,7 +122,7 @@ class Auth extends Component {
   };
 
   onKeyPressHandler = (e) => {
- if (e.key === "Enter") {
+    if (e.key === "Enter") {
       this.onSubmitHandler(e);
     }
   };
@@ -131,9 +131,9 @@ class Auth extends Component {
     // for (let el of userFormArray) {
     //   console.log(el.id, el.config.valid);
     // }
-    let classInvalid = "input-label-invalid";
+    let classInvalid = "Auth-Input-Invalid";
 
-    let classValid = "input-label";
+    let classValid = "Auth-Input-Valid";
 
     const emailIsValid =
       this.state.user.email.touched &&
@@ -161,8 +161,11 @@ class Auth extends Component {
       this.state.user.lastName.value;
 
     let form = (
-      <form onSubmit={(event) => this.onSubmitHandler(event)}>
-        <h4>Sign In</h4>
+      <form
+        className={"Auth-Form"}
+        onSubmit={(event) => this.onSubmitHandler(event)}
+      >
+        <h3 className={"Auth-Header"}>Sign In</h3>
         {/* <h2>
   {this.state.initialState.error !== null
     ? `${this.state.initialState.error.message}`
@@ -205,8 +208,11 @@ class Auth extends Component {
 
     if (this.props.isSignUp) {
       form = (
-        <form onSubmit={(event) => this.onSubmitHandler(event)}>
-          <h4>Sign Up</h4>
+        <form
+          className={"Auth-Form"}
+          onSubmit={(event) => this.onSubmitHandler(event)}
+        >
+          <h3 className={"Auth-Header"}>Sign Up</h3>
           <input
             className={emailIsValid ? classInvalid : classValid}
             value={this.state.user.email.value}
@@ -261,17 +267,17 @@ class Auth extends Component {
     }
 
     return (
-      <div className="SignUp">
+      <div className="Auth">
         {authRedirect}
         {err}
         {form}
         <div>
-          <button className="Button" onClick={this.onSubmitHandler}>
+          <button className="Auth-Button-Confirm" onClick={this.onSubmitHandler}>
             {this.props.isSignUp ? "Sign Up" : "Sign In"}
           </button>
 
           <button
-            className="Button-SignIn"
+            className="Auth-Button"
             onClick={this.onSwithToSignInHandler}
           >
             Swith to {this.props.isSignUp ? "Sign In" : "Sign Up"}

@@ -1,10 +1,46 @@
 .Match-Wrapper {
-  text-align: center;
-  width: 80%;
   margin: auto;
+  max-width: 600px;
 }
 
-.Button {
+
+.Match-Form {
+  margin: 20px auto;
+  display: block;
+  text-align: center;
+  box-shadow: 0 2px 3px #ccc;
+  border: 1px solid #eee;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 25px;
+  background-color: #FF8A84;
+
+}
+
+
+.Match-Header {
+  margin: 20px 20%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.Match-SelectBar {
+  z-index: 1;
+}
+
+
+
+
+@media (max-width: 600px) {
+  .Match-Wrapper{ 
+    margin:  auto;
+    padding: 5px 20px;
+    max-width: 400px;
+    max-height: 300px;
+  }
+}
+
+/* .Button {
   display: inline-block;
   background-color: transparent;
  
@@ -17,31 +53,19 @@
   padding: 10px;
   margin: 10px 10px;
   font-weight: bold;
-}
+} */
 
-.Form {
-  margin: 20px auto;
-  width: 80%;
+
+
+/* .UserName {
   display: block;
-  text-align: center;
-  box-shadow: 0 2px 3px #ccc;
-  border: 1px solid #eee;
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 25px;
-  background-color: #FF8A84;
+} */
 
-}
-
-.UserName {
-  display: block;
-}
-
-.SelectBar {
+/* .SelectBar {
   display: block;
   margin: 15px auto;
   width: 80%;
-}
+} */
 
  /* .slide-enter {
   opacity: 1;

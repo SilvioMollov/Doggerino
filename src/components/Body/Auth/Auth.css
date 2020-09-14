@@ -1,28 +1,18 @@
-.SignUp {
-  margin: 20px auto;
-  width: 80%;
+.Auth {
+  margin: 20px 15%;
   text-align: center;
   box-shadow: 0 2px 3px #ccc;
-  border: 1px solid #eee;
+  border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
   border-radius: 25px;
 }
 
-.input-label {
-  outline: none;
-  border: 1px solid #ccc;
-  background-color: white;
-  margin: 10px 0;
-  font: inherit;
-  text-align: center;
-  padding: 6px 10px;
-  width: 80%;
-  box-sizing: border-box;
-  border-radius: 25px;
+.Auth-Form {
+  padding: 0 5vh
 }
 
-.input-label-invalid {
+.Auth-Input-Invalid {
   outline: none;
   border: 1px solid #ccc;
   background-color: rgb(230, 91, 91);
@@ -30,31 +20,68 @@
   font: inherit;
   text-align: center;
   padding: 6px 10px;
-  width: 80%;
+  width: 100%;
   box-sizing: border-box;
   border-radius: 25px;
 }
 
-.Button {
-  border: 1px #ff8a84;
+.Auth-Input-Valid {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 10px 0;
   font: inherit;
-  background-color: #ff8a84;
   text-align: center;
-  margin: 10px 10px;
-  padding: 10px;
-  width: 30%;
-  height: 20%;
+  padding: 6px 10px;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 25px;
 }
 
-.Button-SignIn {
-  border: 1px #84ffda;
-  font: inherit;
-  background-color: #84ffa9;
-  text-align: center;
-  margin: 10px 10px;
+.Auth-Header {
+  margin: 10px 20%;
   padding: 10px;
-  width: 30%;
-  height: 20%;
+
+  border-bottom: 1px solid black;
+}
+
+.Auth-Button {
+  display: inline;
+  border: 1px #ff8a84;
+  font: inherit;
+  background-color: #ff8a84;
+  padding: 10px;
+  margin:  10px;
+  min-width: 150px;
   border-radius: 25px;
 }
+
+.Auth-Button-Confirm {
+  display: inline;
+  border: 1px #84ff94;
+  font: inherit;
+  background-color: #84ff94;
+  padding: 10px;
+  margin:  10px;
+  min-width: 150px;
+  border-radius: 25px;
+}
+
+
+
+@media (max-width: 600px) {
+  .Auth {
+    margin: 10px auto;
+    padding: 5px;
+  }
+
+  .Auth-Header {
+    margin: 10px 20%;
+    border-bottom: 1px solid black;
+  }
+
+  .Auth-Form {
+    padding: 0 5px
+  }
+}
+
