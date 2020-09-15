@@ -22,7 +22,7 @@
 .Toolbar-Navigation {
   display: flex;
   align-items: center;
-  height: 100%;
+  height: inherit;
   padding: 0 1rem;
 }
 

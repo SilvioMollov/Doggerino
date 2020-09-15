@@ -130,10 +130,15 @@ export class Match extends Component {
         >
           <CardHolder
             filteredMatchesLength={filteredMatches.length}
-            matchName={
+            matchFirstName={
               !filteredMatches.length
                 ? "NQMA DANNI "
                 : filteredMatches[matchIndex].firstName
+            }
+            matchLastName={
+              !filteredMatches.length
+                ? "NQMA DANNI "
+                : filteredMatches[matchIndex].lastName
             }
             matchLocation={
               !filteredMatches.length
@@ -173,17 +178,17 @@ export class Match extends Component {
         <div>
           <button
             disabled={!filteredMatches.length}
-            className="Match-Button-Like"
+            className="Match-Button"
             onClick={this.likeClickHandler}
           >
-            Like
+            <i className="fas fa-heart fa-2x"></i>
           </button>
           <button
             disabled={filteredMatches.length <= 1}
-            className="Button-Button-Next"
+            className="Match-Button"
             onClick={this.nextClickHandler}
           >
-            Next
+            <i className="fas fa-arrow-circle-right fa-2x"></i>
           </button>
         </div>
       </div>
@@ -208,7 +213,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
+    onFetchMatches: (userId, token) =>
+      dispatch(actions.fetchMatches(userId, token)),
     onFilterMatches: (matches, filterValue) =>
       dispatch(actions.matchesFilter(matches, filterValue)),
     onPostLikedUsers: (token, userId, likedUserId) =>

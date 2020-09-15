@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import Match from "./components/Body/Match/Matching";
 import Auth from "./components/Body/Auth/Auth";
-import NavigationItems from "./components/Navigation/NavigationItems";
 import Matched from "./components/Body/Matched/Matched";
 import Chat from "./components/Body/Chat/Chat";
 import Admin from "./components/Admin/Admin";
-import Toolbar from "./components/Navigation/Toolbar/Toolbar";
 import Layout from "./hoc/Layout/Layout";
 import { CSSTransition } from "react-transition-group";
 
@@ -72,7 +70,7 @@ class App extends Component {
     return (
       <CSSTransition
         in={this.props.isAuthenticated}
-        appear={true}
+        appear={false}
         timeout={300}
         classNames="fade"
       >

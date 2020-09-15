@@ -1,7 +1,9 @@
 .DrawerToggle {
- height: 40px;
+  padding: 5px 0;
+  margin: auto;
  width: 40px;
  display: inline-grid;
+ grid-row-gap: 10px;
  cursor: pointer;
  border: none;
 }

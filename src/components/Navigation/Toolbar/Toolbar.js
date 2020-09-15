@@ -8,9 +8,7 @@ const toolbar = (props) => {
   return (
     <header className={"Toolbar"}>
       <nav className={"Toolbar-Navigation"}>
-        <div>
-          <DrawerToggle clicked={props.drawerClickHandler} />
-        </div>
+        <DrawerToggle clicked={props.drawerClickHandler} />
 
         <div className="Toolbar-Logo">
           <NavLink to="/match" className="Toolbar-NavLinks">
