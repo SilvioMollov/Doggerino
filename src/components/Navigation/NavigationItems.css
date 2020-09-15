@@ -9,8 +9,18 @@
 
 .NavLinks {
   color: aliceblue;
-  padding: 0 10px;
+  padding: 10px;
   text-decoration: none;
+}
+
+.NavLinks i {
+  padding: 10px;
+}
+
+@media (max-width: 599px) {
+  .NavigationItems {
+    display: none;
+  }
 }
 
 /* .NavigationItems {

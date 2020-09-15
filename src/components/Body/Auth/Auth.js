@@ -272,14 +272,19 @@ class Auth extends Component {
         {err}
         {form}
         <div>
-          <button className="Auth-Button-Confirm" onClick={this.onSubmitHandler}>
+          <button
+            className="Auth-Button-Confirm"
+            onClick={this.onSubmitHandler}
+          >
             {this.props.isSignUp ? "Sign Up" : "Sign In"}
+            {this.props.isSignUp ? (
+              <i className="fas fa-user-plus"></i>
+            ) : (
+              <i className="fas fa-sign-in-alt"></i>
+            )}
           </button>
 
-          <button
-            className="Auth-Button"
-            onClick={this.onSwithToSignInHandler}
-          >
+          <button className="Auth-Button" onClick={this.onSwithToSignInHandler}>
             Swith to {this.props.isSignUp ? "Sign In" : "Sign Up"}
           </button>
         </div>

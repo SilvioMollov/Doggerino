@@ -78,9 +78,6 @@ class App extends Component {
       >
         <div className="App">
           <Router>
-            {/* <NavigationItems /> */}
-            {/* {routes} */}
-            {/* <Toolbar></Toolbar> */}
             <Layout>{routes}</Layout>
             <Route path="/auth" component={Auth} />
           </Router>

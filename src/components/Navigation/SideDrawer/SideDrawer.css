@@ -6,7 +6,12 @@
   top: 0;
   left: 0;
   z-index: 200;
-  max-width: 400px;
+  transform: translateX(-100%);
+  min-width: 200px;
+}
+
+.SideDrawer.Open {
+  transform: translateX(0);
 }
 
 .SideDrawer ul {
@@ -15,9 +20,15 @@
   flex-direction: column;
 }
 
+.SideDrawer li {
+  padding: 10px;
+  margin: 10px;
+}
+
 .SideDrawer a {
   text-decoration: none;
   color: #ff8a84;
+  padding: 0;
 }
 
 /* @media (min-width: 500px) {

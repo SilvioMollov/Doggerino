@@ -1,15 +1,18 @@
 .Auth {
-  margin: 20px 15%;
+  margin: 20px auto;
   text-align: center;
   box-shadow: 0 2px 3px #ccc;
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
   border-radius: 25px;
+  max-width: 600px;
 }
 
 .Auth-Form {
-  padding: 0 5vh
+  padding: 0 5vh;
+  max-width: 400px;
+  margin: auto;
 }
 
 .Auth-Input-Invalid {
@@ -67,7 +70,9 @@
   border-radius: 25px;
 }
 
-
+.Auth-Button-Confirm i {
+  padding-left: 10px;
+}
 
 @media (max-width: 600px) {
   .Auth {

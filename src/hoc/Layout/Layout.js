@@ -12,37 +12,28 @@ class Layout extends Component {
 
   drawerCloseHandler = () => {
     this.setState({ showSideDrawer: false });
+    console.log(this.state.showSideDrawer);
   };
 
   drawerOpenHandler = () => {
-
     this.setState((prevState) => {
       return { showSideDrawer: !prevState.showSideDrawer };
     });
   };
 
   render() {
-    let sideDrawer;
-
-    if (this.state.showSideDrawer) {
-      sideDrawer = (
-        <>
-          <SideDrawer
-            //   isAuth={this.props.isAuth}
-            open={this.drawerOpenHandler}
-            closed={this.drawerCloseHandler}
-          />
-          <Backdrop show={this.state.showSideDrawer} clicked={this.drawerCloseHandler}></Backdrop>
-        </>
-      );
-    } else {
-      sideDrawer = null;
-    }
-
     return (
       <>
         <Toolbar drawerClickHandler={this.drawerOpenHandler} />
-        {sideDrawer}
+        <SideDrawer
+          //   isAuth={this.props.isAuth}
+          isOpen={this.state.showSideDrawer}
+          clicked={this.drawerCloseHandler}
+        />
+        <Backdrop
+          show={this.state.showSideDrawer}
+          clicked={this.drawerCloseHandler}
+        ></Backdrop>
 
         <main className={"Layout-Content"}>{this.props.children}</main>
       </>

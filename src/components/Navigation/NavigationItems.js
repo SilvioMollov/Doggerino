@@ -15,8 +15,13 @@ class navigationItems extends Component {
       if (userData.isAdmin) {
         userRoutes = (
           <li>
-            <NavLink to="/logout" className="NavLinks">
+            <NavLink
+              to="/logout"
+              className="NavLinks"
+              onClick={this.props.onClick}
+            >
               Logout
+              <i className="fas fa-sign-out-alt"></i>
             </NavLink>
           </li>
         );
@@ -24,18 +29,33 @@ class navigationItems extends Component {
         userRoutes = (
           <>
             <li>
-              <NavLink to="/match" className="NavLinks">
+              <NavLink
+                to="/match"
+                className="NavLinks"
+                onClick={this.props.onClick}
+              >
                 Matches
+                <i className="fas fa-users"></i>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/matched" className="NavLinks">
+              <NavLink
+                to="/matched"
+                className="NavLinks"
+                onClick={this.props.onClick}
+              >
                 Matched
+                <i className="fas fa-heart"></i>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/logout" className="NavLinks">
+              <NavLink
+                to="/logout"
+                className="NavLinks"
+                onClick={this.props.onClick}
+              >
                 Logout
+                <i className="fas fa-sign-out-alt"></i>
               </NavLink>
             </li>
           </>
@@ -43,8 +63,9 @@ class navigationItems extends Component {
       }
     } else {
       userRoutes = (
-        <NavLink to="/auth" className="NavLinks">
+        <NavLink to="/auth" className="NavLinks" onClick={this.props.onClick}>
           {!isSignUp ? "Sing in" : "Sing Up"}
+          <i className="fas fa-sign-in-alt"></i>
         </NavLink>
       );
     }
