@@ -18,7 +18,7 @@
 .Auth-Input-Invalid {
   outline: none;
   border: 1px solid #ccc;
-  background-color: rgb(230, 91, 91);
+  background-color: rgba(240, 165, 146, 0.74);
   margin: 10px 0;
   font: inherit;
   text-align: center;
@@ -34,8 +34,8 @@
   background-color: white;
   margin: 10px 0;
   font: inherit;
-  text-align: center;
-  padding: 6px 0px;
+  text-align: left;
+  padding: 6px 8px;
   width: 100%;
   box-sizing: border-box;
   border-radius: 25px;
