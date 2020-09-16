@@ -211,7 +211,6 @@ class Auth extends Component {
   onKeyPressHandler = (e) => {
     const { isSignUp } = this.props;
     const {
-      citiesSelectOptions,
       user: {
         email,
         password,

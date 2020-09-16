@@ -1,3 +1,9 @@
 .Layout-Content {
     margin: 20px 0;
 }
+
+@media (max-width: 600px) {
+    .Layout-Content {
+        margin: 5px 0
+    }
+  }
