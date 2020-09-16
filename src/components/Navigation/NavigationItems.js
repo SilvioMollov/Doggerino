@@ -27,6 +27,16 @@ class navigationItems extends Component {
       } else {
         userRoutes = (
           <>
+           <li>
+              <NavLink
+                to="/userProfile"
+                className="NavLinks"
+                onClick={this.props.onClick}
+              >
+                My Profile
+                <i className="fas fa-user"></i>
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to="/match"
@@ -62,10 +72,12 @@ class navigationItems extends Component {
       }
     } else {
       userRoutes = (
-        <NavLink to="/auth" className="NavLinks" onClick={this.props.onClick}>
-          {!isSignUp ? "Sing in" : "Sing Up"}
-          <i className="fas fa-sign-in-alt"></i>
-        </NavLink>
+        <li>
+          <NavLink to="/auth" className="NavLinks" onClick={this.props.onClick}>
+            {!isSignUp ? "Sing in" : "Sing Up"}
+            <i className="fas fa-sign-in-alt"></i>
+          </NavLink>
+        </li>
       );
     }
 

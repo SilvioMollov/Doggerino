@@ -5,6 +5,7 @@ import Matched from "./components/Body/Matched/Matched";
 import Chat from "./components/Body/Chat/Chat";
 import Admin from "./components/Admin/Admin";
 import Layout from "./hoc/Layout/Layout";
+import UserProfile from "./components/Body/UserProfile/UserProfile";
 import { CSSTransition } from "react-transition-group";
 
 import {
@@ -55,6 +56,7 @@ class App extends Component {
       } else {
         routes = (
           <Switch>
+            <Route path="/userProfile" component={UserProfile} />
             <Route exact path="/match" component={Match} />
             <Route path="/logout" component={Logout} />
             <Route path="/matched" component={Matched} />

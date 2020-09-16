@@ -8,7 +8,7 @@ const sideDrawer = (props) => {
   if (props.isOpen) {
     drawerClasses = "SideDrawer Open";
   }
-
+ 
   return (
     <>
       <nav className={drawerClasses}>

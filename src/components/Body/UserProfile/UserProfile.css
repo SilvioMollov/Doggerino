@@ -1,0 +1,19 @@
+.UserProfile-Wrapper {
+  padding: 20px;
+}
+
+.UserProfile-CardHolder {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+  transition: transform 1s ease-in-out;
+  transform: translateX(0);
+  transform-origin: top left;
+}
+
+.UserProfile-CardHolder.Open {
+  transform: rotate(-80deg);
+  margin-left: auto;
+  z-index: -1;
+  /* transform-origin:  top left; */
+}

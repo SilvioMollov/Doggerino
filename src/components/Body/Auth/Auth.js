@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./Auth.css";
+import CountryLists from "all-countries-and-cities-json";
+import Select from "react-select";
 
 import * as actions from "../../../store/actions/index";
 import { connect } from "react-redux";
@@ -7,6 +9,7 @@ import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
   state = {
+    citiesSelectOptions: [{}],
     user: {
       email: {
         value: "",
@@ -22,14 +25,6 @@ class Auth extends Component {
         validation: {
           required: true,
           minLength: 6,
-        },
-        valid: false,
-        touched: false,
-      },
-      location: {
-        value: "",
-        validation: {
-          required: true,
         },
         valid: false,
         touched: false,
@@ -50,10 +45,26 @@ class Auth extends Component {
         valid: false,
         touched: false,
       },
+      country: {
+        value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      city: {
+        value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
     },
   };
 
-  checkValidity = (value, rules) => {
+  processValidity = (value, rules) => {
     let isValid = true;
     const mailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -66,7 +77,7 @@ class Auth extends Component {
     }
 
     if (rules.mailFormat) {
-      isValid = value.match(mailFormat);
+      isValid = value.match(mailFormat) && isValid;
     }
 
     return isValid;
@@ -78,13 +89,14 @@ class Auth extends Component {
       [inputType]: {
         ...this.state.user[inputType],
         value: event.target.value,
-        valid: this.checkValidity(
+        valid: this.processValidity(
           event.target.value,
           this.state.user[inputType].validation
         ),
         touched: true,
       },
     };
+
     this.setState({ user: updatedUser });
   };
 
@@ -127,38 +139,54 @@ class Auth extends Component {
     }
   };
 
+  onChangeSelectHandler = ({ value }, { name }) => {
+    let citiesSelect = [];
+
+    if (name === "country") {
+      CountryLists[value].forEach((city) =>
+        citiesSelect.push({ value: city, label: city })
+      );
+      this.setState({ citiesSelectOptions: citiesSelect });
+    }
+
+    const updatedUser = {
+      ...this.state.user,
+      [name]: {
+        ...this.state.user[name],
+        value: value,
+        valid: this.processValidity(value, this.state.user[name].validation),
+        touched: true,
+      },
+    };
+
+    this.setState({ user: updatedUser });
+  };
+
+  isInvalid = (touched, valid, value) => {
+    return touched && !valid && value;
+  };
+
   render() {
-    // for (let el of userFormArray) {
-    //   console.log(el.id, el.config.valid);
-    // }
-    let classInvalid = "Auth-Input-Invalid";
+    const {
+      citiesSelectOptions,
+      user: { email, password, country, city, firstName, lastName },
+    } = this.state;
 
-    let classValid = "Auth-Input-Valid";
+    const countries = Object.keys(CountryLists);
 
-    const emailIsValid =
-      this.state.user.email.touched &&
-      !this.state.user.email.valid &&
-      this.state.user.email.value;
+    let countriesSelect = [];
 
-    const passwordIsValid =
-      this.state.user.password.touched &&
-      !this.state.user.password.valid &&
-      this.state.user.password.value;
+    console.log(
+      this.isInvalid(password.touched, password.valid, password.value)
+    );
 
-    const locationIsValid =
-      this.state.user.location.touched &&
-      !this.state.user.location.valid &&
-      this.state.user.location.value;
+    countries.forEach((country) => {
+      countriesSelect.push({ value: country, label: country });
+    });
 
-    const firstNameIsValid =
-      this.state.user.firstName.touched &&
-      !this.state.user.firstName.valid &&
-      this.state.user.firstName.value;
+    const classInvalid = "Auth-Input-Invalid";
 
-    const lastNameIsValid =
-      this.state.user.lastName.touched &&
-      !this.state.user.lastName.valid &&
-      this.state.user.lastName.value;
+    const classValid = "Auth-Input-Valid";
 
     let form = (
       <form
@@ -214,8 +242,12 @@ class Auth extends Component {
         >
           <h3 className={"Auth-Header"}>Sign Up</h3>
           <input
-            className={emailIsValid ? classInvalid : classValid}
-            value={this.state.user.email.value}
+            className={
+              this.isInvalid(email.touched, email.valid, email.value)
+                ? classInvalid
+                : classValid
+            }
+            value={email.value}
             type="email"
             id="email"
             name="email"
@@ -224,8 +256,12 @@ class Auth extends Component {
           ></input>
 
           <input
-            className={passwordIsValid ? classInvalid : classValid}
-            value={this.state.user.password.value}
+            className={
+              this.isInvalid(password.touched, password.valid, password.value)
+                ? classInvalid
+                : classValid
+            }
+            value={password.value}
             type="password"
             id="password"
             name="password"
@@ -234,18 +270,16 @@ class Auth extends Component {
           ></input>
 
           <input
-            className={locationIsValid ? classInvalid : classValid}
-            value={this.state.user.location.value}
-            type="text"
-            id="location"
-            name="location"
-            onChange={(event) => this.onChangeHandler(event, event.target.id)}
-            placeholder="Location"
-          ></input>
-
-          <input
-            className={firstNameIsValid ? classInvalid : classValid}
-            value={this.state.user.firstName.value}
+            className={
+              this.isInvalid(
+                firstName.touched,
+                firstName.valid,
+                firstName.value
+              )
+                ? classInvalid
+                : classValid
+            }
+            value={firstName.value}
             type="text"
             id="firstName"
             name="firstName"
@@ -254,14 +288,35 @@ class Auth extends Component {
           ></input>
 
           <input
-            className={lastNameIsValid ? classInvalid : classValid}
-            value={this.state.user.lastName.value}
+            className={
+              this.isInvalid(lastName.touched, lastName.valid, lastName.value)
+                ? classInvalid
+                : classValid
+            }
+            value={lastName.value}
             type="text"
             id="lastName"
             name="lastName"
             onChange={(event) => this.onChangeHandler(event, event.target.id)}
             placeholder="Last Name"
           ></input>
+
+          <Select
+            className={"Auth-Select-Country"}
+            name="country"
+            options={countriesSelect}
+            onChange={this.onChangeSelectHandler}
+            placeholder={"Country"}
+          ></Select>
+
+          <Select
+            className={"Auth-Select-City"}
+            name="city"
+            options={citiesSelectOptions}
+            isDisabled={!(citiesSelectOptions.length > 1)}
+            onChange={this.onChangeSelectHandler}
+            placeholder={"City"}
+          ></Select>
         </form>
       );
     }
