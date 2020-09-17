@@ -63,14 +63,19 @@ const userData = (state, action) => {
   const { userId, data } = action;
 
   let updatedUserData = null;
+
+
   updatedUserData = data.filter((match) => match.userId === userId);
 
   const [userData] = updatedUserData;
+
+  console.log(userData.location.city)
+
   return updateObject(state, {
     userData: updateObject(state.userData, {
       ...userData,
     }),
-    selectedLocation: userData.location,
+    selectedLocation: userData.location.city,
   });
 };
 

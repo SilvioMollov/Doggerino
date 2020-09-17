@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import './Auth.css';
-import CountryLists from 'all-countries-and-cities-json';
-import Select from 'react-select';
+import React, { Component } from "react";
+import "./Auth.css";
+import CountryLists from "all-countries-and-cities-json";
+import Select from "react-select";
 
-import * as actions from '../../../store/actions/index';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import * as actions from "../../../store/actions/index";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
   state = {
     citiesSelectOptions: [{}],
     user: {
       email: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           mailFormat: true,
@@ -21,7 +21,7 @@ class Auth extends Component {
         touched: false,
       },
       password: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           minLength: 6,
@@ -30,7 +30,7 @@ class Auth extends Component {
         touched: false,
       },
       confirmPassword: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           minLength: 6,
@@ -40,7 +40,7 @@ class Auth extends Component {
         touched: false,
       },
       firstName: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -48,7 +48,7 @@ class Auth extends Component {
         touched: false,
       },
       lastName: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -56,7 +56,7 @@ class Auth extends Component {
         touched: false,
       },
       userAge: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           maxLength: 2,
@@ -67,7 +67,7 @@ class Auth extends Component {
         touched: false,
       },
       country: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -75,7 +75,7 @@ class Auth extends Component {
         touched: false,
       },
       city: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -101,7 +101,7 @@ class Auth extends Component {
     let isValid = true;
 
     if (required) {
-      isValid = value.trim() !== '' && isValid;
+      isValid = value.trim() !== "" && isValid;
     }
 
     if (mailFormat) {
@@ -136,10 +136,10 @@ class Auth extends Component {
 
     let updatedUser = {};
 
-    if (inputType.name === 'country' || inputType.name === 'city') {
+    if (inputType.name === "country" || inputType.name === "city") {
       let citiesSelect = [];
 
-      if (inputType.name === 'country') {
+      if (inputType.name === "country") {
         CountryLists[event.value].forEach((city) =>
           citiesSelect.push({ value: city, label: city })
         );
@@ -175,10 +175,15 @@ class Auth extends Component {
 
     for (const obj in this.state.user) {
       if (this.state.user[obj].touched) {
-        console.log(this.state.user[obj]);
+        if (this.state.user.country.touched) {
+          this.setState((state) => {
+            state.citiesSelectOptions = [{}];
+          });
+        }
+
         this.setState((state) => {
           return (
-            (state.user[obj].value = ''),
+            (state.user[obj].value = ""),
             (state.user[obj].valid = false),
             (state.user[obj].touched = false)
           );
@@ -188,23 +193,36 @@ class Auth extends Component {
   };
 
   onSubmitHandler = (event) => {
+    const {
+      user: {
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName,
+        userAge,
+        country,
+        city,
+      },
+    } = this.state;
+
     event.preventDefault();
 
     if (this.props.isSignUp) {
       this.props.onSignUp(
-        this.state.user.email.value,
-        this.state.user.password.value,
-        this.state.user.location.value,
-        this.state.user.firstName.value,
-        this.state.user.lastName.value,
+        email.value,
+        password.value,
+        confirmPassword.value,
+        firstName.value,
+        lastName.value,
+        userAge.value,
+        country.value,
+        city.value,
         this.props.isSignUp,
         this.props.userId
       );
     } else {
-      this.props.onSignIn(
-        this.state.user.email.value,
-        this.state.user.password.value
-      );
+      this.props.onSignIn(email.value, password.value);
     }
   };
 
@@ -236,8 +254,8 @@ class Auth extends Component {
         country.valid &&
         city.valid;
     }
-    console.log(formIsValid);
-    if (e.key === 'Enter' && formIsValid) {
+
+    if (e.key === "Enter" && formIsValid) {
       this.onSubmitHandler(e);
     }
   };
@@ -269,16 +287,16 @@ class Auth extends Component {
       countriesSelect.push({ value: country, label: country });
     });
 
-    const classInvalid = 'Auth-Input-Invalid';
+    const classInvalid = "Auth-Input-Invalid";
 
-    const classValid = 'Auth-Input-Valid';
+    const classValid = "Auth-Input-Valid";
 
     let form = (
       <form
-        className={'Auth-Form'}
+        className={"Auth-Form"}
         onSubmit={(event) => this.onSubmitHandler(event)}
       >
-        <h3 className={'Auth-Header'}>Sign In</h3>
+        <h3 className={"Auth-Header"}>Sign In</h3>
         {/* <h2>
   {this.state.initialState.error !== null
     ? `${this.state.initialState.error.message}`
@@ -322,10 +340,10 @@ class Auth extends Component {
     if (this.props.isSignUp) {
       form = (
         <form
-          className={'Auth-Form'}
+          className={"Auth-Form"}
           onSubmit={(event) => this.onSubmitHandler(event)}
         >
-          <h3 className={'Auth-Header'}>Sign Up</h3>
+          <h3 className={"Auth-Header"}>Sign Up</h3>
           <input
             className={
               this.isInvalid(email.touched, email.valid, email.value)
@@ -420,20 +438,20 @@ class Auth extends Component {
           ></input>
 
           <Select
-            className={'Auth-Select-Country'}
+            className={"Auth-Select-Country"}
             name="country"
             options={countriesSelect}
             onChange={(event, name) => this.onChangeHandler(event, name)}
-            placeholder={'Country'}
+            placeholder={"Country"}
           ></Select>
 
           <Select
-            className={'Auth-Select-City'}
+            className={"Auth-Select-City"}
             name="city"
             options={citiesSelectOptions}
             isDisabled={!(citiesSelectOptions.length > 1)}
             onChange={(event, name) => this.onChangeHandler(event, name)}
-            placeholder={'City'}
+            placeholder={"City"}
           ></Select>
         </form>
       );
@@ -462,7 +480,7 @@ class Auth extends Component {
               )
             }
           >
-            {this.props.isSignUp ? 'Sign Up' : 'Sign In'}
+            {this.props.isSignUp ? "Sign Up" : "Sign In"}
             {this.props.isSignUp ? (
               <i className="fas fa-user-plus"></i>
             ) : (
@@ -471,7 +489,7 @@ class Auth extends Component {
           </button>
 
           <button className="Auth-Button" onClick={this.onSwithToSignInHandler}>
-            Swith to {this.props.isSignUp ? 'Sign In' : 'Sign Up'}
+            Swith to {this.props.isSignUp ? "Sign In" : "Sign Up"}
           </button>
         </div>
       </div>
@@ -494,9 +512,12 @@ const mapDispatchToProps = (dispatch) => {
     onSignUp: (
       email,
       password,
-      location,
+      confirmPassword,
       firstName,
       lastName,
+      userAge,
+      country,
+      city,
       isSignUp,
       userId
     ) =>
@@ -504,9 +525,12 @@ const mapDispatchToProps = (dispatch) => {
         actions.signUp(
           email,
           password,
-          location,
+          confirmPassword,
           firstName,
           lastName,
+          userAge,
+          country,
+          city,
           isSignUp,
           userId
         )

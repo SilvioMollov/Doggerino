@@ -5,9 +5,12 @@ import { fetchMatches, fetchLikedUsers, clearStateMatches } from "./maches";
 export const signUp = (
   email,
   password,
-  location,
+  confirmPassword,
   firstName,
   lastName,
+  userAge,
+  country,
+  city,
   isSignUp,
   userId
 ) => {
@@ -27,16 +30,18 @@ export const signUp = (
         dispatch(
           dataPost(
             email,
-            location,
             firstName,
             lastName,
+            userAge,
+            country,
+            city,
             isSignUp,
             response.data.localId
           )
         );
       })
       .catch((err) => {
-        console.log("[SignUp]",err.errors.message);
+        console.log("[SignUp]", err.errors.message);
         dispatch(authFail(err));
       });
   };
@@ -57,7 +62,7 @@ export const signIn = (email, password) => {
     axios
       .post(signInUrl, signInData)
       .then((response) => {
-        console.log("[SignIn]",response);
+        console.log("[SignIn]", response);
         const expirationDate = new Date(
           new Date().getTime() + response.data.expiresIn * 1000
         );
@@ -65,32 +70,38 @@ export const signIn = (email, password) => {
         localStorage.setItem("expirationDate", expirationDate);
         localStorage.setItem("userId", response.data.localId);
         // needs Work, when in admin pannel it redirects me to the same pathway as here "/Match"
-        dispatch(authSuccess(response.data.idToken, response.data.localId, "/match"));
-        dispatch(fetchMatches(response.data.localId, response.data.idToken))
+        dispatch(
+          authSuccess(response.data.idToken, response.data.localId, "/match")
+        );
+        dispatch(fetchMatches(response.data.localId, response.data.idToken));
         // dispatch(authRedirectPath('/match'))
         dispatch(checkAuthTimeout(response.data.expiresIn));
-        dispatch(fetchLikedUsers(response.data.localId, response.data.idToken))
+        dispatch(fetchLikedUsers(response.data.localId, response.data.idToken));
       })
       .catch((error) => {
-        console.log("[SignIn]",error);
+        console.log("[SignIn]", error);
       });
   };
 };
 
 export const dataPost = (
   email,
-  location,
   firstName,
   lastName,
+  userAge,
+  country,
+  city,
   isSignUp,
   userId
 ) => {
   return (dispatch) => {
     const userData = {
       email: email,
-      location: location,
+      location: { country: country, city: city },
       firstName: firstName,
       lastName: lastName,
+      userAge: userAge,
+      registrationDate: new Date().getTime(),
       userId: userId,
     };
 
@@ -99,7 +110,7 @@ export const dataPost = (
         .post("https://doggerino-79ffd.firebaseio.com/users.json", userData)
         .then((response) => {
           console.log(response);
-          dispatch(authIsSignUp())
+          dispatch(authIsSignUp());
         })
         .catch((error) => console.log(error));
     }
@@ -111,12 +122,12 @@ export const authCheckState = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       dispatch(logout("/auth"));
-      dispatch(clearStateMatches())
+      dispatch(clearStateMatches());
     } else {
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
       if (expirationDate <= new Date()) {
-      dispatch(clearStateMatches())
-      dispatch(logout('/auth'));
+        dispatch(clearStateMatches());
+        dispatch(logout("/auth"));
       } else {
         const userId = localStorage.getItem("userId");
         dispatch(authSuccess(token, userId));
@@ -124,8 +135,6 @@ export const authCheckState = () => {
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
           )
-
-
         );
       }
     }
@@ -156,7 +165,7 @@ export const authSuccess = (token, userId, path) => {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
     userId: userId,
-    path: path
+    path: path,
   };
 };
 
@@ -170,7 +179,7 @@ export const authFail = (error) => {
 export const checkAuthTimeout = (expirationTime) => {
   return (dispatch) => {
     setTimeout(() => {
-      dispatch(logout('/auth'));
+      dispatch(logout("/auth"));
     }, expirationTime * 1000);
   };
 };
@@ -181,6 +190,6 @@ export const logout = (path) => {
   localStorage.removeItem("userId");
   return {
     type: actionTypes.AUTH_LOGOUT,
-    path: path
+    path: path,
   };
 };
