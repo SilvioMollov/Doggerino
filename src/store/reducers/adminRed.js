@@ -17,8 +17,15 @@ const setAllUsers = (state, action) => {
 const setEditedUser = (state, action) => {
   const { editedUser } = action;
 
+  const updatedUser = {
+    ...editedUser,
+    ...editedUser.location,
+  };
+
+  delete updatedUser.location;
+
   return updateObject(state, {
-    editedUser: editedUser,
+    editedUser: updatedUser,
   });
 };
 

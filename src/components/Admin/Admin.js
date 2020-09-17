@@ -27,7 +27,15 @@ export class Admin extends Component {
         valid: false,
         touched: false,
       },
-      location: {
+      city: {
+        value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      country: {
         value: '',
         validation: {
           required: true,
@@ -215,18 +223,33 @@ export class Admin extends Component {
               ></input>
 
               <p>
-                <strong>Location:</strong> {editedUser.location}
+                <strong>City:</strong> {editedUser.city}
               </p>
               <input
                 className={'Admin-Input-Label'}
-                value={editedUserState.location.value}
+                value={editedUserState.city.value}
                 type="text"
-                id="location"
-                name="location"
+                id="city"
+                name="city"
                 onChange={(event) =>
                   this.onChangeHandler(event, event.target.id)
                 }
-                placeholder="NEW Location"
+                placeholder="NEW City"
+              ></input>
+
+               <p>
+                <strong>Country:</strong> {editedUser.country}
+              </p>
+              <input
+                className={'Admin-Input-Label'}
+                value={editedUserState.country.value}
+                type="text"
+                id="country"
+                name="country"
+                onChange={(event) =>
+                  this.onChangeHandler(event, event.target.id)
+                }
+                placeholder="NEW Country"
               ></input>
             </form>
             <button

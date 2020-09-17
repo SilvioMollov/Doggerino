@@ -1,5 +1,5 @@
-import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../../shared/utility";
+import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
   matches: [],
@@ -11,21 +11,16 @@ const initialState = {
   likedBackUsersData: [],
   likedUsersData: [],
   matchesDataFiltered: [],
-  locations: [],
   locationOptions: [],
-  filter: {
-    value: null,
-    type: null,
-  },
   loading: true,
 };
 
 const fetchMatches = (state, action) => {
   const { userId, matches } = action;
 
-  let updatedMachesArray = null;
-
-  updatedMachesArray = matches.filter((match) => match.userId !== userId);
+  let updatedMachesArray = matches.filter(
+    (match) => !Boolean(match.isAdmin) && match.userId !== userId
+  );
 
   return updateObject(state, {
     matches: updatedMachesArray,
@@ -48,13 +43,8 @@ const clearStateMatches = (state, action) => {
     },
     likedBackUsersData: [],
     likedUsersData: [],
-    matchesDataFiltered: [{}],
-    locations: [],
+    matchesDataFiltered: [],
     locationOptions: [],
-    filter: {
-      value: null,
-      type: null,
-    },
     loading: true,
   });
 };
@@ -64,12 +54,9 @@ const userData = (state, action) => {
 
   let updatedUserData = null;
 
-
   updatedUserData = data.filter((match) => match.userId === userId);
 
   const [userData] = updatedUserData;
-
-  console.log(userData.location.city)
 
   return updateObject(state, {
     userData: updateObject(state.userData, {
@@ -80,25 +67,25 @@ const userData = (state, action) => {
 };
 
 const matchesLocationsData = (state, action) => {
-  const matchesArray = action.matchesData;
-  const locationsData = [];
-  const locationsSelectData = [];
+  const { userData, matches } = state;
 
-  matchesArray.forEach((element) => {
-    if (element.location !== "") {
-      locationsData.push(element.location);
+  let uniqueLocations = new Set();
+  let locationsSelectData = [];
+
+  matches.forEach((user) => {
+    if (Object.values(user.location).length) {
+      if (user.location.country === userData.location.country) {
+        uniqueLocations.add(user.location.city);
+      }
     }
   });
 
-
-  const uniqueLocations = new Set(locationsData);
-
-  uniqueLocations.forEach((el) => {
-    locationsSelectData.push({ value: el, label: el });
+  uniqueLocations.forEach((city) => {
+    locationsSelectData.push({ value: city, label: city });
   });
 
   return updateObject(state, {
-    locations: locationsData,
+    locations: [],
     locationOptions: locationsSelectData,
   });
 };
@@ -113,10 +100,12 @@ const matchesFilter = (state, action) => {
   let filterValue = selectedLocation;
 
   if (!filterValue) {
-    filterValue = location;
+    filterValue = location.city;
   }
 
-  const filteredArray = matches.filter((el) => el.location === filterValue);
+  const filteredArray = matches.filter(
+    (el) => el.location.city === filterValue
+  );
 
   const updatedMatchesDataFiltered = filteredArray.filter(
     (user) => !likedUsers.includes(user.userId)
@@ -186,7 +175,6 @@ const addLikedUser = (state, action) => {
 };
 
 const setLikedBackUsers = (state, action) => {
-  //имаме всички потребители и техните харесани потребители
   const { likedUsersId } = action;
   const {
     userData: { userId, likedUsers },
@@ -195,7 +183,6 @@ const setLikedBackUsers = (state, action) => {
   let allUserLikes = {};
 
   for (let userId in likedUsersId) {
-    // console.log(Object.values(likedUsersId[userId]).map(el => el.likedUserId))
     allUserLikes[userId] = Object.values(likedUsersId[userId]).map(
       (el) => el.likedUserId
     );
@@ -204,11 +191,6 @@ const setLikedBackUsers = (state, action) => {
   const likedBackMatches = likedUsers.filter(
     (matchId) => allUserLikes[matchId] && allUserLikes[matchId].includes(userId)
   );
-
-  // is all the userIds and their data properties
-  // const likedBackUsersData = matches.filter((match) =>
-  //   likedBackMatches.includes(match.userId)
-  // );
 
   return updateObject(state, {
     likedBackUsersData: likedBackMatches,

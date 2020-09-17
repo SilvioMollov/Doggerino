@@ -60,7 +60,7 @@ export const fetchMatches = (userId, token) => {
         dispatch(userData(fetchData, userId));
         dispatch(fetchMatchesSuccess(fetchData, userId));
         dispatch(setAllUsers(response.data));
-        dispatch(matchesLocationsData(fetchData));
+        dispatch(matchesLocationsData());
         dispatch(matchesFilter());
       })
       .catch((error) => {
@@ -87,8 +87,7 @@ export const fetchLikedUsers = (userId, token) => {
   return (dispatch) => {
     axios
       .get(
-        `https://doggerino-79ffd.firebaseio.com/userData/${userId}.json/?auth=` +
-          token
+        `https://doggerino-79ffd.firebaseio.com/userData/${userId}.json/?auth=${token}`
       )
       .then((response) => {
         console.log('[FetchLikedUsers]', response);

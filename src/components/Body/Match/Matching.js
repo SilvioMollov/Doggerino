@@ -1,25 +1,23 @@
-import React, { Component } from "react";
-import Select from "react-select";
-import CardHolder from "./CardHolder/CardHolder";
-import Spinner from "../../UI/Spinner/Spinner";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
+import React, { Component } from 'react';
+import Select from 'react-select';
+import CardHolder from './CardHolder/CardHolder';
+import Spinner from '../../UI/Spinner/Spinner';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
-import { connect } from "react-redux";
-import * as actions from "../../../store/actions/index";
-import "./Matching.css";
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
+import './Matching.css';
 
 export class Match extends Component {
   state = {
     matchIndex: 0,
-    transition: "",
+    transition: '',
   };
 
   nextClickHandler = () => {
-    //this is where the index should be updated on a click
-
     let indexboudry = this.props.filteredMatches.length - 1;
 
-    if (this.state.transition === "slide") {
+    if (this.state.transition === 'slide') {
       this.setState({
         matchIndex:
           this.state.matchIndex >= indexboudry ? 0 : this.state.matchIndex + 1,
@@ -27,7 +25,7 @@ export class Match extends Component {
     } else {
       this.setState(
         {
-          transition: "slide",
+          transition: 'slide',
         },
         () =>
           this.setState({
@@ -44,7 +42,7 @@ export class Match extends Component {
     const currentMatch = this.props.filteredMatches[this.state.matchIndex];
     const indexBoundry = this.props.filteredMatches.length - 1;
 
-    if (this.state.transition === "like") {
+    if (this.state.transition === 'like') {
       this.setState({
         matchIndex:
           this.state.matchIndex === indexBoundry &&
@@ -55,7 +53,7 @@ export class Match extends Component {
     } else {
       this.setState(
         {
-          transition: "like",
+          transition: 'like',
         },
         () => {
           this.setState({
@@ -77,7 +75,7 @@ export class Match extends Component {
   };
 
   selectChangedHandler = (e) => {
-    if (this.state.transition === "fade") {
+    if (this.state.transition === 'fade') {
       this.setState({
         matchIndex: 0,
       });
@@ -85,7 +83,7 @@ export class Match extends Component {
     } else {
       this.setState(
         {
-          transition: "fade",
+          transition: 'fade',
         },
         () => {
           this.setState({
@@ -99,12 +97,12 @@ export class Match extends Component {
 
   componentDidMount() {
     this.props.onFetchMatches(
-      localStorage.getItem("userId"),
-      localStorage.getItem("token")
+      localStorage.getItem('userId'),
+      localStorage.getItem('token')
     );
     this.props.onFetchLikedUsers(
-      localStorage.getItem("userId"),
-      localStorage.getItem("token")
+      localStorage.getItem('userId'),
+      localStorage.getItem('token')
     );
   }
 
@@ -120,32 +118,38 @@ export class Match extends Component {
 
     let form = <Spinner />;
 
+    console.log(Boolean(filteredMatches.length));
+
     const cardHolder = filteredMatches.length ? (
-      <SwitchTransition mode={"out-in"}>
+      <SwitchTransition mode={'out-in'}>
         <CSSTransition
           in={true}
           key={filteredMatches[matchIndex].userId}
           timeout={300}
           classNames={transition}
         >
-          <CardHolder
-            filteredMatchesLength={filteredMatches.length}
-            matchFirstName={
-              !filteredMatches.length
-                ? "NQMA DANNI "
-                : filteredMatches[matchIndex].firstName
-            }
-            matchLastName={
-              !filteredMatches.length
-                ? "NQMA DANNI "
-                : filteredMatches[matchIndex].lastName
-            }
-            matchLocation={
-              !filteredMatches.length
-                ? "NQMA DANNI "
-                : filteredMatches[matchIndex].location
-            }
-          />
+          {Boolean(filteredMatches.length) ? (
+            <CardHolder
+              filteredMatchesLength={filteredMatches.length}
+              matchFirstName={
+                !filteredMatches.length
+                  ? 'NQMA DANNI '
+                  : filteredMatches[matchIndex].firstName
+              }
+              matchLastName={
+                !filteredMatches.length
+                  ? 'NQMA DANNI '
+                  : filteredMatches[matchIndex].lastName
+              }
+              matchLocation={
+                !filteredMatches.length
+                  ? 'NQMA DANNI '
+                  : filteredMatches[matchIndex].location.city
+              }
+            />
+          ) : (
+            <Spinner />
+          )}
         </CSSTransition>
       </SwitchTransition>
     ) : (
@@ -160,9 +164,9 @@ export class Match extends Component {
             className="Match-SelectBar"
             options={locationOptions}
             value={
-              selectedLocation
-                ? { label: selectedLocation, value: selectedLocation }
-                : { label: userData.location, value: userData.location }
+              // selectedLocation
+              { label: selectedLocation, value: selectedLocation }
+              // : { label: userData.location.city, value: userData.location.city }
             }
             onChange={this.selectChangedHandler}
           ></Select>

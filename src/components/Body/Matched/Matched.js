@@ -46,7 +46,7 @@ export class Matched extends Component {
           matched={user.matched}
           firstName={user.firstName}
           lastName={user.lastName}
-          location={user.location}
+          location={user.location.city}
         />
       ));
     }

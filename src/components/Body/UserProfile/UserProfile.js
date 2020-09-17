@@ -61,7 +61,7 @@ export class UserProfile extends Component {
               // filteredMatchesLength={filteredMatches.length}
               matchFirstName={userData.firstName}
               matchLastName={userData.lastName}
-              matchLocation={userData.location}
+              matchLocation={userData.location.city}
             />
           </div>
           <button onClick={this.moreSettingsButtonClickHandler}>
@@ -97,11 +97,11 @@ export class UserProfile extends Component {
             ></input>
 
             <p>
-              <strong>Location:</strong> {userData.location}
+              <strong>Location:</strong> {userData.location.city}
             </p>
             <input
               className={"Admin-Input-Label"}
-              value={userData.location}
+              value={userData.location.city}
               type="text"
               id="location"
               name="location"
