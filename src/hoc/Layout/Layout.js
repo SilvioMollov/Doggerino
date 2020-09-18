@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import "./Layout.css";
-import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
-import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
-import Backdrop from "../../components/UI/BackDrop/BackDrop";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './Layout.css';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import Backdrop from '../../components/UI/BackDrop/BackDrop';
 
 class Layout extends Component {
   state = {
@@ -35,7 +35,7 @@ class Layout extends Component {
           clicked={this.drawerCloseHandler}
         ></Backdrop>
 
-        <main className={"Layout-Content"}>{this.props.children}</main>
+        <main>{this.props.children}</main>
       </>
     );
   }

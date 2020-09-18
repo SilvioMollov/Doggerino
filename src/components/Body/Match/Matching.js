@@ -118,8 +118,6 @@ export class Match extends Component {
 
     let form = <Spinner />;
 
-    console.log(Boolean(filteredMatches.length));
-
     const cardHolder = filteredMatches.length ? (
       <SwitchTransition mode={'out-in'}>
         <CSSTransition
@@ -140,6 +138,11 @@ export class Match extends Component {
                 !filteredMatches.length
                   ? 'NQMA DANNI '
                   : filteredMatches[matchIndex].lastName
+              }
+              userAge={
+                !filteredMatches.length
+                  ? 'NQMA DANNI '
+                  : filteredMatches[matchIndex].userAge
               }
               matchLocation={
                 !filteredMatches.length

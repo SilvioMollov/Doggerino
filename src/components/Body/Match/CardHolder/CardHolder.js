@@ -1,16 +1,17 @@
-import React from "react";
-import "./CardHolder.css";
-import img from "../../../../Assets/DOGS.jpg";
+import React from 'react';
+import './CardHolder.css';
+import img from '../../../../Assets/DOGS.jpg';
 
 const cardHolder = (props) => {
   let form = (
     <div className="CardHolder">
       <div className="ImgHolder">
-        <img src={img} alt="Dogs" className={"ImgSize"} />
+        <img src={img} alt="Dogs" className={'ImgSize'} />
       </div>
       <div className="CardHolder-Description">
         <span className="Description-Name">{props.matchFirstName}</span>
-        <span className="Description-LastName">{props.matchLastName}</span>
+        <span className="Description-LastName">{props.matchLastName},</span>
+        <span className='Description-UserAge'>{props.userAge}</span>
         <span className="Description-Location">{props.matchLocation}</span>
       </div>
     </div>
