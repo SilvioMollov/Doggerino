@@ -53,8 +53,7 @@ export const fetchMatches = (userId, token) => {
         const fetchData = [];
 
         for (let match in response.data) {
-          // console.log({...response.data[match]})
-          fetchData.push({ ...response.data[match] });
+          fetchData.push({ ...response.data[match], dbUserId: match });
         }
         console.log('[FetchMatches]', response);
         dispatch(userData(fetchData, userId));

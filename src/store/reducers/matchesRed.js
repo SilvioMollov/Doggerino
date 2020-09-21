@@ -8,6 +8,7 @@ const initialState = {
   userData: {
     likedUsers: [],
   },
+  petData: {},
   likedBackUsersData: [],
   likedUsersData: [],
   matchesDataFiltered: [],

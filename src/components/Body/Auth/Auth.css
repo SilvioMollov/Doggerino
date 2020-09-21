@@ -39,6 +39,7 @@
   width: 100%;
   box-sizing: border-box;
   border-radius: 25px;
+  word-wrap: break-word;
 }
 
 .Auth-Select-Country {

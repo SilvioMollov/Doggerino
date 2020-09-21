@@ -39,11 +39,23 @@
   height: 50px;
   padding: 10px;
   width: 50px;
+  cursor: pointer;
   background-color: #ff8a84;
   color: aliceblue;
   border: 1px white;
 }
 
+.UserProfile-Button-Submit {
+  color: aliceblue;
+  display: inline;
+  border: 1px #84ff94;
+  font: inherit;
+  background-color: #84ff94;
+  padding: 10px;
+  margin: 10px;
+  min-width: 150px;
+  border-radius: 25px;
+}
 
 .UserProfile-Form {
   padding: 20px;
@@ -55,15 +67,16 @@
   z-index: 100;
 }
 
-
 @media (max-width: 600px) {
   .UserProfile-Wrapper {
-    min-height: 500px;
+    min-height: 550px;
+  }
+
+  .CardHolder {
+    height: 550px;
   }
 
   .UserProfile-Button-Edit {
-    left: 28%;
-    
-    
+    left: 2%;
   }
 }
