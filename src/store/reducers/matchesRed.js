@@ -7,8 +7,9 @@ const initialState = {
   error: null,
   userData: {
     likedUsers: [],
+    petData: {},
   },
-  petData: {},
+  
   likedBackUsersData: [],
   likedUsersData: [],
   matchesDataFiltered: [],

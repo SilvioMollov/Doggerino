@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import DogBreeds from 'dog-breeds';
 
 import * as actions from '../../../store/actions/index';
 import './UserProfile.css';
@@ -12,6 +13,61 @@ export class UserProfile extends Component {
   state = {
     citiesSelectOptions: [{}],
     moreSettings: false,
+    petSettings: false,
+    editedPetState: {
+      petName: {
+        value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      petAge: {
+        value: '',
+        validation: {
+          required: true,
+          maxAge: 12,
+          maxLength: 2,
+        },
+        valid: false,
+        touched: false,
+      },
+      petBreed: {
+        value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      petGender: {
+        value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      petWeight: {
+        value: '',
+        validation: {
+          required: true,
+          maxLength: 2,
+        },
+        valid: false,
+        touched: false,
+      },
+      petDescription: {
+        value: '',
+        validation: {
+          required: false,
+          maxLength: 300,
+        },
+        valid: false,
+        touched: false,
+      },
+    },
     editedUserState: {
       firstName: {
         value: '',
@@ -114,8 +170,21 @@ export class UserProfile extends Component {
     return isValid;
   };
 
-  onChangeHandler = (event, inputType) => {
-    const { editedUserState } = this.state;
+  onChangeHandler = (event, inputType, stateType) => {
+    const { editedUserState, editedPetState } = this.state;
+
+    switch (stateType) {
+      case 'editedUserState':
+        console.log(' im in UserState');
+        break;
+      case 'editedPetState':
+        console.log(' im in UserState');
+        break;
+      default:
+        console.log('ERROR');
+    }
+
+    console.log(inputType);
 
     let updatedUser = {};
 
@@ -189,7 +258,9 @@ export class UserProfile extends Component {
     return touched && !valid && value;
   };
 
-  submitHandler = () => {
+  submitHandler = (e) => {
+    e.preventDefault();
+
     const { editedUserState } = this.state;
     const { onUpdateEditedUser, userData } = this.props;
 
@@ -218,7 +289,7 @@ export class UserProfile extends Component {
     delete editedUserData.country;
     delete editedUserData.city;
 
-    console.log(editedUserData);
+    this.moreSettingsButtonClickHandler();
     onUpdateEditedUser(
       userData.dbUserId,
       editedUserData,
@@ -226,11 +297,24 @@ export class UserProfile extends Component {
     );
   };
 
+  petProfileHandler = () => {
+    this.setState({ petSettings: !this.state.petSettings });
+  };
+
   render() {
     const { userData } = this.props;
     const {
       citiesSelectOptions,
       moreSettings,
+      petSettings,
+      editedPetState: {
+        petName,
+        petGender,
+        petBreed,
+        petAge,
+        petWeight,
+        petDescription,
+      },
       editedUserState: {
         firstName,
         lastName,
@@ -241,17 +325,20 @@ export class UserProfile extends Component {
       },
     } = this.state;
 
+    let dogBreeds = [];
+    let countriesSelect = [];
+
+    DogBreeds.all.forEach((breed) => {
+      dogBreeds.push({ value: breed.name, label: breed.name });
+    });
+
+    Object.keys(CountryLists).forEach((country) => {
+      countriesSelect.push({ value: country, label: country });
+    });
+
     const classInvalid = 'Auth-Input-Invalid';
 
     const classValid = 'Auth-Input-Valid';
-
-    const countries = Object.keys(CountryLists);
-
-    let countriesSelect = [];
-
-    countries.forEach((country) => {
-      countriesSelect.push({ value: country, label: country });
-    });
 
     let userProfile = <Spinner />;
     let classSettings = 'UserProfile-CardHolder';
@@ -260,7 +347,7 @@ export class UserProfile extends Component {
       classSettings = 'UserProfile-CardHolder Open';
     }
 
-    if (Object.values(userData).length > 1) {
+    if (Object.values(userData).length > 2 && !petSettings) {
       userProfile = (
         <>
           <div className={classSettings}>
@@ -289,7 +376,11 @@ export class UserProfile extends Component {
                 id="firstName"
                 name="firstName"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(
+                    event,
+                    event.target.id,
+                    'editedUserState'
+                  )
                 }
                 placeholder={userData.firstName}
               ></input>
@@ -366,15 +457,163 @@ export class UserProfile extends Component {
                 }
                 placeholder={'Description'}
               ></input>
+              <button
+                className="UserProfile-Button-Submit"
+                onClick={this.submitHandler}
+                disabled={country.touched && !city.valid}
+              >
+                Save
+              </button>
             </form>
-            <button
-              className="UserProfile-Button-Submit"
-              onClick={this.submitHandler}
-              disabled={country.touched && !city.valid}
-            >
-              Save
-            </button>
           </div>
+
+          <button
+            className={'UserProfile-Button-Edit'}
+            onClick={this.moreSettingsButtonClickHandler}
+          >
+            <i className="fas fa-user-cog fa-2x"></i>
+          </button>
+        </>
+      );
+    } else if (Object.values(userData).length > 2 && petSettings) {
+      userProfile = (
+        <>
+          <div className={classSettings}>
+            <CardHolder
+              isDog={petSettings}
+              // filteredMatchesLength={filteredMatches.length}
+              matchFirstName={userData.petData.petName}
+              matchLocation={userData.userData}
+              userAge={userData.petData.petAge}
+            />
+          </div>
+
+          <div className={'UserProfile-FormCard'}>
+            <form className={'UserProfile-Form'} onSubmit={this.submitHandler}>
+              <input
+                className={
+                  this.isInvalid(petName.touched, petName.valid, petName.value)
+                    ? classInvalid
+                    : classValid
+                }
+                value={petName.value}
+                type="text"
+                id="petName"
+                name="petName"
+                onChange={(event) =>
+                  this.onChangeHandler(event, event.target.id)
+                }
+                placeholder={
+                  userData.petData.petName
+                    ? userData.petData.petName
+                    : "Your Pet's Name"
+                }
+              ></input>
+
+              <input
+                className={
+                  this.isInvalid(petAge.touched, petAge.valid, petAge.value)
+                    ? classInvalid
+                    : classValid
+                }
+                value={petAge.value}
+                type="number"
+                id="petAge"
+                name="petAge"
+                onChange={(event) =>
+                  this.onChangeHandler(event, event.target.id)
+                }
+                placeholder={
+                  userData.petData.petAge
+                    ? userData.petData.petAge
+                    : "Your Pet's Age"
+                }
+              ></input>
+
+              <input
+                className={
+                  this.isInvalid(
+                    petWeight.touched,
+                    petWeight.valid,
+                    petWeight.value
+                  )
+                    ? classInvalid
+                    : classValid
+                }
+                value={petWeight.value}
+                type="number"
+                id="petWeight"
+                name="petWeight"
+                onChange={(event) =>
+                  this.onChangeHandler(event, event.target.id)
+                }
+                placeholder={
+                  userData.petData.petWeight
+                    ? userData.petData.petWeight
+                    : "Your Pet's Weight"
+                }
+              ></input>
+
+              <Select
+                className={'Auth-Select-Country'}
+                name="petGender"
+                options={[
+                  { value: 'Male', label: 'Male' },
+                  { value: 'Female', label: 'Female' },
+                ]}
+                onChange={(event, name) => this.onChangeHandler(event, name)}
+                placeholder={
+                  userData.petData.petGender
+                    ? userData.petData.petGender
+                    : "Select your Pet's Gender"
+                }
+              ></Select>
+
+              <Select
+                className={'Auth-Select-City'}
+                name="petBreed"
+                options={dogBreeds}
+                onChange={(event, name) => this.onChangeHandler(event, name)}
+                placeholder={
+                  userData.petData.petBreed
+                    ? userData.petData.petBreed
+                    : "Select your Pet's Breed"
+                }
+              ></Select>
+
+              <input
+                className={
+                  this.isInvalid(
+                    petDescription.touched,
+                    petDescription.valid,
+                    petDescription.value
+                  )
+                    ? classInvalid
+                    : classValid
+                }
+                value={petDescription.value}
+                type="text"
+                id="petDescription"
+                name="petDescription"
+                onChange={(event) =>
+                  this.onChangeHandler(event, event.target.id)
+                }
+                placeholder={
+                  userData.petData.petDescription
+                    ? userData.petData.petDescription
+                    : 'Say something about your Dog!'
+                }
+              ></input>
+              <button
+                className="UserProfile-Button-Submit"
+                onClick={this.submitHandler}
+                disabled={country.touched && !city.valid}
+              >
+                Save
+              </button>
+            </form>
+          </div>
+
           <button
             className={'UserProfile-Button-Edit'}
             onClick={this.moreSettingsButtonClickHandler}
@@ -387,7 +626,8 @@ export class UserProfile extends Component {
 
     return (
       <>
-        <div className={'UserProfile-Wrapper'}>{userProfile}</div>
+        <div className={'UserProfile-Wrapper'}>{userProfile} </div>
+        <button onClick={this.petProfileHandler}>Pet Settings</button>
       </>
     );
   }
