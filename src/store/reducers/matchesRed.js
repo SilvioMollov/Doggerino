@@ -42,6 +42,7 @@ const clearStateMatches = (state, action) => {
     error: null,
     userData: {
       likedUsers: [],
+      petData: {}
     },
     likedBackUsersData: [],
     likedUsersData: [],

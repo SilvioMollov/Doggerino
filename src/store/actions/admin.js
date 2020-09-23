@@ -1,6 +1,6 @@
-import * as actionTypes from './actionTypes';
-import axios from 'axios';
-import { fetchMatches } from './maches';
+import * as actionTypes from "./actionTypes";
+import axios from "axios";
+import { fetchMatches } from "./maches";
 
 export const setAllUsers = (allUsers) => {
   return {
@@ -16,20 +16,40 @@ export const setEditedUser = (editedUser) => {
   };
 };
 
-export const updateEditedUser = (firebaseUserId, editedUserData, token) => {
+export const updateEditedUser = (
+  firebaseUserId,
+  editedUserData,
+  token,
+  isPetData
+) => {
   return (dispatch) => {
-    axios
-      .patch(
-        `https://doggerino-79ffd.firebaseio.com/users/${firebaseUserId}.json/?auth=${token}`,
-        editedUserData
-      )
-      .then((response) => {
-        console.log('[updateEditedUser]', response);
-        dispatch(fetchMatches(localStorage.getItem('userId'), token));
-      })
-      .catch((error) => {
-        console.log('[updateEditedUser]', error);
-      });
+    if (isPetData) {
+      axios
+        .patch(
+          `https://doggerino-79ffd.firebaseio.com/users/${firebaseUserId}/petData.json/?auth=${token}`,
+          editedUserData
+        )
+        .then((response) => {
+          console.log("[updateEditedUserPet]", response);
+          dispatch(fetchMatches(localStorage.getItem("userId"), token));
+        })
+        .catch((error) => {
+          console.log("[updateEditedUserPet]", error);
+        });
+    } else {
+      axios
+        .patch(
+          `https://doggerino-79ffd.firebaseio.com/users/${firebaseUserId}.json/?auth=`,
+          editedUserData
+        )
+        .then((response) => {
+          console.log("[updateEditedUser]", response);
+          dispatch(fetchMatches(localStorage.getItem("userId"), token));
+        })
+        .catch((error) => {
+          console.log("[updateEditedUser]", error);
+        });
+    }
   };
 };
 
@@ -51,22 +71,22 @@ export const deleteUserFromDb = (firebaseUserId, token) => {
                 `https://doggerino-79ffd.firebaseio.com/userData/${userId}.json/?auth=${token}`
               )
               .then((response) => {
-                console.log('[DeletesUserData]', response);
-                dispatch(fetchMatches(localStorage.getItem('userId'), token));
+                console.log("[DeletesUserData]", response);
+                dispatch(fetchMatches(localStorage.getItem("userId"), token));
               })
               .catch((error) => {
-                console.log('[DeletesUserData]', error);
+                console.log("[DeletesUserData]", error);
               });
-            console.log('[DeletesChatData]', response);
+            console.log("[DeletesChatData]", response);
           })
           .catch((error) => {
-            console.log('[DeleteChatData]', error);
+            console.log("[DeleteChatData]", error);
           });
 
-        console.log('[DeleteUserFromDb]', response);
+        console.log("[DeleteUserFromDb]", response);
       })
       .catch((error) => {
-        console.log('[DeleteUserFromDb]', error);
+        console.log("[DeleteUserFromDb]", error);
       });
   };
 };

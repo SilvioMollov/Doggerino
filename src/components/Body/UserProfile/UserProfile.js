@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import DogBreeds from 'dog-breeds';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import DogBreeds from "dog-breeds";
 
-import * as actions from '../../../store/actions/index';
-import './UserProfile.css';
-import CountryLists from 'all-countries-and-cities-json';
-import Spinner from '../../UI/Spinner/Spinner';
-import CardHolder from '../Match/CardHolder/CardHolder';
-import Select from 'react-select';
+import * as actions from "../../../store/actions/index";
+import "./UserProfile.css";
+import CountryLists from "all-countries-and-cities-json";
+import Spinner from "../../UI/Spinner/Spinner";
+import CardHolder from "../Match/CardHolder/CardHolder";
+import Select from "react-select";
 
 export class UserProfile extends Component {
   state = {
     citiesSelectOptions: [{}],
     moreSettings: false,
-    petSettings: false,
+    petSettings: true,
     editedPetState: {
       petName: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -24,7 +24,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       petAge: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           maxAge: 12,
@@ -34,7 +34,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       petBreed: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -42,7 +42,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       petGender: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -50,7 +50,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       petWeight: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           maxLength: 2,
@@ -59,7 +59,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       petDescription: {
-        value: '',
+        value: "",
         validation: {
           required: false,
           maxLength: 300,
@@ -70,7 +70,7 @@ export class UserProfile extends Component {
     },
     editedUserState: {
       firstName: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -78,7 +78,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       lastName: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -86,7 +86,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       userAge: {
-        value: '',
+        value: "",
         validation: {
           required: true,
           maxLength: 2,
@@ -97,7 +97,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       country: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -105,7 +105,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       city: {
-        value: '',
+        value: "",
         validation: {
           required: true,
         },
@@ -113,7 +113,7 @@ export class UserProfile extends Component {
         touched: false,
       },
       description: {
-        value: '',
+        value: "",
         validation: {
           required: false,
           maxLength: 300,
@@ -140,7 +140,7 @@ export class UserProfile extends Component {
     let isValid = true;
 
     if (required) {
-      isValid = value.trim() !== '' && isValid;
+      isValid = value.trim() !== "" && isValid;
     }
 
     if (mailFormat) {
@@ -174,60 +174,87 @@ export class UserProfile extends Component {
     const { editedUserState, editedPetState } = this.state;
 
     switch (stateType) {
-      case 'editedUserState':
-        console.log(' im in UserState');
+      case "editedUserState":
+        let updatedUser = {};
+
+        if (Boolean(inputType.action)) {
+          let citySelect = [];
+
+          if (inputType.name === "country") {
+            CountryLists[event.value].forEach((city) =>
+              citySelect.push({ value: city, label: city })
+            );
+            this.setState({ citiesSelectOptions: citySelect });
+          }
+
+          updatedUser = {
+            ...editedUserState,
+            [inputType.name]: {
+              ...editedUserState[inputType.name],
+              value: event.value,
+              valid: this.processValidity(
+                event.value,
+                editedUserState[inputType.name]
+              ),
+              touched: true,
+            },
+          };
+        } else {
+          updatedUser = {
+            ...editedUserState,
+            [inputType]: {
+              ...editedUserState[inputType],
+              value: event.target.value,
+              valid: this.processValidity(
+                event.target.value,
+                editedUserState[inputType]
+              ),
+              touched: true,
+            },
+          };
+        }
+
+        this.setState({ editedUserState: updatedUser });
+
         break;
-      case 'editedPetState':
-        console.log(' im in UserState');
+
+      case "editedPetState":
+        let updatedPetState = {};
+
+        if (Boolean(inputType.action)) {
+          updatedPetState = {
+            ...editedPetState,
+            [inputType.name]: {
+              ...editedPetState[inputType.name],
+              value: event.value,
+              valid: this.processValidity(
+                event.value,
+                editedPetState[inputType.name]
+              ),
+              touched: true,
+            },
+          };
+        } else {
+          updatedPetState = {
+            ...editedPetState,
+            [inputType]: {
+              ...editedPetState[inputType],
+              value: event.target.value,
+              valid: this.processValidity(
+                event.target.value,
+                editedPetState[inputType]
+              ),
+              touched: true,
+            },
+          };
+        }
+
+        this.setState({ editedPetState: updatedPetState });
+
         break;
       default:
-        console.log('ERROR');
+        console.log("ERROR");
     }
-
-    console.log(inputType);
-
-    let updatedUser = {};
-
-    if (inputType.name === 'country' || inputType.name === 'city') {
-      let citiesSelect = [];
-
-      if (inputType.name === 'country') {
-        CountryLists[event.value].forEach((city) =>
-          citiesSelect.push({ value: city, label: city })
-        );
-        this.setState({ citiesSelectOptions: citiesSelect });
-      }
-
-      updatedUser = {
-        ...editedUserState,
-        [inputType.name]: {
-          ...editedUserState[inputType.name],
-          value: event.value,
-          valid: this.processValidity(
-            event.value,
-            editedUserState[inputType.name]
-          ),
-          touched: true,
-        },
-      };
-    } else {
-      updatedUser = {
-        ...editedUserState,
-        [inputType]: {
-          ...editedUserState[inputType],
-          value: event.target.value,
-          valid: this.processValidity(
-            event.target.value,
-            editedUserState[inputType]
-          ),
-          touched: true,
-        },
-      };
-    }
-
-    console.log(updatedUser);
-
-    this.setState({ editedUserState: updatedUser });
   };
 
   moreSettingsButtonClickHandler = () => {
@@ -243,11 +270,13 @@ export class UserProfile extends Component {
           });
         }
 
+        console.log(editedUserState[propType]);
+
         this.setState((state) => {
           return (
-            (editedUserState[propType].value = ''),
-            (editedUserState[propType].valid = false),
-            (editedUserState[propType].touched = false)
+            (state.editedUserState[propType].value = ""),
+            (state.editedUserState[propType].valid = false),
+            (state.editedUserState[propType].touched = false)
           );
         });
       }
@@ -258,43 +287,67 @@ export class UserProfile extends Component {
     return touched && !valid && value;
   };
 
-  submitHandler = (e) => {
+  submitHandler = (e, stateType) => {
     e.preventDefault();
 
-    const { editedUserState } = this.state;
+    const { editedUserState, editedPetState } = this.state;
     const { onUpdateEditedUser, userData } = this.props;
 
-    let editedUserData = {};
+    if (stateType === "editedUserState") {
+      let editedUserData = {};
 
-    for (let propType in editedUserState) {
-      if (
-        editedUserState[propType].valid &&
-        editedUserState[propType].touched
-      ) {
-        editedUserData = {
-          ...editedUserData,
-          location: {
-            country: Boolean(editedUserState['country'].value)
-              ? editedUserState['country'].value
-              : userData.location.country,
-            city: Boolean(editedUserState['city'].value)
-              ? editedUserState['city'].value
-              : userData.location.city,
-          },
-          [propType]: editedUserState[propType].value,
-        };
+      for (let propType in editedUserState) {
+        if (
+          editedUserState[propType].valid &&
+          editedUserState[propType].touched
+        ) {
+          editedUserData = {
+            ...editedUserData,
+            location: {
+              country: Boolean(editedUserState["country"].value)
+                ? editedUserState["country"].value
+                : userData.location.country,
+              city: Boolean(editedUserState["city"].value)
+                ? editedUserState["city"].value
+                : userData.location.city,
+            },
+            [propType]: editedUserState[propType].value,
+          };
+        }
       }
+
+      delete editedUserData.country;
+      delete editedUserData.city;
+
+      this.moreSettingsButtonClickHandler();
+      onUpdateEditedUser(
+        userData.dbUserId,
+        editedUserData,
+        localStorage.getItem("token"),
+        false
+      );
+    } else {
+      let editedPetUserData = {};
+
+      for (let propType in editedPetState) {
+        if (
+          editedPetState[propType].valid &&
+          editedPetState[propType].touched
+        ) {
+          editedPetUserData = {
+            ...editedPetUserData,
+            [propType]: editedPetState[propType].value,
+          };
+        }
+      }
+      this.moreSettingsButtonClickHandler();
+      onUpdateEditedUser(
+        userData.dbUserId,
+        editedPetUserData,
+        localStorage.getItem("token"),
+        true
+      );
     }
-
-    delete editedUserData.country;
-    delete editedUserData.city;
-
-    this.moreSettingsButtonClickHandler();
-    onUpdateEditedUser(
-      userData.dbUserId,
-      editedUserData,
-      localStorage.getItem('token')
-    );
   };
 
   petProfileHandler = () => {
@@ -309,10 +362,10 @@ export class UserProfile extends Component {
       petSettings,
       editedPetState: {
         petName,
-        petGender,
-        petBreed,
         petAge,
         petWeight,
+        petGender,
+        petBreed,
         petDescription,
       },
       editedUserState: {
@@ -336,21 +389,23 @@ export class UserProfile extends Component {
       countriesSelect.push({ value: country, label: country });
     });
 
-    const classInvalid = 'Auth-Input-Invalid';
+    const classInvalid = "Auth-Input-Invalid";
 
-    const classValid = 'Auth-Input-Valid';
+    const classValid = "Auth-Input-Valid";
 
     let userProfile = <Spinner />;
-    let classSettings = 'UserProfile-CardHolder';
+    let userCardHolderClass = "UserProfile-CardHolder";
 
     if (moreSettings) {
-      classSettings = 'UserProfile-CardHolder Open';
+      userCardHolderClass = "UserProfile-CardHolder Open";
     }
+
+    console.log(userData.petData);
 
     if (Object.values(userData).length > 2 && !petSettings) {
       userProfile = (
         <>
-          <div className={classSettings}>
+          <div className={userCardHolderClass}>
             <CardHolder
               // filteredMatchesLength={filteredMatches.length}
               matchFirstName={userData.firstName}
@@ -358,9 +413,20 @@ export class UserProfile extends Component {
               matchLocation={userData.location.city}
               userAge={userData.userAge}
             />
+
+            <button
+              className={"UserProfile-Button-Edit"}
+              onClick={this.moreSettingsButtonClickHandler}
+            >
+              <i className="fas fa-user-cog fa-2x"></i>
+            </button>
           </div>
-          <div className={'UserProfile-FormCard'}>
-            <form className={'UserProfile-Form'} onSubmit={this.submitHandler}>
+
+          <div className={"UserProfile-FormCard"}>
+            <form
+              className={"UserProfile-Form"}
+              onSubmit={(event) => this.submitHandler(event, "editedUserState")}
+            >
               <input
                 className={
                   this.isInvalid(
@@ -379,7 +445,7 @@ export class UserProfile extends Component {
                   this.onChangeHandler(
                     event,
                     event.target.id,
-                    'editedUserState'
+                    "editedUserState"
                   )
                 }
                 placeholder={userData.firstName}
@@ -400,7 +466,11 @@ export class UserProfile extends Component {
                 id="lastName"
                 name="lastName"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(
+                    event,
+                    event.target.id,
+                    "editedUserState"
+                  )
                 }
                 placeholder={userData.lastName}
               ></input>
@@ -416,25 +486,33 @@ export class UserProfile extends Component {
                 id="userAge"
                 name="userAge"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(
+                    event,
+                    event.target.id,
+                    "editedUserState"
+                  )
                 }
                 placeholder={userData.userAge}
               ></input>
 
               <Select
-                className={'Auth-Select-Country'}
+                className={"Auth-Select-Country"}
                 name="country"
                 options={countriesSelect}
-                onChange={(event, name) => this.onChangeHandler(event, name)}
+                onChange={(event, name) =>
+                  this.onChangeHandler(event, name, "editedUserState")
+                }
                 placeholder={userData.location.country}
               ></Select>
 
               <Select
-                className={'Auth-Select-City'}
+                className={"Auth-Select-City"}
                 name="city"
                 options={citiesSelectOptions}
                 isDisabled={!(citiesSelectOptions.length > 1)}
-                onChange={(event, name) => this.onChangeHandler(event, name)}
+                onChange={(event, name) =>
+                  this.onChangeHandler(event, name, "editedUserState")
+                }
                 placeholder={userData.location.city}
               ></Select>
 
@@ -453,43 +531,62 @@ export class UserProfile extends Component {
                 id="description"
                 name="description"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(
+                    event,
+                    event.target.id,
+                    "editedUserState"
+                  )
                 }
-                placeholder={'Description'}
+                placeholder={"Description"}
               ></input>
               <button
                 className="UserProfile-Button-Submit"
-                onClick={this.submitHandler}
+                onClick={(event) =>
+                  this.submitHandler(event, "editedUserState")
+                }
                 disabled={country.touched && !city.valid}
               >
                 Save
               </button>
             </form>
           </div>
-
-          <button
-            className={'UserProfile-Button-Edit'}
-            onClick={this.moreSettingsButtonClickHandler}
-          >
-            <i className="fas fa-user-cog fa-2x"></i>
-          </button>
         </>
       );
     } else if (Object.values(userData).length > 2 && petSettings) {
       userProfile = (
         <>
-          <div className={classSettings}>
+          <div className={userCardHolderClass}>
             <CardHolder
               isDog={petSettings}
-              // filteredMatchesLength={filteredMatches.length}
-              matchFirstName={userData.petData.petName}
-              matchLocation={userData.userData}
-              userAge={userData.petData.petAge}
+              petGender={
+                userData.petData.petGender
+                  ? userData.petData.petGender
+                  : "Your Pet's Gender"
+              }
+              petName={
+                userData.petData.petName
+                  ? userData.petData.petName
+                  : "Your Pet's Name"
+              }
+              petBreed={
+                userData.petData.petBreed ? userData.petData.petBreed : "Breed"
+              }
+              petAge={userData.petData.petAge ? userData.petData.petAge : "Age"}
+              petDescription={userData.petData.petDescription}
             />
+            <button
+              className={"UserProfile-Button-Edit"}
+              onClick={this.moreSettingsButtonClickHandler}
+            >
+              <i className="fas fa-user-cog fa-2x"></i>
+            </button>
           </div>
 
-          <div className={'UserProfile-FormCard'}>
-            <form className={'UserProfile-Form'} onSubmit={this.submitHandler}>
+          <div className={"UserProfile-FormCard"}>
+            <form
+              className={"UserProfile-Form"}
+              onSubmit={(event) => this.submitHandler(event, "editedPetState")}
+            >
               <input
                 className={
                   this.isInvalid(petName.touched, petName.valid, petName.value)
@@ -501,7 +598,7 @@ export class UserProfile extends Component {
                 id="petName"
                 name="petName"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(event, event.target.id, "editedPetState")
                 }
                 placeholder={
                   userData.petData.petName
@@ -521,7 +618,7 @@ export class UserProfile extends Component {
                 id="petAge"
                 name="petAge"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(event, event.target.id, "editedPetState")
                 }
                 placeholder={
                   userData.petData.petAge
@@ -545,7 +642,7 @@ export class UserProfile extends Component {
                 id="petWeight"
                 name="petWeight"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(event, event.target.id, "editedPetState")
                 }
                 placeholder={
                   userData.petData.petWeight
@@ -555,13 +652,15 @@ export class UserProfile extends Component {
               ></input>
 
               <Select
-                className={'Auth-Select-Country'}
+                className={"Auth-Select-Country"}
                 name="petGender"
                 options={[
-                  { value: 'Male', label: 'Male' },
-                  { value: 'Female', label: 'Female' },
+                  { value: "Male", label: "Male" },
+                  { value: "Female", label: "Female" },
                 ]}
-                onChange={(event, name) => this.onChangeHandler(event, name)}
+                onChange={(event, name) =>
+                  this.onChangeHandler(event, name, "editedPetState")
+                }
                 placeholder={
                   userData.petData.petGender
                     ? userData.petData.petGender
@@ -570,10 +669,12 @@ export class UserProfile extends Component {
               ></Select>
 
               <Select
-                className={'Auth-Select-City'}
+                className={"Auth-Select-City"}
                 name="petBreed"
                 options={dogBreeds}
-                onChange={(event, name) => this.onChangeHandler(event, name)}
+                onChange={(event, name) =>
+                  this.onChangeHandler(event, name, "editedPetState")
+                }
                 placeholder={
                   userData.petData.petBreed
                     ? userData.petData.petBreed
@@ -596,38 +697,44 @@ export class UserProfile extends Component {
                 id="petDescription"
                 name="petDescription"
                 onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id)
+                  this.onChangeHandler(event, event.target.id, "editedPetState")
                 }
                 placeholder={
                   userData.petData.petDescription
                     ? userData.petData.petDescription
-                    : 'Say something about your Dog!'
+                    : "Say something about your Dog!"
                 }
               ></input>
               <button
                 className="UserProfile-Button-Submit"
-                onClick={this.submitHandler}
-                disabled={country.touched && !city.valid}
+                onClick={(event) => this.submitHandler(event, "editedPetState")}
+                disabled={
+                  !(
+                    petName.valid &&
+                    petAge.valid &&
+                    petWeight.valid &&
+                    petGender.valid &&
+                    petBreed.valid
+                  )
+                }
               >
                 Save
               </button>
             </form>
           </div>
-
-          <button
-            className={'UserProfile-Button-Edit'}
-            onClick={this.moreSettingsButtonClickHandler}
-          >
-            <i className="fas fa-user-cog fa-2x"></i>
-          </button>
         </>
       );
     }
 
     return (
       <>
-        <div className={'UserProfile-Wrapper'}>{userProfile} </div>
-        <button onClick={this.petProfileHandler}>Pet Settings</button>
+        <div className={"UserProfile-Wrapper"}>{userProfile} </div>
+        <button
+          className="UserProfile-Button-Switch"
+          onClick={this.petProfileHandler}
+        >
+          {!petSettings ? "Pet Settings" : "User Settings"}
+        </button>
       </>
     );
   }
@@ -641,8 +748,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUpdateEditedUser: (editedUserId, editedUserData, token) =>
-      dispatch(actions.updateEditedUser(editedUserId, editedUserData, token)),
+    onUpdateEditedUser: (editedUserId, editedUserData, token, isPetData) =>
+      dispatch(
+        actions.updateEditedUser(editedUserId, editedUserData, token, isPetData)
+      ),
   };
 };
 

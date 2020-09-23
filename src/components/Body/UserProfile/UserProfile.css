@@ -1,7 +1,11 @@
 .UserProfile-Wrapper {
   z-index: 100;
   position: relative;
+  transform: translateX(0);
+  transition: transform 2s ease-in-out;
 }
+
+
 
 .UserProfile-CardHolder {
   position: relative;
@@ -32,7 +36,7 @@
 
 .UserProfile-Button-Edit {
   position: absolute;
-  left: 29%;
+  left: -25px;
   top: 95%;
   z-index: 150;
   border-radius: 25px;
@@ -43,6 +47,23 @@
   background-color: #ff8a84;
   color: aliceblue;
   border: 1px white;
+  outline: none;
+}
+
+.UserProfile-Form button:disabled {
+  background-color: rgb(199, 199, 199);
+}
+
+.UserProfile-Button-Switch {
+  color: aliceblue;
+  display: inline;
+  border: 1px #ff8a84;
+  font: inherit;
+  background-color: #ff8a84;
+  padding: 10px;
+  margin: 5px;
+  min-width: 150px;
+  border-radius: 25px;
 }
 
 .UserProfile-Button-Submit {
