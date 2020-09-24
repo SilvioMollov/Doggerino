@@ -110,20 +110,22 @@ const matchesLocationsData = (state, action) => {
 };
 
 const matchesFilter = (state, action) => {
-  const { selectedLocation } = action;
+  const { selectedLocation, selectedBreed, selectedGenderIsMale } = action;
   const {
     matches,
     userData: { location, likedUsers },
   } = state;
 
-  let filterValue = selectedLocation;
+  let locationFilterValue = selectedLocation;
+  
 
-  if (!filterValue) {
-    filterValue = location.city;
+
+  if (!locationFilterValue) {
+    locationFilterValue = location.city;
   }
 
   const filteredArray = matches.filter(
-    (el) => el.location.city === filterValue
+    (el) => el.location.city === locationFilterValue
   );
 
   const updatedMatchesDataFiltered = filteredArray.filter(
@@ -132,7 +134,7 @@ const matchesFilter = (state, action) => {
 
   return updateObject(state, {
     matchesDataFiltered: updatedMatchesDataFiltered,
-    selectedLocation: filterValue,
+    selectedLocation: locationFilterValue,
     loading: false,
   });
 };
