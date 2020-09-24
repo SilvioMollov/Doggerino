@@ -4,7 +4,7 @@ import CardHolder from "./CardHolder/CardHolder";
 import Spinner from "../../UI/Spinner/Spinner";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { withRouter } from "react-router";
-
+import Modal from "../../UI/Modal/Modal";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 import "./Matching.css";
@@ -13,6 +13,7 @@ export class Match extends Component {
   state = {
     matchIndex: 0,
     transition: "",
+    showFilters: false,
   };
 
   nextClickHandler = () => {
@@ -110,20 +111,33 @@ export class Match extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { userData, history } = this.props;
     // NEEDS WORK
-    if (prevProps.userData !== userData && !!!userData.petData) {
+    console.log(prevProps.userData !== userData);
+    if (
+      prevProps.userData !== userData &&
+      !Object.keys(userData.petData).length
+    ) {
       history.push("/userProfile");
+      console.log("im in");
     }
   }
+
+  selectFiltersHandler = (e) => {
+    e.preventDefault();
+    this.setState({ showFilters: !this.state.showFilters });
+  };
 
   render() {
     const {
       selectedLocation,
+      selectedBreed,
+      selectedGenderIsMale,
       locationOptions,
+      breedOptions,
       filteredMatches,
       userData,
       loading,
     } = this.props;
-    const { matchIndex, transition } = this.state;
+    const { matchIndex, transition, showFilters } = this.state;
 
     let form = <Spinner />;
 
@@ -172,16 +186,41 @@ export class Match extends Component {
       form = (
         <form className="Match-Form">
           <h3 className="Match-Header">Welcome {userData.firstName}</h3>
-          <Select
-            className="Match-SelectBar"
-            options={locationOptions}
-            value={
-              // selectedLocation
-              { label: selectedLocation, value: selectedLocation }
-              // : { label: userData.location.city, value: userData.location.city }
-            }
-            onChange={this.selectChangedHandler}
-          ></Select>
+          <button onClick={this.selectFiltersHandler}>set filters</button>
+          <Modal show={showFilters} closed={this.selectFiltersHandler}>
+            <Select
+              className="Match-SelectBar"
+              options={locationOptions}
+              value={
+                // selectedLocation
+                { label: selectedLocation, value: selectedLocation }
+                // : { label: userData.location.city, value: userData.location.city }
+              }
+              onChange={this.selectChangedHandler}
+              placeholder={"Filter on location"}
+            ></Select>
+            <Select
+              className="Match-SelectBar"
+              options={breedOptions}
+              value={{ label: selectedBreed, value: selectedBreed }}
+              onChange={this.selectChangedHandler}
+              placeholder={"Filter your dog's breed"}
+            ></Select>
+            <Select
+              className="Match-SelectBar"
+              options={[
+                { value: "Male", label: "Male" },
+                { value: "Female", label: "Female" },
+              ]}
+              value={
+                selectedGenderIsMale
+                  ? { label: "Male", value: "Male" }
+                  : { value: "Female", label: "Female" }
+              }
+              onChange={this.selectChangedHandler}
+              placeholder={"Filter your dog's gender"}
+            ></Select>
+          </Modal>
           {cardHolder}
         </form>
       );
@@ -199,6 +238,7 @@ export class Match extends Component {
           >
             <i className="fas fa-heart fa-2x"></i>
           </button>
+
           <button
             disabled={filteredMatches.length <= 1}
             className="Match-Button"
@@ -224,6 +264,9 @@ const mapStateToProps = (state) => {
     locations: state.matches.locations,
     locationOptions: state.matches.locationOptions,
     selectedLocation: state.matches.selectedLocation,
+    breedOptions: state.matches.breedOptions,
+    selectedBreed: state.matches.selectedBreed,
+    selectedGenderIsMale: state.matches.selectedGenderIsMale,
   };
 };
 

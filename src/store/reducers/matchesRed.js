@@ -1,19 +1,21 @@
-import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../shared/utility';
+import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../../shared/utility";
 
 const initialState = {
   matches: [],
   selectedLocation: null,
+  selectedBreed: null,
+  selectedGenderIsMale: null,
   error: null,
   userData: {
     likedUsers: [],
     petData: {},
   },
-  
   likedBackUsersData: [],
   likedUsersData: [],
   matchesDataFiltered: [],
   locationOptions: [],
+  breedOptions: [],
   loading: true,
 };
 
@@ -37,17 +39,20 @@ const fetchMatchesFail = (state, action) => {
 
 const clearStateMatches = (state, action) => {
   return updateObject(state, {
-    matches: [{}],
+    matches: [],
     selectedLocation: null,
+    selectedBreed: null,
+    selectedGenderIsMale: null,
     error: null,
     userData: {
       likedUsers: [],
-      petData: {}
+      petData: {},
     },
     likedBackUsersData: [],
     likedUsersData: [],
     matchesDataFiltered: [],
     locationOptions: [],
+    breedOptions: [],
     loading: true,
   });
 };
@@ -66,6 +71,8 @@ const userData = (state, action) => {
       ...userData,
     }),
     selectedLocation: userData.location.city,
+    selectedBreed: userData.petData.petBreed,
+    selectedGenderIsMale: userData.petData.petGender === "Male" ? true : false,
   });
 };
 
@@ -73,14 +80,23 @@ const matchesLocationsData = (state, action) => {
   const { userData, matches } = state;
 
   let uniqueLocations = new Set();
+  let uniqueBreeds = new Set();
   let locationsSelectData = [];
+  let breedsSelectData = [];
 
   matches.forEach((user) => {
     if (Object.values(user.location).length) {
       if (user.location.country === userData.location.country) {
         uniqueLocations.add(user.location.city);
+        if (Boolean(user.petData)) {
+          uniqueBreeds.add(user.petData.petBreed);
+        }
       }
     }
+  });
+
+  uniqueBreeds.forEach((breed) => {
+    breedsSelectData.push({ value: breed, label: breed });
   });
 
   uniqueLocations.forEach((city) => {
@@ -88,8 +104,8 @@ const matchesLocationsData = (state, action) => {
   });
 
   return updateObject(state, {
-    locations: [],
     locationOptions: locationsSelectData,
+    breedOptions: breedsSelectData,
   });
 };
 

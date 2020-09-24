@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import DogBreeds from "dog-breeds";
+import {  AttentionSeeker } from "react-awesome-reveal";
 
 import * as actions from "../../../store/actions/index";
 import "./UserProfile.css";
@@ -400,8 +401,6 @@ export class UserProfile extends Component {
       userCardHolderClass = "UserProfile-CardHolder Open";
     }
 
-    console.log(userData.petData);
-
     if (Object.values(userData).length > 2 && !petSettings) {
       userProfile = (
         <>
@@ -574,11 +573,14 @@ export class UserProfile extends Component {
               petAge={userData.petData.petAge ? userData.petData.petAge : "Age"}
               petDescription={userData.petData.petDescription}
             />
+
             <button
               className={"UserProfile-Button-Edit"}
               onClick={this.moreSettingsButtonClickHandler}
             >
-              <i className="fas fa-user-cog fa-2x"></i>
+              <AttentionSeeker effect="headShake">
+                <i className="fas fa-user-cog fa-2x"></i>
+              </AttentionSeeker>
             </button>
           </div>
 
@@ -705,6 +707,7 @@ export class UserProfile extends Component {
                     : "Say something about your Dog!"
                 }
               ></input>
+
               <button
                 className="UserProfile-Button-Submit"
                 onClick={(event) => this.submitHandler(event, "editedPetState")}

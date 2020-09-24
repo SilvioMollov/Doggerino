@@ -153,7 +153,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMatches: (userId, token) => dispatch(actions.fetchMatches(userId, token)),
+    onFetchMatches: (userId, token) =>
+      dispatch(actions.fetchMatches(userId, token)),
     onPostMessage: (token, userId, messagedUserId, message) =>
       dispatch(actions.postChatMessage(token, userId, messagedUserId, message)),
     onClearState: () => dispatch(actions.clearChatState()),
