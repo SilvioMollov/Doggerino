@@ -6,6 +6,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { withRouter } from "react-router";
 import Modal from "../../UI/Modal/Modal";
 import { connect } from "react-redux";
+import { processValidity } from "../../../shared/utility";
 import * as actions from "../../../store/actions/index";
 import "./Matching.css";
 
@@ -14,6 +15,32 @@ export class Match extends Component {
     matchIndex: 0,
     transition: "",
     showFilters: false,
+    selectFilters: {
+      selectedLocation: {
+        value: "",
+        validation: {
+          requered: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      selectedBreed: {
+        value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      selectedGender: {
+        value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
+      },
+    },
   };
 
   nextClickHandler = () => {
@@ -76,12 +103,28 @@ export class Match extends Component {
     );
   };
 
-  selectChangedHandler = (e) => {
+  selectChangedHandler = (event, inputType) => {
+    const { selectFilters } = this.state;
+
+    if (event === null) {
+      event = { value: "", label: "" };
+    }
+
+    const updatedSelectState = {
+      ...selectFilters,
+      [inputType.name]: {
+        ...selectFilters[inputType.name],
+        value: event.value,
+        valid: processValidity(event.value, selectFilters[inputType.name]),
+        touched: true,
+      },
+    };
+
     if (this.state.transition === "fade") {
       this.setState({
         matchIndex: 0,
+        selectFilters: updatedSelectState,
       });
-      this.props.onFilterMatches(e.value);
     } else {
       this.setState(
         {
@@ -90,8 +133,8 @@ export class Match extends Component {
         () => {
           this.setState({
             matchIndex: 0,
+            selectFilters: updatedSelectState,
           });
-          this.props.onFilterMatches(e.value);
         }
       );
     }
@@ -108,18 +151,32 @@ export class Match extends Component {
     );
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { userData, history } = this.props;
-    // NEEDS WORK
-    console.log(prevProps.userData !== userData);
-    if (
-      prevProps.userData !== userData &&
-      !Object.keys(userData.petData).length
-    ) {
-      history.push("/userProfile");
-      console.log("im in");
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { userData, history } = this.props;
+  //   // NEEDS WORK
+  //   // if (
+  //   //   prevProps.userData !== userData &&
+  //   //   !Object.keys(userData.petData).length
+  //   // ) {
+  //   //   history.push("/userProfile");
+  //   //   console.log("im in");
+  //   // }
+  // }
+
+  applyFilterChanges = (e) => {
+    e.preventDefault();
+
+    const {
+      selectFilters: { selectedBreed, selectedLocation, selectedGender },
+    } = this.state;
+    const { onFilterMatches } = this.props;
+
+    onFilterMatches(
+      selectedLocation.value,
+      selectedBreed.value,
+      selectedGender.value
+    );
+  };
 
   selectFiltersHandler = (e) => {
     e.preventDefault();
@@ -128,9 +185,6 @@ export class Match extends Component {
 
   render() {
     const {
-      selectedLocation,
-      selectedBreed,
-      selectedGenderIsMale,
       locationOptions,
       breedOptions,
       filteredMatches,
@@ -189,37 +243,44 @@ export class Match extends Component {
           <button onClick={this.selectFiltersHandler}>set filters</button>
           <Modal show={showFilters} closed={this.selectFiltersHandler}>
             <Select
+              isClearable
               className="Match-SelectBar"
               options={locationOptions}
-              value={
-                // selectedLocation
-                { label: selectedLocation, value: selectedLocation }
-                // : { label: userData.location.city, value: userData.location.city }
-              }
-              onChange={this.selectChangedHandler}
+              name={"selectedLocation"}
+              // value={
+              //   // selectedLocation
+              //   // { label: selectedLocation, value: selectedLocation }
+              //   // : { label: userData.location.city, value: userData.location.city }
+              // }
+              onChange={(event, name) => this.selectChangedHandler(event, name)}
               placeholder={"Filter on location"}
             ></Select>
             <Select
+              isClearable
               className="Match-SelectBar"
               options={breedOptions}
-              value={{ label: selectedBreed, value: selectedBreed }}
-              onChange={this.selectChangedHandler}
+              name={"selectedBreed"}
+              // value={{ label: selectedBreed, value: selectedBreed }}
+              onChange={(event, name) => this.selectChangedHandler(event, name)}
               placeholder={"Filter your dog's breed"}
             ></Select>
             <Select
+              isClearable
               className="Match-SelectBar"
               options={[
                 { value: "Male", label: "Male" },
                 { value: "Female", label: "Female" },
               ]}
-              value={
-                selectedGenderIsMale
-                  ? { label: "Male", value: "Male" }
-                  : { value: "Female", label: "Female" }
-              }
-              onChange={this.selectChangedHandler}
+              name={"selectedGender"}
+              // value={
+              //   selectedGenderIsMale
+              //     ? { label: "Male", value: "Male" }
+              //     : { value: "Female", label: "Female" }
+              // }
+              onChange={(event, name) => this.selectChangedHandler(event, name)}
               placeholder={"Filter your dog's gender"}
             ></Select>
+            <button onClick={this.applyFilterChanges}>Apply Changes</button>
           </Modal>
           {cardHolder}
         </form>
@@ -274,8 +335,18 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFetchMatches: (userId, token) =>
       dispatch(actions.fetchMatches(userId, token)),
-    onFilterMatches: (matches, filterValue) =>
-      dispatch(actions.matchesFilter(matches, filterValue)),
+    onFilterMatches: (
+      locationFilterValue,
+      breedFilterValue,
+      genderFilterValue
+    ) =>
+      dispatch(
+        actions.matchesFilter(
+          locationFilterValue,
+          breedFilterValue,
+          genderFilterValue
+        )
+      ),
     onPostLikedUsers: (token, userId, likedUserId) =>
       dispatch(actions.postLikedUsers(token, userId, likedUserId)),
     onFetchLikedUsers: (userId, token) =>

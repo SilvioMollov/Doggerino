@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import DogBreeds from "dog-breeds";
-import {  AttentionSeeker } from "react-awesome-reveal";
+import { AttentionSeeker } from "react-awesome-reveal";
+import { processValidity } from "../../../shared/utility";
 
 import * as actions from "../../../store/actions/index";
 import "./UserProfile.css";
@@ -125,51 +126,45 @@ export class UserProfile extends Component {
     },
   };
 
-  processValidity = (value, inputType) => {
-    const { password } = this.state.editedUserState;
-    const {
-      required,
-      mailFormat,
-      minLength,
-      matching,
-      minAge,
-      maxAge,
-      maxLength,
-    } = inputType.validation;
+  // processValidity = (value, inputType) => {
+  //   const {
+  //     required,
+  //     mailFormat,
+  //     minLength,
+  //     minAge,
+  //     maxAge,
+  //     maxLength,
+  //   } = inputType.validation;
 
-    const format = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    let isValid = true;
+  //   const format = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+  //   let isValid = true;
 
-    if (required) {
-      isValid = value.trim() !== "" && isValid;
-    }
+  //   if (required) {
+  //     isValid = value.trim() !== "" && isValid;
+  //   }
 
-    if (mailFormat) {
-      isValid = Boolean(value.match(format)) && isValid;
-    }
+  //   if (mailFormat) {
+  //     isValid = Boolean(value.match(format)) && isValid;
+  //   }
 
-    if (minLength) {
-      isValid = value.length >= minLength && isValid;
-    }
+  //   if (minLength) {
+  //     isValid = value.length >= minLength && isValid;
+  //   }
 
-    if (matching) {
-      isValid = value === password.value && isValid;
-    }
+  //   if (maxLength) {
+  //     isValid = value.length <= maxLength && isValid;
+  //   }
 
-    if (maxLength) {
-      isValid = value.length <= maxLength && isValid;
-    }
+  //   if (minAge) {
+  //     isValid = value >= minAge && isValid;
+  //   }
 
-    if (minAge) {
-      isValid = value >= minAge && isValid;
-    }
+  //   if (maxAge) {
+  //     isValid = value <= maxAge && isValid;
+  //   }
 
-    if (maxAge) {
-      isValid = value <= maxAge && isValid;
-    }
-
-    return isValid;
-  };
+  //   return isValid;
+  // };
 
   onChangeHandler = (event, inputType, stateType) => {
     const { editedUserState, editedPetState } = this.state;
@@ -193,7 +188,7 @@ export class UserProfile extends Component {
             [inputType.name]: {
               ...editedUserState[inputType.name],
               value: event.value,
-              valid: this.processValidity(
+              valid: processValidity(
                 event.value,
                 editedUserState[inputType.name]
               ),
@@ -206,7 +201,7 @@ export class UserProfile extends Component {
             [inputType]: {
               ...editedUserState[inputType],
               value: event.target.value,
-              valid: this.processValidity(
+              valid: processValidity(
                 event.target.value,
                 editedUserState[inputType]
               ),
@@ -228,7 +223,7 @@ export class UserProfile extends Component {
             [inputType.name]: {
               ...editedPetState[inputType.name],
               value: event.value,
-              valid: this.processValidity(
+              valid: processValidity(
                 event.value,
                 editedPetState[inputType.name]
               ),
@@ -241,7 +236,7 @@ export class UserProfile extends Component {
             [inputType]: {
               ...editedPetState[inputType],
               value: event.target.value,
-              valid: this.processValidity(
+              valid: processValidity(
                 event.target.value,
                 editedPetState[inputType]
               ),

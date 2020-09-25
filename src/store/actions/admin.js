@@ -39,7 +39,7 @@ export const updateEditedUser = (
     } else {
       axios
         .patch(
-          `https://doggerino-79ffd.firebaseio.com/users/${firebaseUserId}.json/?auth=`,
+          `https://doggerino-79ffd.firebaseio.com/users/${firebaseUserId}.json/?auth=${token}`,
           editedUserData
         )
         .then((response) => {

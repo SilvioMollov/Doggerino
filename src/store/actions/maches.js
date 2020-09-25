@@ -1,6 +1,6 @@
-import * as actionTypes from './actionTypes';
-import axios from 'axios';
-import { setAllUsers } from './admin';
+import * as actionTypes from "./actionTypes";
+import axios from "axios";
+import { setAllUsers } from "./admin";
 
 export const fetchMatchesSuccess = (matches, userId) => {
   return {
@@ -38,10 +38,16 @@ export const matchesLocationsData = (matches) => {
   };
 };
 
-export const matchesFilter = (selectedLocation) => {
+export const matchesFilter = (
+  selectedLocation,
+  selectedBreed,
+  selectedGender
+) => {
   return {
     type: actionTypes.MATCHES_FILTER_SELECT,
-    selectedLocation,
+    selectedLocation: selectedLocation,
+    selectedBreed: selectedBreed,
+    selectedGender: selectedGender,
   };
 };
 
@@ -55,7 +61,7 @@ export const fetchMatches = (userId, token) => {
         for (let match in response.data) {
           fetchData.push({ ...response.data[match], dbUserId: match });
         }
-        console.log('[FetchMatches]', response);
+        console.log("[FetchMatches]", response);
         dispatch(userData(fetchData, userId));
         dispatch(fetchMatchesSuccess(fetchData, userId));
         dispatch(setAllUsers(response.data));
@@ -63,7 +69,7 @@ export const fetchMatches = (userId, token) => {
         dispatch(matchesFilter());
       })
       .catch((error) => {
-        console.log('[FetchMatches]', error);
+        console.log("[FetchMatches]", error);
       });
   };
 };
@@ -89,12 +95,12 @@ export const fetchLikedUsers = (userId, token) => {
         `https://doggerino-79ffd.firebaseio.com/userData/${userId}.json/?auth=${token}`
       )
       .then((response) => {
-        console.log('[FetchLikedUsers]', response);
+        console.log("[FetchLikedUsers]", response);
         dispatch(updatedLikedUsers(response.data));
         dispatch(fetchAllLikedUsers(token));
       })
       .catch((error) => {
-        console.log('[FetchLikedUsers]', error);
+        console.log("[FetchLikedUsers]", error);
       });
   };
 };
@@ -116,12 +122,12 @@ export const postLikedUsers = (token, userId, likedUserId) => {
         userData
       )
       .then((response) => {
-        console.log('[PostLikedUsers]', response);
+        console.log("[PostLikedUsers]", response);
         dispatch(removeLikedUser(likedUserId));
         dispatch(addingLikedUsers(likedUserId));
       })
       .catch((error) => {
-        console.log('[PostLikedUsers]', error);
+        console.log("[PostLikedUsers]", error);
       });
   };
 };
@@ -133,13 +139,13 @@ export const fetchAllLikedUsers = (token) => {
         `https://doggerino-79ffd.firebaseio.com/userData.json/?auth=${token}`
       )
       .then((response) => {
-        console.log('[FetchAllLikedUsers]', response);
+        console.log("[FetchAllLikedUsers]", response);
         // figure out where to dispatch this
         dispatch(setLikedBackUsers(response.data));
         dispatch(setLikedUsersData());
       })
       .catch((error) => {
-        console.log('[FetchAllLikedUsers]', error);
+        console.log("[FetchAllLikedUsers]", error);
       });
   };
 };

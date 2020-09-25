@@ -71,8 +71,8 @@ const userData = (state, action) => {
       ...userData,
     }),
     selectedLocation: userData.location.city,
-    selectedBreed: userData.petData.petBreed,
-    selectedGenderIsMale: userData.petData.petGender === "Male" ? true : false,
+    selectedBreed: null,
+    // selectedGenderIsMale: userData.petData.petGender === "Male" ? true : false,
   });
 };
 
@@ -110,23 +110,78 @@ const matchesLocationsData = (state, action) => {
 };
 
 const matchesFilter = (state, action) => {
-  const { selectedLocation, selectedBreed, selectedGenderIsMale } = action;
+  const { selectedLocation, selectedBreed, selectedGender } = action;
   const {
     matches,
-    userData: { location, likedUsers },
+    userData: { likedUsers },
   } = state;
 
-  let locationFilterValue = selectedLocation;
-  
+  const matchesWithPets = matches.filter((user) => user.petData);
 
+  const actionObj = action;
+  delete actionObj.type;
 
-  if (!locationFilterValue) {
-    locationFilterValue = location.city;
+  let testArr = matchesWithPets;
+
+  for (let propType in actionObj) {
+    // testArr = testArr.filter(user =>  {
+    if (Boolean(actionObj[propType]))
+      // })
+      console.log(Boolean(actionObj[propType]));
   }
 
-  const filteredArray = matches.filter(
-    (el) => el.location.city === locationFilterValue
-  );
+  // console.log(selectedLocation, selectedBreed, selectedGender);
+
+  let selectedLocationValue = selectedLocation;
+  let selectedBreedValue = selectedBreed;
+  let selectedGenderValue = selectedGender;
+
+  // if (!locationFilterValue && !selectedBreedValue && !selectedGenderValue) {
+  //   locationFilterValue = location.city;
+  //   selectedBreedValue = petData.petBreed;
+  //   selectedGenderValue = petData.petGender;
+  // }
+
+  let filteredArray = matchesWithPets;
+
+  if (Boolean(selectedLocation)) {
+    console.log("[LOCATION]");
+
+    filteredArray = matchesWithPets.filter(
+      (user) => user.location.city === selectedLocationValue
+    );
+
+    if (Boolean(selectedBreed)) {
+      filteredArray = filteredArray.filter(
+        (user) => user.petData.petBreed === selectedBreedValue
+      );
+    }
+
+    if (Boolean(selectedGender)) {
+      filteredArray = filteredArray.filter(
+        (user) => user.petData.petGender === selectedGenderValue
+      );
+    }
+  } else if (Boolean(selectedBreed)) {
+    console.log("[BREED]");
+
+    filteredArray = matchesWithPets.filter(
+      (user) => user.petData.petBreed === selectedBreedValue
+    );
+
+    if (Boolean(selectedGender)) {
+      filteredArray = filteredArray.filter(
+        (user) => user.petData.petGender === selectedGenderValue
+      );
+    }
+  } else if (Boolean(selectedGender)) {
+    console.log("[GENDER]");
+    filteredArray = matchesWithPets.filter(
+      (user) => user.petData.petGender === selectedGenderValue
+    );
+  }
+
+  console.log(filteredArray);
 
   const updatedMatchesDataFiltered = filteredArray.filter(
     (user) => !likedUsers.includes(user.userId)
@@ -134,7 +189,7 @@ const matchesFilter = (state, action) => {
 
   return updateObject(state, {
     matchesDataFiltered: updatedMatchesDataFiltered,
-    selectedLocation: locationFilterValue,
+    selectedLocation: selectedLocationValue,
     loading: false,
   });
 };
@@ -153,8 +208,12 @@ const removeLikedUser = (state, action) => {
 };
 
 const updateLikedUsers = (state, action) => {
-  const { likedUsers } = action;
+  let { likedUsers } = action;
   const { matchesDataFiltered } = state;
+
+  if (!Boolean(likedUsers)) {
+    likedUsers = {};
+  }
 
   const likedUsersArray = Object.values(likedUsers);
   let likedUsersUpdated = [];
