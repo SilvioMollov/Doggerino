@@ -124,10 +124,12 @@ const matchesFilter = (state, action) => {
   let testArr = matchesWithPets;
 
   for (let propType in actionObj) {
-    // testArr = testArr.filter(user =>  {
-    if (Boolean(actionObj[propType]))
-      // })
-      console.log(Boolean(actionObj[propType]));
+    if (Boolean(actionObj[propType])) {
+      testArr = testArr.filter((user) => {
+        
+      });
+    }
+    console.log(actionObj[propType]);
   }
 
   // console.log(selectedLocation, selectedBreed, selectedGender);
