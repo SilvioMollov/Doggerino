@@ -121,16 +121,105 @@ const matchesFilter = (state, action) => {
   const actionObj = action;
   delete actionObj.type;
 
-  let testArr = matchesWithPets;
+  let newMatches = matchesWithPets;
 
-  for (let propType in actionObj) {
-    if (Boolean(actionObj[propType])) {
-      testArr = testArr.filter((user) => {
-        
-      });
+  const findUsersLike = {
+    location: { city: selectedLocation },
+    petData: { petBreed: selectedBreed, petGender: selectedGender },
+    userAge: "22",
+  };
+
+  let filterFunction = (
+    filterValues,
+    structureProps = Object.keys(filterValues),
+    structureNumber
+  ) => {
+    // let filterMatches = matchesWithPets;
+    console.log("[STRUCTURE]", structureProps);
+    console.log(filterValues);
+
+    structureNumber = 0;
+
+    for (let props in filterValues) {
+      if (typeof filterValues[props] === "string") {
+        console.log(filterValues[props], props, structureNumber);
+        if (structureNumber < 2) {
+          console.log(filterValues[props]);
+          // newMatches = newMatches.filter((match) => {
+          //   return
+          // })
+        } else {
+          newMatches = newMatches.filter((match) => {
+            return match[props] === filterValues[props];
+          });
+        }
+      } else {
+        console.log(
+          filterValues[props],
+          Object.keys(filterValues[props]),
+          structureNumber
+        );
+
+        filterFunction(
+          filterValues[props],
+          Object.keys(filterValues[props]),
+          structureNumber++
+        );
+      }
     }
-    console.log(actionObj[propType]);
-  }
+  };
+
+  filterFunction(findUsersLike);
+  console.log(newMatches);
+  // for (let [key, value] of Object.entries(findUsersLike)) {
+  //   for (const [filterKeys, filterValue] of Object.entries(value)) {
+  //     if (Boolean(filterValue)) {
+  //       newMatches = newMatches.filter((match) => {
+  //         if (match[key][filterKeys] === filterValue) {
+  //           return true;
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
+
+  // let foundUsers = [];
+
+  // for (let [key, values] of Object.entries(findUsersLike)) {
+  //   console.log(findUsersLike[key]);
+  //   let filteredUser = {};
+  //   for (let match of newMatches) {
+  //   }
+  // }
+  // const filters = [];
+
+  // for (let prop in actionObj) {
+  //   console.log(actionObj[prop]);
+  //   if (Boolean(actionObj[prop])) {
+  //     filters.push(actionObj[prop]);
+  //   }
+  // }
+
+  // filters.forEach(filterValue => {
+  //   newMatches = newMatches.filter(match => {
+  //     for (let value of Object.values(match)) {
+  //       if (Object.values(value).includes(filterValue)) {
+  //         return true;
+  //       }
+  //     }
+  //   });
+  // });
+
+  // console.log("[AFTER FILTER]", newMatches);
+
+  // for (let propType in actionObj) {
+  //   if (Boolean(actionObj[propType])) {
+  //     testArr = testArr.filter((user) => {
+
+  //     });
+  //   }
+  //   console.log(actionObj[propType]);
+  // }
 
   // console.log(selectedLocation, selectedBreed, selectedGender);
 
@@ -147,8 +236,6 @@ const matchesFilter = (state, action) => {
   let filteredArray = matchesWithPets;
 
   if (Boolean(selectedLocation)) {
-    console.log("[LOCATION]");
-
     filteredArray = matchesWithPets.filter(
       (user) => user.location.city === selectedLocationValue
     );
@@ -165,8 +252,6 @@ const matchesFilter = (state, action) => {
       );
     }
   } else if (Boolean(selectedBreed)) {
-    console.log("[BREED]");
-
     filteredArray = matchesWithPets.filter(
       (user) => user.petData.petBreed === selectedBreedValue
     );
@@ -177,7 +262,6 @@ const matchesFilter = (state, action) => {
       );
     }
   } else if (Boolean(selectedGender)) {
-    console.log("[GENDER]");
     filteredArray = matchesWithPets.filter(
       (user) => user.petData.petGender === selectedGenderValue
     );
