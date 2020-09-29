@@ -126,51 +126,91 @@ const matchesFilter = (state, action) => {
   const findUsersLike = {
     location: { city: selectedLocation },
     petData: { petBreed: selectedBreed, petGender: selectedGender },
-    userAge: "22",
   };
 
-  let filterFunction = (
-    filterValues,
-    structureProps = Object.keys(filterValues),
-    structureNumber
-  ) => {
-    // let filterMatches = matchesWithPets;
-    console.log("[STRUCTURE]", structureProps);
-    console.log(filterValues);
+  let iter = 0;
 
-    structureNumber = 0;
-
-    for (let props in filterValues) {
-      if (typeof filterValues[props] === "string") {
-        console.log(filterValues[props], props, structureNumber);
-        if (structureNumber < 2) {
-          console.log(filterValues[props]);
-          // newMatches = newMatches.filter((match) => {
-          //   return
-          // })
-        } else {
-          newMatches = newMatches.filter((match) => {
-            return match[props] === filterValues[props];
-          });
+  const filterFunction = (filteredObj, filter) => {
+    let isMatch = false;
+    for (let props in filter) {
+      if (typeof filter[props] !== "object") {
+        if (filter[props] !== undefined && filter[props] !== "") {
+          console.log(filter[props], filteredObj[props], iter + 1);
+          if (filteredObj[props] === filter[props]) {
+            isMatch = true;
+          } else {
+            isMatch = false;
+          }
         }
       } else {
-        console.log(
-          filterValues[props],
-          Object.keys(filterValues[props]),
-          structureNumber
-        );
-
-        filterFunction(
-          filterValues[props],
-          Object.keys(filterValues[props]),
-          structureNumber++
-        );
+        filterFunction(filteredObj[props], filter[props]);
       }
     }
+    console.log(isMatch);
+    return isMatch;
   };
 
-  filterFunction(findUsersLike);
-  console.log(newMatches);
+  let test = {
+    dbUserId: "-MHR5J36_vPynwUeNJle",
+    email: "valio@gmail.com",
+    firstName: "Valentin",
+    lastName: "Parvanov",
+    location: { city: "Plovdiv", country: "Bulgaria" },
+    petData: {
+      petAge: "5",
+      petBreed: "Doberman Pinscher",
+      petDescription: "very good boi",
+      petGender: "Male",
+      petName: "roshko",
+    },
+    registrationDate: 1600346734625,
+    userAge: "22",
+    userId: "F51hqWnL01MooDsej7HigqtJy5s2",
+  };
+
+  console.log(filterFunction(test, findUsersLike));
+
+  // newMatches = newMatches.filter((match) => {
+  //   // console.log(filterFunction(match, findUsersLike));
+  //   // return filterFunction(match, findUsersLike);
+  // });
+
+  // console.log(newMatches);
+
+  //   let filterFunction = (
+  //     filterValues,
+  //     structureProps = Object.keys(filterValues),
+  //     structureNumber
+  //   ) => {
+  //     // let filterMatches = matchesWithPets;
+  //     // console.log("[STRUCTURE]", structureProps);
+  //     // console.log(filterValues);
+
+  //     structureNumber = 0;
+
+  //     for (let props in filterValues) {
+  //       if (typeof filterValues[props] === "string") {
+  //         if (structureNumber < 2) {
+  //           newMatches = newMatches.filter((match) => {
+  //             console.log(match);
+  //           });
+  //         } else {
+  //           newMatches = newMatches.filter((match) => {
+  //             return match[props] === filterValues[props];
+  //           });
+  //         }
+  //       } else {
+  //         filterFunction(
+  //           filterValues[props],
+  //           Object.keys(filterValues[props]),
+  //           structureNumber++
+  //         );
+  //       }
+  //     }
+  //   };
+
+  //   filterFunction(findUsersLike);
+  //   console.log(newMatches);
   // for (let [key, value] of Object.entries(findUsersLike)) {
   //   for (const [filterKeys, filterValue] of Object.entries(value)) {
   //     if (Boolean(filterValue)) {
@@ -267,7 +307,7 @@ const matchesFilter = (state, action) => {
     );
   }
 
-  console.log(filteredArray);
+  // console.log(filteredArray);
 
   const updatedMatchesDataFiltered = filteredArray.filter(
     (user) => !likedUsers.includes(user.userId)
