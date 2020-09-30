@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../../shared/utility";
+import { updateObject, filterFunction } from "../../shared/utility";
 
 const initialState = {
   matches: [],
@@ -123,199 +123,28 @@ const matchesFilter = (state, action) => {
 
   let newMatches = matchesWithPets;
 
+  console.log(likedUsers);
+
   const findUsersLike = {
     location: { city: selectedLocation },
     petData: { petBreed: selectedBreed, petGender: selectedGender },
   };
 
-  let iter = 0;
-
-  const filterFunction = (filteredObj, filter) => {
-    let isMatch = false;
-    for (let props in filter) {
-      if (typeof filter[props] !== "object") {
-        if (filter[props] !== undefined && filter[props] !== "") {
-          console.log(filter[props], filteredObj[props], iter + 1);
-          if (filteredObj[props] === filter[props]) {
-            isMatch = true;
-          } else {
-            isMatch = false;
-          }
-        }
-      } else {
-        filterFunction(filteredObj[props], filter[props]);
-      }
-    }
-    console.log(isMatch);
-    return isMatch;
+  let filterMatches = (matches, filterObj) => {
+    return matches.filter((match) => filterFunction(match, filterObj));
   };
 
-  let test = {
-    dbUserId: "-MHR5J36_vPynwUeNJle",
-    email: "valio@gmail.com",
-    firstName: "Valentin",
-    lastName: "Parvanov",
-    location: { city: "Plovdiv", country: "Bulgaria" },
-    petData: {
-      petAge: "5",
-      petBreed: "Doberman Pinscher",
-      petDescription: "very good boi",
-      petGender: "Male",
-      petName: "roshko",
-    },
-    registrationDate: 1600346734625,
-    userAge: "22",
-    userId: "F51hqWnL01MooDsej7HigqtJy5s2",
-  };
+  newMatches = filterMatches(newMatches, findUsersLike);
 
-  console.log(filterFunction(test, findUsersLike));
+  console.log(newMatches);
 
-  // newMatches = newMatches.filter((match) => {
-  //   // console.log(filterFunction(match, findUsersLike));
-  //   // return filterFunction(match, findUsersLike);
-  // });
-
-  // console.log(newMatches);
-
-  //   let filterFunction = (
-  //     filterValues,
-  //     structureProps = Object.keys(filterValues),
-  //     structureNumber
-  //   ) => {
-  //     // let filterMatches = matchesWithPets;
-  //     // console.log("[STRUCTURE]", structureProps);
-  //     // console.log(filterValues);
-
-  //     structureNumber = 0;
-
-  //     for (let props in filterValues) {
-  //       if (typeof filterValues[props] === "string") {
-  //         if (structureNumber < 2) {
-  //           newMatches = newMatches.filter((match) => {
-  //             console.log(match);
-  //           });
-  //         } else {
-  //           newMatches = newMatches.filter((match) => {
-  //             return match[props] === filterValues[props];
-  //           });
-  //         }
-  //       } else {
-  //         filterFunction(
-  //           filterValues[props],
-  //           Object.keys(filterValues[props]),
-  //           structureNumber++
-  //         );
-  //       }
-  //     }
-  //   };
-
-  //   filterFunction(findUsersLike);
-  //   console.log(newMatches);
-  // for (let [key, value] of Object.entries(findUsersLike)) {
-  //   for (const [filterKeys, filterValue] of Object.entries(value)) {
-  //     if (Boolean(filterValue)) {
-  //       newMatches = newMatches.filter((match) => {
-  //         if (match[key][filterKeys] === filterValue) {
-  //           return true;
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
-  // let foundUsers = [];
-
-  // for (let [key, values] of Object.entries(findUsersLike)) {
-  //   console.log(findUsersLike[key]);
-  //   let filteredUser = {};
-  //   for (let match of newMatches) {
-  //   }
-  // }
-  // const filters = [];
-
-  // for (let prop in actionObj) {
-  //   console.log(actionObj[prop]);
-  //   if (Boolean(actionObj[prop])) {
-  //     filters.push(actionObj[prop]);
-  //   }
-  // }
-
-  // filters.forEach(filterValue => {
-  //   newMatches = newMatches.filter(match => {
-  //     for (let value of Object.values(match)) {
-  //       if (Object.values(value).includes(filterValue)) {
-  //         return true;
-  //       }
-  //     }
-  //   });
-  // });
-
-  // console.log("[AFTER FILTER]", newMatches);
-
-  // for (let propType in actionObj) {
-  //   if (Boolean(actionObj[propType])) {
-  //     testArr = testArr.filter((user) => {
-
-  //     });
-  //   }
-  //   console.log(actionObj[propType]);
-  // }
-
-  // console.log(selectedLocation, selectedBreed, selectedGender);
-
-  let selectedLocationValue = selectedLocation;
-  let selectedBreedValue = selectedBreed;
-  let selectedGenderValue = selectedGender;
-
-  // if (!locationFilterValue && !selectedBreedValue && !selectedGenderValue) {
-  //   locationFilterValue = location.city;
-  //   selectedBreedValue = petData.petBreed;
-  //   selectedGenderValue = petData.petGender;
-  // }
-
-  let filteredArray = matchesWithPets;
-
-  if (Boolean(selectedLocation)) {
-    filteredArray = matchesWithPets.filter(
-      (user) => user.location.city === selectedLocationValue
-    );
-
-    if (Boolean(selectedBreed)) {
-      filteredArray = filteredArray.filter(
-        (user) => user.petData.petBreed === selectedBreedValue
-      );
-    }
-
-    if (Boolean(selectedGender)) {
-      filteredArray = filteredArray.filter(
-        (user) => user.petData.petGender === selectedGenderValue
-      );
-    }
-  } else if (Boolean(selectedBreed)) {
-    filteredArray = matchesWithPets.filter(
-      (user) => user.petData.petBreed === selectedBreedValue
-    );
-
-    if (Boolean(selectedGender)) {
-      filteredArray = filteredArray.filter(
-        (user) => user.petData.petGender === selectedGenderValue
-      );
-    }
-  } else if (Boolean(selectedGender)) {
-    filteredArray = matchesWithPets.filter(
-      (user) => user.petData.petGender === selectedGenderValue
-    );
-  }
-
-  // console.log(filteredArray);
-
-  const updatedMatchesDataFiltered = filteredArray.filter(
+  const updatedMatchesDataFiltered = newMatches.filter(
     (user) => !likedUsers.includes(user.userId)
   );
 
   return updateObject(state, {
     matchesDataFiltered: updatedMatchesDataFiltered,
-    selectedLocation: selectedLocationValue,
+    selectedLocation: selectedLocation,
     loading: false,
   });
 };

@@ -180,7 +180,24 @@ export class Match extends Component {
 
   selectFiltersHandler = (e) => {
     e.preventDefault();
-    this.setState({ showFilters: !this.state.showFilters });
+    this.setState(
+      {
+        showFilters: !this.state.showFilters,
+      },
+      () => {
+        if (this.state.showFilters) {
+          document.addEventListener("keydown", this.onKeyPressHandler);
+        } else {
+          document.removeEventListener("keydown", this.onKeyPressHandler);
+        }
+      }
+    );
+  };
+
+  onKeyPressHandler = (e) => {
+    if (e.keyCode === 27) {
+      this.setState({ showFilters: !this.state.showFilters });
+    }
   };
 
   render() {
@@ -241,7 +258,11 @@ export class Match extends Component {
         <form className="Match-Form">
           <h3 className="Match-Header">Welcome {userData.firstName}</h3>
           <button onClick={this.selectFiltersHandler}>set filters</button>
-          <Modal show={showFilters} closed={this.selectFiltersHandler}>
+          <Modal
+            show={showFilters}
+            closed={this.selectFiltersHandler}
+            keyDown={this.onKeyPressHandler}
+          >
             <Select
               isClearable
               className="Match-SelectBar"

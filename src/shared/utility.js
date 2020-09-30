@@ -44,3 +44,40 @@ export const processValidity = (value, inputType) => {
 
   return isValid;
 };
+
+// filter Algorithm, accepts the to be (filteredObj, filter, include ),  
+//the filter argument has to mimic the filtered Obj with its props.
+//the include argument is set by default to true, it marks if elements should be includede by the filter settings or included.
+// Like this:
+//===============================================================
+// const findUsersLike = {
+//   location: { city: selectedLocation },
+//   petData: { petBreed: selectedBreed, petGender: selectedGender },
+// };
+
+export const filterFunction = (filteredObj, filter, include = true) => {
+  let isAMatch = false;
+  let isAMatchArr = [];
+
+  let recursion = (filteredObj, filter) => {
+    for (let prop in filter) {
+      if (typeof filter[prop] !== "object") {
+        if (filter[prop]) {
+          if (include) {
+            isAMatch = filteredObj[prop] === filter[prop];
+            isAMatchArr.push(isAMatch);
+          } else {
+            isAMatch = filteredObj[prop] !== filter[prop];
+            isAMatchArr.push(isAMatch);
+          }
+        }
+      } else {
+        recursion(filteredObj[prop], filter[prop]);
+      }
+    }
+  };
+
+  recursion(filteredObj, filter);
+
+  return isAMatchArr.every((val) => val === true);
+};

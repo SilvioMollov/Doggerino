@@ -10,20 +10,21 @@ class Modal extends Component {
     );
   }
 
+
   render() {
-    const { props } = this;
+    const { show, closed, children } = this.props;
 
     return (
       <>
-        <Backdrop show={props.show} clicked={props.closed} />
+        <Backdrop show={show} clicked={closed}  />
         <div
           className={"Modal"}
           style={{
-            transform: props.show ? "translateY(0)" : "translateY(-100vh)",
-            opacity: props.show ? "1" : "0",
+            transform: show ? "translateY(0)" : "translateY(-100vh)",
+            opacity: show ? "1" : "0",
           }}
         >
-          {props.children}
+          {children}
         </div>
       </>
     );
