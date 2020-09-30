@@ -116,14 +116,7 @@ const matchesFilter = (state, action) => {
     userData: { likedUsers },
   } = state;
 
-  const matchesWithPets = matches.filter((user) => user.petData);
-
-  const actionObj = action;
-  delete actionObj.type;
-
-  let newMatches = matchesWithPets;
-
-  console.log(likedUsers);
+  let matchesWithPets = matches.filter((user) => user.petData);
 
   const findUsersLike = {
     location: { city: selectedLocation },
@@ -134,11 +127,9 @@ const matchesFilter = (state, action) => {
     return matches.filter((match) => filterFunction(match, filterObj));
   };
 
-  newMatches = filterMatches(newMatches, findUsersLike);
+  matchesWithPets = filterMatches(matchesWithPets, findUsersLike);
 
-  console.log(newMatches);
-
-  const updatedMatchesDataFiltered = newMatches.filter(
+  const updatedMatchesDataFiltered = matchesWithPets.filter(
     (user) => !likedUsers.includes(user.userId)
   );
 

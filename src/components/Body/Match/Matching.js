@@ -171,6 +171,8 @@ export class Match extends Component {
     } = this.state;
     const { onFilterMatches } = this.props;
 
+    this.selectFiltersHandler(e);
+
     onFilterMatches(
       selectedLocation.value,
       selectedBreed.value,
