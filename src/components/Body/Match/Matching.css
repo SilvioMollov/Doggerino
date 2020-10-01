@@ -1,63 +1,115 @@
 .Match-Wrapper {
-  margin: auto;
-  padding: 10px;
+  position: relative;
+  margin: 5px 50px;
   max-width: 600px;
+  margin: auto;
+
+  /* position: relative;
+  padding: 10px;
+  max-height: 550px; */
 }
 
 .Match-Form {
-  border: 1px solid #eee;
-  padding: 0 50px;
+  padding: 10px 50px;
+  padding-bottom: 30px;
   border-radius: 25px;
-  background-color: #ff8a84b0;
-  box-shadow: 5px 7px rgba(221, 100, 100, 0.185);
+  background-color: #ff8a84dc;
+  box-shadow: 0 0.3em 1em #000;
 }
 
 .Match-Header {
-  padding-bottom: 10px;
-  border-bottom: 1px solid black;
+  margin: 0;
+  padding: 10px;
+  color: aliceblue;
+  border-bottom: 1px solid aliceblue;
 }
 
-.Match-SelectBar {
-  
+.Matching-Button-ViewChange {
+  position: absolute;
+  left: -25px;
+  top: 95%;
+  z-index: 110;
+  border-radius: 25px;
+  height: 50px;
+  padding: 10px;
+  width: 50px;
+  cursor: pointer;
+  background-color: white;
+  color: #ff8a84;
+  border: 1px white;
+  outline: none;
+}
+
+.Match-Filter-Button {
+  font-weight: bolder;
+  font-size: medium;
+  color: #ff8a84dc;
+  background-color: white;
+  padding: 10px;
+  margin: 15px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.Ontop {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  transition: transform 1s ease-in-out;
+  transform: translateX(0);
+  transform-origin: bottom left;
+}
+
+.Match-CardHolderWrapper {
+  position: relative;
+  top: 0px;
+}
+
+.Ontop.Open {
+  transform: rotate(-100deg);
+  margin-left: auto;
+  z-index: 100;
 }
 
 .Match-Button {
   display: inline;
   border: 1px #ff8a84;
   font: inherit;
+  color: white;
   background-color: #ff8a84;
   padding: 10px;
-  margin: 10px;
+  margin: 20px;
   min-width: 100px;
   min-height: 50px;
   border-radius: 25px;
   box-shadow: 5px 7px rgba(221, 100, 100, 0.185);
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
   .Match-Wrapper {
     padding: 5px;
+    
   }
 
   .Match-Form {
-    margin: auto;
-    padding: 5px 20px;
-    min-height: 80vh;
-    max-width: 400px;
     max-height: 650px;
+    padding: 10px 25px;
+    padding-bottom: 30px;
   }
+
+  
+
+  
 }
 
 .slide-exit.slide-exit-active {
   opacity: 0;
   transform: scale(1) translateX(100%);
   z-index: -1;
-  transition: opacity 200ms linear, transform 100ms ease-out;
+  transition: opacity 200ms linear, transform 300ms ease-out;
 }
-
-/* .slide-exit-done {
-  opacity: 1;
-} */
 
 .like-exit.like-exit-active {
   opacity: 0;

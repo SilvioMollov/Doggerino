@@ -126,45 +126,7 @@ export class UserProfile extends Component {
     },
   };
 
-  // processValidity = (value, inputType) => {
-  //   const {
-  //     required,
-  //     mailFormat,
-  //     minLength,
-  //     minAge,
-  //     maxAge,
-  //     maxLength,
-  //   } = inputType.validation;
-
-  //   const format = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-  //   let isValid = true;
-
-  //   if (required) {
-  //     isValid = value.trim() !== "" && isValid;
-  //   }
-
-  //   if (mailFormat) {
-  //     isValid = Boolean(value.match(format)) && isValid;
-  //   }
-
-  //   if (minLength) {
-  //     isValid = value.length >= minLength && isValid;
-  //   }
-
-  //   if (maxLength) {
-  //     isValid = value.length <= maxLength && isValid;
-  //   }
-
-  //   if (minAge) {
-  //     isValid = value >= minAge && isValid;
-  //   }
-
-  //   if (maxAge) {
-  //     isValid = value <= maxAge && isValid;
-  //   }
-
-  //   return isValid;
-  // };
+ 
 
   onChangeHandler = (event, inputType, stateType) => {
     const { editedUserState, editedPetState } = this.state;
@@ -578,7 +540,6 @@ export class UserProfile extends Component {
               </AttentionSeeker>
             </button>
           </div>
-
           <div className={"UserProfile-FormCard"}>
             <form
               className={"UserProfile-Form"}
@@ -649,7 +610,7 @@ export class UserProfile extends Component {
               ></input>
 
               <Select
-                className={"Auth-Select-Country"}
+                className={"UserProfile-Select"}
                 name="petGender"
                 options={[
                   { value: "Male", label: "Male" },
@@ -666,7 +627,7 @@ export class UserProfile extends Component {
               ></Select>
 
               <Select
-                className={"Auth-Select-City"}
+                className={"UserProfile-Select"}
                 name="petBreed"
                 options={dogBreeds}
                 onChange={(event, name) =>
@@ -719,6 +680,7 @@ export class UserProfile extends Component {
                 Save
               </button>
             </form>
+
           </div>
         </>
       );

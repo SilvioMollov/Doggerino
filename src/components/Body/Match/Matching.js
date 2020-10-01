@@ -9,12 +9,14 @@ import { connect } from "react-redux";
 import { processValidity } from "../../../shared/utility";
 import * as actions from "../../../store/actions/index";
 import "./Matching.css";
+import { AttentionSeeker } from "react-awesome-reveal";
 
 export class Match extends Component {
   state = {
     matchIndex: 0,
     transition: "",
     showFilters: false,
+    userView: false,
     selectFilters: {
       selectedLocation: {
         value: "",
@@ -202,6 +204,12 @@ export class Match extends Component {
     }
   };
 
+  userViewHandler = (e) => {
+    e.preventDefault();
+
+    this.setState({ userView: !this.state.userView });
+  };
+
   render() {
     const {
       locationOptions,
@@ -210,109 +218,143 @@ export class Match extends Component {
       userData,
       loading,
     } = this.props;
-    const { matchIndex, transition, showFilters } = this.state;
+    const { matchIndex, transition, showFilters, userView } = this.state;
 
-    let form = <Spinner />;
+    let userCardHolderClass = "Ontop";
 
-    const cardHolder = filteredMatches.length ? (
-      <SwitchTransition mode={"out-in"}>
-        <CSSTransition
-          in={true}
-          key={filteredMatches[matchIndex].userId}
-          timeout={300}
-          classNames={transition}
-        >
-          {Boolean(filteredMatches.length) ? (
-            <CardHolder
-              filteredMatchesLength={filteredMatches.length}
-              matchFirstName={
-                !filteredMatches.length
-                  ? "NQMA DANNI "
-                  : filteredMatches[matchIndex].firstName
-              }
-              matchLastName={
-                !filteredMatches.length
-                  ? "NQMA DANNI "
-                  : filteredMatches[matchIndex].lastName
-              }
-              userAge={
-                !filteredMatches.length
-                  ? "NQMA DANNI "
-                  : filteredMatches[matchIndex].userAge
-              }
-              matchLocation={
-                !filteredMatches.length
-                  ? "NQMA DANNI "
-                  : filteredMatches[matchIndex].location.city
-              }
-            />
-          ) : (
-            <Spinner />
-          )}
-        </CSSTransition>
-      </SwitchTransition>
-    ) : (
-      <div> No data</div>
-    );
-
-    if (!loading) {
-      form = (
-        <form className="Match-Form">
-          <h3 className="Match-Header">Welcome {userData.firstName}</h3>
-          <button onClick={this.selectFiltersHandler}>set filters</button>
-          <Modal
-            show={showFilters}
-            closed={this.selectFiltersHandler}
-            keyDown={this.onKeyPressHandler}
-          >
-            <Select
-              isClearable
-              className="Match-SelectBar"
-              options={locationOptions}
-              name={"selectedLocation"}
-              // value={
-              //   // selectedLocation
-              //   // { label: selectedLocation, value: selectedLocation }
-              //   // : { label: userData.location.city, value: userData.location.city }
-              // }
-              onChange={(event, name) => this.selectChangedHandler(event, name)}
-              placeholder={"Filter on location"}
-            ></Select>
-            <Select
-              isClearable
-              className="Match-SelectBar"
-              options={breedOptions}
-              name={"selectedBreed"}
-              // value={{ label: selectedBreed, value: selectedBreed }}
-              onChange={(event, name) => this.selectChangedHandler(event, name)}
-              placeholder={"Filter your dog's breed"}
-            ></Select>
-            <Select
-              isClearable
-              className="Match-SelectBar"
-              options={[
-                { value: "Male", label: "Male" },
-                { value: "Female", label: "Female" },
-              ]}
-              name={"selectedGender"}
-              // value={
-              //   selectedGenderIsMale
-              //     ? { label: "Male", value: "Male" }
-              //     : { value: "Female", label: "Female" }
-              // }
-              onChange={(event, name) => this.selectChangedHandler(event, name)}
-              placeholder={"Filter your dog's gender"}
-            ></Select>
-            <button onClick={this.applyFilterChanges}>Apply Changes</button>
-          </Modal>
-          {cardHolder}
-        </form>
-      );
+    if (userView) {
+      userCardHolderClass = "Ontop Open";
     }
 
     return (
       <div className="Match-Wrapper">
-        {form}
+        {!loading ? (
+          <form className="Match-Form">
+            <h3 className="Match-Header">Welcome {userData.firstName}</h3>
+            <button
+              onClick={this.selectFiltersHandler}
+              className={"Match-Filter-Button"}
+            >
+              Filter me!
+            </button>
+            <Modal
+              show={showFilters}
+              closed={this.selectFiltersHandler}
+              keyDown={this.onKeyPressHandler}
+            >
+              <Select
+                isClearable
+                className="Match-SelectBar"
+                options={locationOptions}
+                name={"selectedLocation"}
+                onChange={(event, name) =>
+                  this.selectChangedHandler(event, name)
+                }
+                placeholder={"Filter on location"}
+              ></Select>
+              <Select
+                isClearable
+                className="Match-SelectBar"
+                options={breedOptions}
+                name={"selectedBreed"}
+                onChange={(event, name) =>
+                  this.selectChangedHandler(event, name)
+                }
+                placeholder={"Filter your dog's breed"}
+              ></Select>
+              <Select
+                isClearable
+                className="Match-SelectBar"
+                options={[
+                  { value: "Male", label: "Male" },
+                  { value: "Female", label: "Female" },
+                ]}
+                name={"selectedGender"}
+                onChange={(event, name) =>
+                  this.selectChangedHandler(event, name)
+                }
+                placeholder={"Filter your dog's gender"}
+              ></Select>
+              <button onClick={this.applyFilterChanges}>Apply Changes</button>
+            </Modal>
+            {Boolean(filteredMatches.length) ? (
+              <SwitchTransition mode={"out-in"}>
+                <CSSTransition
+                  in={true}
+                  key={filteredMatches[matchIndex].userId}
+                  timeout={300}
+                  classNames={transition}
+                >
+                  <div className={"Match-CardHolderWrapper"}>
+                    <CardHolder
+                      isDog={false}
+                      filteredMatchesLength={filteredMatches.length}
+                      matchFirstName={
+                        !filteredMatches.length
+                          ? "NQMA DANNI "
+                          : filteredMatches[matchIndex].firstName
+                      }
+                      matchLastName={
+                        !filteredMatches.length
+                          ? "NQMA DANNI "
+                          : filteredMatches[matchIndex].lastName
+                      }
+                      userAge={
+                        !filteredMatches.length
+                          ? "NQMA DANNI "
+                          : filteredMatches[matchIndex].userAge
+                      }
+                      matchLocation={
+                        !filteredMatches.length
+                          ? "NQMA DANNI "
+                          : filteredMatches[matchIndex].location.city
+                      }
+                    />
+                    <div className={userCardHolderClass}>
+                      <CardHolder
+                        isDog={true}
+                        petGender={
+                          userData.petData.petGender
+                            ? userData.petData.petGender
+                            : "Your Pet's Gender"
+                        }
+                        petName={
+                          userData.petData.petName
+                            ? userData.petData.petName
+                            : "Your Pet's Name"
+                        }
+                        petBreed={
+                          userData.petData.petBreed
+                            ? userData.petData.petBreed
+                            : "Breed"
+                        }
+                        petAge={
+                          userData.petData.petAge
+                            ? userData.petData.petAge
+                            : "Age"
+                        }
+                        petDescription={userData.petData.petDescription}
+                      />
+                    </div>
+
+                    <button
+                      className={"Matching-Button-ViewChange"}
+                      onClick={this.userViewHandler}
+                    >
+                      <AttentionSeeker effect="headShake">
+                        <i className="fas fa-user-cog fa-2x"></i>
+                      </AttentionSeeker>
+                    </button>
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
+            ) : (
+              <Spinner />
+            )}
+          </form>
+        ) : (
+          <Spinner />
+        )}
 
         <div>
           <button

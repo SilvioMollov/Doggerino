@@ -5,7 +5,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 200;
+  z-index: 450;
+transition: transform 100ms ease-in-out;
   transform: translateX(-100%);
   min-width: 200px;
 }
