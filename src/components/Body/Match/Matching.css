@@ -10,6 +10,7 @@
 }
 
 .Match-Form {
+  position: relative;
   padding: 10px 50px;
   padding-bottom: 30px;
   border-radius: 25px;
@@ -72,6 +73,26 @@
   z-index: 100;
 }
 
+.Match-SelectBar {
+  margin: 20px;
+}
+.Match-SelectBar div {
+  border-radius: 35px;
+}
+
+.Matching-Apply {
+  display: inline;
+  border: 1px #ff8a84;
+  font: inherit;
+  font-weight: bold;
+  color: white;
+  background-color: #ff8a84;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
 .Match-Button {
   display: inline;
   border: 1px #ff8a84;
@@ -83,14 +104,17 @@
   min-width: 100px;
   min-height: 50px;
   border-radius: 25px;
-  box-shadow: 5px 7px rgba(221, 100, 100, 0.185);
+  box-shadow: 0 0.3em 1em #000;
   cursor: pointer;
+}
+
+.Match-Button:disabled {
+  background-color: grey;
 }
 
 @media (max-width: 600px) {
   .Match-Wrapper {
     padding: 5px;
-    
   }
 
   .Match-Form {
@@ -99,9 +123,9 @@
     padding-bottom: 30px;
   }
 
-  
-
-  
+  .Matching-Button-ViewChange {
+    top: 90%;
+  }
 }
 
 .slide-exit.slide-exit-active {

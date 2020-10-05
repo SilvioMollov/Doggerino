@@ -9,6 +9,10 @@
 }
 
 
+button{
+  outline-style: none;
+}
+
 
 .App-header {
   background-color: #282c34;

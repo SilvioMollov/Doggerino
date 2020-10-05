@@ -51,7 +51,6 @@
 .Auth-Select-City {
   margin: 8px 0;
   padding: 6px 0;
-
 }
 
 .Auth-Select-Country div,
@@ -75,6 +74,7 @@
   margin: 10px;
   min-width: 150px;
   border-radius: 25px;
+  color: white;
 }
 
 .Auth-Button-Confirm {
@@ -86,6 +86,7 @@
   margin: 10px;
   min-width: 150px;
   border-radius: 25px;
+  color: white;
 }
 
 .Auth-Button-Confirm i {

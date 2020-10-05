@@ -123,6 +123,8 @@ const matchesFilter = (state, action) => {
     petData: { petBreed: selectedBreed, petGender: selectedGender },
   };
 
+  console.log(matchesWithPets);
+
   let filterMatches = (matches, filterObj) => {
     return matches.filter((match) => filterFunction(match, filterObj));
   };

@@ -1,0 +1,42 @@
+.ToolTip-Inner {
+  left: 0;
+  top: 0;
+  position: absolute;
+  background: rgb(91, 202, 236);
+  border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  clip-path: circle(5% at 98% 2%);
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.ToolTip-Inner:hover {
+  clip-path: circle(75%);
+  background: white;
+  z-index: 115;
+}
+
+.ToolTip-Inner h1 {
+  color: #ff8a84dc;
+  margin-top: 35%;
+}
+
+.ToolTip-Inner span {
+  left: 47%;
+  top: 10px;
+  color: turquoise;
+  font-weight: bold;
+  transition: color 0.5s;
+  position: relative;
+  color: white;
+  margin: 0;
+  z-index: 111;
+}
+
+.ToolTip-Inner p {
+  color: #ff8a84dc;
+  font-size: 1rem;
+  margin: 0 35px;
+}

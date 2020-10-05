@@ -10,12 +10,14 @@ import CountryLists from "all-countries-and-cities-json";
 import Spinner from "../../UI/Spinner/Spinner";
 import CardHolder from "../Match/CardHolder/CardHolder";
 import Select from "react-select";
+import ToolTip from "../../UI/ToolTip/ToolTip";
+import ToggleBar from "../../UI/ToggleBar/ToggleBar";
 
 export class UserProfile extends Component {
   state = {
     citiesSelectOptions: [{}],
     moreSettings: false,
-    petSettings: true,
+    petSettings: false,
     editedPetState: {
       petName: {
         value: "",
@@ -125,8 +127,6 @@ export class UserProfile extends Component {
       },
     },
   };
-
- 
 
   onChangeHandler = (event, inputType, stateType) => {
     const { editedUserState, editedPetState } = this.state;
@@ -336,6 +336,8 @@ export class UserProfile extends Component {
       },
     } = this.state;
 
+    console.log(this.state.editedPetState);
+
     let dogBreeds = [];
     let countriesSelect = [];
 
@@ -352,350 +354,344 @@ export class UserProfile extends Component {
     const classValid = "Auth-Input-Valid";
 
     let userProfile = <Spinner />;
-    let userCardHolderClass = "UserProfile-CardHolder";
+    let userCardHolderClass = "UserProfile-Card-OnTop";
 
     if (moreSettings) {
-      userCardHolderClass = "UserProfile-CardHolder Open";
+      userCardHolderClass = "UserProfile-Card-OnTop Open";
     }
 
     if (Object.values(userData).length > 2 && !petSettings) {
       userProfile = (
         <>
-          <div className={userCardHolderClass}>
-            <CardHolder
-              // filteredMatchesLength={filteredMatches.length}
-              matchFirstName={userData.firstName}
-              matchLastName={userData.lastName}
-              matchLocation={userData.location.city}
-              userAge={userData.userAge}
-            />
+          <form
+            className={"UserProfile-Form"}
+            onSubmit={(event) => this.submitHandler(event, "editedUserState")}
+          >
+            <input
+              className={
+                this.isInvalid(
+                  firstName.touched,
+                  firstName.valid,
+                  firstName.value
+                )
+                  ? classInvalid
+                  : classValid
+              }
+              value={firstName.value}
+              type="text"
+              id="firstName"
+              name="firstName"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedUserState")
+              }
+              placeholder={userData.firstName}
+            ></input>
 
+            <input
+              className={
+                this.isInvalid(lastName.touched, lastName.valid, lastName.value)
+                  ? classInvalid
+                  : classValid
+              }
+              value={lastName.value}
+              type="text"
+              id="lastName"
+              name="lastName"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedUserState")
+              }
+              placeholder={userData.lastName}
+            ></input>
+
+            <input
+              className={
+                this.isInvalid(userAge.touched, userAge.valid, userAge.value)
+                  ? classInvalid
+                  : classValid
+              }
+              value={userAge.value}
+              type="number"
+              id="userAge"
+              name="userAge"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedUserState")
+              }
+              placeholder={userData.userAge}
+            ></input>
+
+            <Select
+              className={"Auth-Select-Country"}
+              name="country"
+              options={countriesSelect}
+              onChange={(event, name) =>
+                this.onChangeHandler(event, name, "editedUserState")
+              }
+              placeholder={userData.location.country}
+            ></Select>
+
+            <Select
+              className={"Auth-Select-City"}
+              name="city"
+              options={citiesSelectOptions}
+              isDisabled={!(citiesSelectOptions.length > 1)}
+              onChange={(event, name) =>
+                this.onChangeHandler(event, name, "editedUserState")
+              }
+              placeholder={userData.location.city}
+            ></Select>
+
+            <input
+              className={
+                this.isInvalid(
+                  description.touched,
+                  description.valid,
+                  description.value
+                )
+                  ? classInvalid
+                  : classValid
+              }
+              value={description.value}
+              type="text"
+              id="description"
+              name="description"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedUserState")
+              }
+              placeholder={"Description"}
+            ></input>
             <button
-              className={"UserProfile-Button-Edit"}
-              onClick={this.moreSettingsButtonClickHandler}
+              className="UserProfile-Button-Submit"
+              onClick={(event) => this.submitHandler(event, "editedUserState")}
+              disabled={country.touched && !city.valid}
             >
-              <i className="fas fa-user-cog fa-2x"></i>
+              Save
             </button>
-          </div>
+          </form>
 
-          <div className={"UserProfile-FormCard"}>
-            <form
-              className={"UserProfile-Form"}
-              onSubmit={(event) => this.submitHandler(event, "editedUserState")}
-            >
-              <input
-                className={
-                  this.isInvalid(
-                    firstName.touched,
-                    firstName.valid,
-                    firstName.value
-                  )
-                    ? classInvalid
-                    : classValid
-                }
-                value={firstName.value}
-                type="text"
-                id="firstName"
-                name="firstName"
-                onChange={(event) =>
-                  this.onChangeHandler(
-                    event,
-                    event.target.id,
-                    "editedUserState"
-                  )
-                }
-                placeholder={userData.firstName}
-              ></input>
-
-              <input
-                className={
-                  this.isInvalid(
-                    lastName.touched,
-                    lastName.valid,
-                    lastName.value
-                  )
-                    ? classInvalid
-                    : classValid
-                }
-                value={lastName.value}
-                type="text"
-                id="lastName"
-                name="lastName"
-                onChange={(event) =>
-                  this.onChangeHandler(
-                    event,
-                    event.target.id,
-                    "editedUserState"
-                  )
-                }
-                placeholder={userData.lastName}
-              ></input>
-
-              <input
-                className={
-                  this.isInvalid(userAge.touched, userAge.valid, userAge.value)
-                    ? classInvalid
-                    : classValid
-                }
-                value={userAge.value}
-                type="number"
-                id="userAge"
-                name="userAge"
-                onChange={(event) =>
-                  this.onChangeHandler(
-                    event,
-                    event.target.id,
-                    "editedUserState"
-                  )
-                }
-                placeholder={userData.userAge}
-              ></input>
-
-              <Select
-                className={"Auth-Select-Country"}
-                name="country"
-                options={countriesSelect}
-                onChange={(event, name) =>
-                  this.onChangeHandler(event, name, "editedUserState")
-                }
-                placeholder={userData.location.country}
-              ></Select>
-
-              <Select
-                className={"Auth-Select-City"}
-                name="city"
-                options={citiesSelectOptions}
-                isDisabled={!(citiesSelectOptions.length > 1)}
-                onChange={(event, name) =>
-                  this.onChangeHandler(event, name, "editedUserState")
-                }
-                placeholder={userData.location.city}
-              ></Select>
-
-              <input
-                className={
-                  this.isInvalid(
-                    description.touched,
-                    description.valid,
-                    description.value
-                  )
-                    ? classInvalid
-                    : classValid
-                }
-                value={description.value}
-                type="text"
-                id="description"
-                name="description"
-                onChange={(event) =>
-                  this.onChangeHandler(
-                    event,
-                    event.target.id,
-                    "editedUserState"
-                  )
-                }
-                placeholder={"Description"}
-              ></input>
-              <button
-                className="UserProfile-Button-Submit"
-                onClick={(event) =>
-                  this.submitHandler(event, "editedUserState")
-                }
-                disabled={country.touched && !city.valid}
-              >
-                Save
-              </button>
-            </form>
+          <div className={userCardHolderClass}>
+            <div className={"UserProfile-CardHolder"}>
+              <CardHolder
+                // filteredMatchesLength={filteredMatches.length}
+                matchFirstName={userData.firstName}
+                matchLastName={userData.lastName}
+                matchLocation={userData.location.city}
+                userAge={userData.userAge}
+              />
+            </div>
           </div>
         </>
       );
     } else if (Object.values(userData).length > 2 && petSettings) {
       userProfile = (
         <>
-          <div className={userCardHolderClass}>
-            <CardHolder
-              isDog={petSettings}
-              petGender={
-                userData.petData.petGender
-                  ? userData.petData.petGender
-                  : "Your Pet's Gender"
+          <form
+            className={"UserProfile-Form"}
+            onSubmit={(event) => this.submitHandler(event, "editedPetState")}
+          >
+            <input
+              className={
+                this.isInvalid(petName.touched, petName.valid, petName.value)
+                  ? classInvalid
+                  : classValid
               }
-              petName={
+              value={petName.value}
+              type="text"
+              id="petName"
+              name="petName"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedPetState")
+              }
+              placeholder={
                 userData.petData.petName
                   ? userData.petData.petName
                   : "Your Pet's Name"
               }
-              petBreed={
-                userData.petData.petBreed ? userData.petData.petBreed : "Breed"
+            ></input>
+
+            <input
+              className={
+                this.isInvalid(petAge.touched, petAge.valid, petAge.value)
+                  ? classInvalid
+                  : classValid
               }
-              petAge={userData.petData.petAge ? userData.petData.petAge : "Age"}
-              petDescription={userData.petData.petDescription}
-            />
+              value={petAge.value}
+              type="number"
+              id="petAge"
+              name="petAge"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedPetState")
+              }
+              placeholder={
+                userData.petData.petAge
+                  ? userData.petData.petAge
+                  : "Your Pet's Age"
+              }
+            ></input>
+
+            <input
+              className={
+                this.isInvalid(
+                  petWeight.touched,
+                  petWeight.valid,
+                  petWeight.value
+                )
+                  ? classInvalid
+                  : classValid
+              }
+              value={petWeight.value}
+              type="number"
+              id="petWeight"
+              name="petWeight"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedPetState")
+              }
+              placeholder={
+                userData.petData.petWeight
+                  ? userData.petData.petWeight
+                  : "Your Pet's Weight"
+              }
+            ></input>
+
+            <Select
+              className={"UserProfile-Select"}
+              name="petGender"
+              options={[
+                { value: "Male", label: "Male" },
+                { value: "Female", label: "Female" },
+              ]}
+              onChange={(event, name) =>
+                this.onChangeHandler(event, name, "editedPetState")
+              }
+              placeholder={
+                userData.petData.petGender
+                  ? userData.petData.petGender
+                  : "Select your Pet's Gender"
+              }
+            ></Select>
+
+            <Select
+              className={"UserProfile-Select"}
+              name="petBreed"
+              options={dogBreeds}
+              onChange={(event, name) =>
+                this.onChangeHandler(event, name, "editedPetState")
+              }
+              placeholder={
+                userData.petData.petBreed
+                  ? userData.petData.petBreed
+                  : "Select your Pet's Breed"
+              }
+            ></Select>
+
+            <input
+              className={
+                this.isInvalid(
+                  petDescription.touched,
+                  petDescription.valid,
+                  petDescription.value
+                )
+                  ? classInvalid
+                  : classValid
+              }
+              value={petDescription.value}
+              type="text"
+              id="petDescription"
+              name="petDescription"
+              onChange={(event) =>
+                this.onChangeHandler(event, event.target.id, "editedPetState")
+              }
+              placeholder={
+                userData.petData.petDescription
+                  ? userData.petData.petDescription
+                  : "Say something about your Dog!"
+              }
+            ></input>
 
             <button
-              className={"UserProfile-Button-Edit"}
-              onClick={this.moreSettingsButtonClickHandler}
+              className="UserProfile-Button-Submit"
+              onClick={(event) => this.submitHandler(event, "editedPetState")}
+              disabled={
+                !(
+                  petName.valid &&
+                  petAge.valid &&
+                  petWeight.valid &&
+                  petGender.valid &&
+                  petBreed.valid
+                )
+              }
             >
-              <AttentionSeeker effect="headShake">
-                <i className="fas fa-user-cog fa-2x"></i>
-              </AttentionSeeker>
+              Save
             </button>
-          </div>
-          <div className={"UserProfile-FormCard"}>
-            <form
-              className={"UserProfile-Form"}
-              onSubmit={(event) => this.submitHandler(event, "editedPetState")}
-            >
-              <input
-                className={
-                  this.isInvalid(petName.touched, petName.valid, petName.value)
-                    ? classInvalid
-                    : classValid
+          </form>
+          <div className={userCardHolderClass}>
+            <div className={"UserProfile-CardHolder"}>
+              <CardHolder
+                isDog={petSettings}
+                petGender={
+                  userData.petData.petGender
+                    ? userData.petData.petGender
+                    : "Your Pet's Gender"
                 }
-                value={petName.value}
-                type="text"
-                id="petName"
-                name="petName"
-                onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id, "editedPetState")
-                }
-                placeholder={
+                petName={
                   userData.petData.petName
                     ? userData.petData.petName
                     : "Your Pet's Name"
                 }
-              ></input>
-
-              <input
-                className={
-                  this.isInvalid(petAge.touched, petAge.valid, petAge.value)
-                    ? classInvalid
-                    : classValid
-                }
-                value={petAge.value}
-                type="number"
-                id="petAge"
-                name="petAge"
-                onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id, "editedPetState")
-                }
-                placeholder={
-                  userData.petData.petAge
-                    ? userData.petData.petAge
-                    : "Your Pet's Age"
-                }
-              ></input>
-
-              <input
-                className={
-                  this.isInvalid(
-                    petWeight.touched,
-                    petWeight.valid,
-                    petWeight.value
-                  )
-                    ? classInvalid
-                    : classValid
-                }
-                value={petWeight.value}
-                type="number"
-                id="petWeight"
-                name="petWeight"
-                onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id, "editedPetState")
-                }
-                placeholder={
-                  userData.petData.petWeight
-                    ? userData.petData.petWeight
-                    : "Your Pet's Weight"
-                }
-              ></input>
-
-              <Select
-                className={"UserProfile-Select"}
-                name="petGender"
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-                onChange={(event, name) =>
-                  this.onChangeHandler(event, name, "editedPetState")
-                }
-                placeholder={
-                  userData.petData.petGender
-                    ? userData.petData.petGender
-                    : "Select your Pet's Gender"
-                }
-              ></Select>
-
-              <Select
-                className={"UserProfile-Select"}
-                name="petBreed"
-                options={dogBreeds}
-                onChange={(event, name) =>
-                  this.onChangeHandler(event, name, "editedPetState")
-                }
-                placeholder={
+                petBreed={
                   userData.petData.petBreed
                     ? userData.petData.petBreed
-                    : "Select your Pet's Breed"
+                    : "Breed"
                 }
-              ></Select>
-
-              <input
-                className={
-                  this.isInvalid(
-                    petDescription.touched,
-                    petDescription.valid,
-                    petDescription.value
-                  )
-                    ? classInvalid
-                    : classValid
+                petAge={
+                  userData.petData.petAge ? userData.petData.petAge : "Age"
                 }
-                value={petDescription.value}
-                type="text"
-                id="petDescription"
-                name="petDescription"
-                onChange={(event) =>
-                  this.onChangeHandler(event, event.target.id, "editedPetState")
-                }
-                placeholder={
-                  userData.petData.petDescription
-                    ? userData.petData.petDescription
-                    : "Say something about your Dog!"
-                }
-              ></input>
-
-              <button
-                className="UserProfile-Button-Submit"
-                onClick={(event) => this.submitHandler(event, "editedPetState")}
-                disabled={
-                  !(
-                    petName.valid &&
-                    petAge.valid &&
-                    petWeight.valid &&
-                    petGender.valid &&
-                    petBreed.valid
-                  )
-                }
-              >
-                Save
-              </button>
-            </form>
-
+                petDescription={userData.petData.petDescription}
+              />
+            </div>
           </div>
         </>
       );
     }
 
     return (
-      <>
-        <div className={"UserProfile-Wrapper"}>{userProfile} </div>
-        <button
+      <div className={"UserProfile-Wrapper"}>
+        <div className={"UserProfile-Holder"}>
+          <ToolTip
+            header={"Hello there!"}
+            content={
+              "On this page you can edit your own profile, and your dog's profile aswell! Keep in mind that if your dog's profile remains empty, you wont appear as a match!"
+            }
+          >
+            <h3 className="Match-Header">Welcome {userData.firstName}</h3>
+            <div className={"UserProfile-CardHolder-Wrapper"}>
+              {userProfile}
+              <button
+                className={"UserProfile-Button-Edit"}
+                onClick={this.moreSettingsButtonClickHandler}
+              >
+                <AttentionSeeker effect="headShake">
+                  <i className="fas fa-user-cog fa-2x"></i>
+                </AttentionSeeker>
+              </button>
+            </div>
+          </ToolTip>
+        </div>
+        <ToggleBar
+          clicked={this.petProfileHandler}
+          icons={
+            <>
+              <i className="fas fa-dog fa-2x "></i>
+              <i className="fas fa-user fa-2x "></i>
+            </>
+          }
+        />
+        {/* <button
           className="UserProfile-Button-Switch"
           onClick={this.petProfileHandler}
         >
           {!petSettings ? "Pet Settings" : "User Settings"}
-        </button>
-      </>
+        </button> */}
+      </div>
     );
   }
 }

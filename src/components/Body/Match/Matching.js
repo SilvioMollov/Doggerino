@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import CardHolder from "./CardHolder/CardHolder";
 import Spinner from "../../UI/Spinner/Spinner";
+import ToolTip from "../../UI/ToolTip/ToolTip";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { withRouter } from "react-router";
 import Modal from "../../UI/Modal/Modal";
@@ -230,130 +231,146 @@ export class Match extends Component {
       <div className="Match-Wrapper">
         {!loading ? (
           <form className="Match-Form">
-            <h3 className="Match-Header">Welcome {userData.firstName}</h3>
-            <button
-              onClick={this.selectFiltersHandler}
-              className={"Match-Filter-Button"}
+            <ToolTip
+              header={"Hey there!"}
+              content={
+                "Here is where all the magic happens! Filter Me! provides a couple of filters, later on you will be able to like the user you want.  "
+              }
             >
-              Filter me!
-            </button>
-            <Modal
-              show={showFilters}
-              closed={this.selectFiltersHandler}
-              keyDown={this.onKeyPressHandler}
-            >
-              <Select
-                isClearable
-                className="Match-SelectBar"
-                options={locationOptions}
-                name={"selectedLocation"}
-                onChange={(event, name) =>
-                  this.selectChangedHandler(event, name)
-                }
-                placeholder={"Filter on location"}
-              ></Select>
-              <Select
-                isClearable
-                className="Match-SelectBar"
-                options={breedOptions}
-                name={"selectedBreed"}
-                onChange={(event, name) =>
-                  this.selectChangedHandler(event, name)
-                }
-                placeholder={"Filter your dog's breed"}
-              ></Select>
-              <Select
-                isClearable
-                className="Match-SelectBar"
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-                name={"selectedGender"}
-                onChange={(event, name) =>
-                  this.selectChangedHandler(event, name)
-                }
-                placeholder={"Filter your dog's gender"}
-              ></Select>
-              <button onClick={this.applyFilterChanges}>Apply Changes</button>
-            </Modal>
-            {Boolean(filteredMatches.length) ? (
-              <SwitchTransition mode={"out-in"}>
-                <CSSTransition
-                  in={true}
-                  key={filteredMatches[matchIndex].userId}
-                  timeout={300}
-                  classNames={transition}
+              <h3 className="Match-Header">Welcome {userData.firstName}</h3>
+              <button
+                onClick={this.selectFiltersHandler}
+                className={"Match-Filter-Button"}
+              >
+                Filter me!
+              </button>
+              <Modal
+                show={showFilters}
+                closed={this.selectFiltersHandler}
+                keyDown={this.onKeyPressHandler}
+              >
+                <Select
+                  isClearable
+                  className="Match-SelectBar"
+                  options={locationOptions}
+                  name={"selectedLocation"}
+                  onChange={(event, name) =>
+                    this.selectChangedHandler(event, name)
+                  }
+                  placeholder={"Filter by Location"}
+                ></Select>
+                <Select
+                  isClearable
+                  className="Match-SelectBar"
+                  options={breedOptions}
+                  name={"selectedBreed"}
+                  onChange={(event, name) =>
+                    this.selectChangedHandler(event, name)
+                  }
+                  placeholder={"Filter by breed"}
+                ></Select>
+                <Select
+                  isClearable
+                  className="Match-SelectBar"
+                  options={[
+                    { value: "Male", label: "Male" },
+                    { value: "Female", label: "Female" },
+                  ]}
+                  name={"selectedGender"}
+                  onChange={(event, name) =>
+                    this.selectChangedHandler(event, name)
+                  }
+                  placeholder={"Filter by gender"}
+                ></Select>
+                <button
+                  onClick={this.applyFilterChanges}
+                  className={"Matching-Apply"}
                 >
-                  <div className={"Match-CardHolderWrapper"}>
-                    <CardHolder
-                      isDog={false}
-                      filteredMatchesLength={filteredMatches.length}
-                      matchFirstName={
-                        !filteredMatches.length
-                          ? "NQMA DANNI "
-                          : filteredMatches[matchIndex].firstName
-                      }
-                      matchLastName={
-                        !filteredMatches.length
-                          ? "NQMA DANNI "
-                          : filteredMatches[matchIndex].lastName
-                      }
-                      userAge={
-                        !filteredMatches.length
-                          ? "NQMA DANNI "
-                          : filteredMatches[matchIndex].userAge
-                      }
-                      matchLocation={
-                        !filteredMatches.length
-                          ? "NQMA DANNI "
-                          : filteredMatches[matchIndex].location.city
-                      }
-                    />
-                    <div className={userCardHolderClass}>
+                  Apply Changes
+                </button>
+              </Modal>
+              {Boolean(filteredMatches.length) ? (
+                <SwitchTransition mode={"out-in"}>
+                  <CSSTransition
+                    in={true}
+                    key={filteredMatches[matchIndex].userId}
+                    timeout={300}
+                    classNames={transition}
+                  >
+                    <div className={"Match-CardHolderWrapper"}>
                       <CardHolder
-                        isDog={true}
-                        petGender={
-                          userData.petData.petGender
-                            ? userData.petData.petGender
-                            : "Your Pet's Gender"
+                        isDog={false}
+                        filteredMatchesLength={filteredMatches.length}
+                        matchFirstName={
+                          !filteredMatches.length
+                            ? "NQMA DANNI "
+                            : filteredMatches[matchIndex].firstName
                         }
-                        petName={
-                          userData.petData.petName
-                            ? userData.petData.petName
-                            : "Your Pet's Name"
+                        matchLastName={
+                          !filteredMatches.length
+                            ? "NQMA DANNI "
+                            : filteredMatches[matchIndex].lastName
                         }
-                        petBreed={
-                          userData.petData.petBreed
-                            ? userData.petData.petBreed
-                            : "Breed"
+                        userAge={
+                          !filteredMatches.length
+                            ? "NQMA DANNI "
+                            : filteredMatches[matchIndex].userAge
                         }
-                        petAge={
-                          userData.petData.petAge
-                            ? userData.petData.petAge
-                            : "Age"
+                        matchLocation={
+                          !filteredMatches.length
+                            ? "NQMA DANNI "
+                            : filteredMatches[matchIndex].location.city
                         }
-                        petDescription={userData.petData.petDescription}
                       />
-                    </div>
+                      <div className={userCardHolderClass}>
+                        <CardHolder
+                          isDog={true}
+                          petGender={
+                            filteredMatches[matchIndex].petData.petGender
+                              ? filteredMatches[matchIndex].petData.petGender
+                              : "Your Pet's Gender"
+                          }
+                          petName={
+                            filteredMatches[matchIndex].petData.petName
+                              ? filteredMatches[matchIndex].petData.petName
+                              : "Your Pet's Name"
+                          }
+                          petBreed={
+                            filteredMatches[matchIndex].petData.petBreed
+                              ? filteredMatches[matchIndex].petData.petBreed
+                              : "Breed"
+                          }
+                          petAge={
+                            filteredMatches[matchIndex].petData.petAge
+                              ? filteredMatches[matchIndex].petData.petAge
+                              : "Age"
+                          }
+                          petDescription={
+                            filteredMatches[matchIndex].petData.petDescription
+                          }
+                        />
+                      </div>
 
-                    <button
-                      className={"Matching-Button-ViewChange"}
-                      onClick={this.userViewHandler}
-                    >
-                      <AttentionSeeker effect="headShake">
-                        <i className="fas fa-user-cog fa-2x"></i>
-                      </AttentionSeeker>
-                    </button>
-                  </div>
-                </CSSTransition>
-              </SwitchTransition>
-            ) : (
-              <Spinner />
-            )}
+                      <button
+                        className={"Matching-Button-ViewChange"}
+                        onClick={this.userViewHandler}
+                      >
+                        <AttentionSeeker effect="headShake">
+                          <i className="fas fa-user-cog fa-2x"></i>
+                        </AttentionSeeker>
+                      </button>
+                    </div>
+                  </CSSTransition>
+                </SwitchTransition>
+              ) : (
+                <Spinner />
+              )}
+            </ToolTip>
           </form>
         ) : (
-          <Spinner />
+          <Spinner>
+            
+          </Spinner>
         )}
 
         <div>
