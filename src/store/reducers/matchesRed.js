@@ -123,8 +123,6 @@ const matchesFilter = (state, action) => {
     petData: { petBreed: selectedBreed, petGender: selectedGender },
   };
 
-  console.log(matchesWithPets);
-
   let filterMatches = (matches, filterObj) => {
     return matches.filter((match) => filterFunction(match, filterObj));
   };
@@ -206,9 +204,11 @@ const setLikedBackUsers = (state, action) => {
   const { likedUsersId } = action;
   const {
     userData: { userId, likedUsers },
+    matches,
   } = state;
 
   let allUserLikes = {};
+  let updatedLikedUsersData = [];
 
   for (let userId in likedUsersId) {
     allUserLikes[userId] = Object.values(likedUsersId[userId]).map(
@@ -220,31 +220,22 @@ const setLikedBackUsers = (state, action) => {
     (matchId) => allUserLikes[matchId] && allUserLikes[matchId].includes(userId)
   );
 
+  if (Boolean(allUserLikes[userId])) {
+    const likedUsersData = matches.filter((match) =>
+      allUserLikes[userId].includes(match.userId)
+    );
+
+    updatedLikedUsersData = likedUsersData.map((match) => {
+      return {
+        ...match,
+        matched: likedBackMatches.includes(match.userId),
+      };
+    });
+  }
+
   return updateObject(state, {
     likedBackUsersData: likedBackMatches,
-  });
-};
-
-const setLikedUsersData = (state, action) => {
-  const {
-    likedBackUsersData,
-    matches,
-    userData: { likedUsers },
-  } = state;
-
-  const likedUsersData = matches.filter((match) =>
-    likedUsers.includes(match.userId)
-  );
-
-  const likedUsersDataUpdated = likedUsersData.map((likedUser) => {
-    return {
-      ...likedUser,
-      matched: likedBackUsersData.includes(likedUser.userId),
-    };
-  });
-
-  return updateObject(state, {
-    likedUsersData: likedUsersDataUpdated,
+    likedUsersData: updatedLikedUsersData,
   });
 };
 
@@ -270,8 +261,6 @@ const reducer = (state = initialState, action) => {
       return addLikedUser(state, action);
     case actionTypes.SET_MATCHED_USERS_DATA:
       return setLikedBackUsers(state, action);
-    case actionTypes.SET_LIKED_USERS_DATA:
-      return setLikedUsersData(state, action);
     default:
       return state;
   }

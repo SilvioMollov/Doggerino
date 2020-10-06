@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./Auth.css";
 import CountryLists from "all-countries-and-cities-json";
 import Select from "react-select";
-import TogglelBar from "../../UI/ToggleBar/ToggleBar";
 
 import * as actions from "../../../store/actions/index";
 import { connect } from "react-redux";

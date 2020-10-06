@@ -1,41 +1,58 @@
-.Liked {
-    display: inline-block;
-    margin: 5px 8px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 30px;
-    width: 60%
+.Match-Wrapper {
+  display: inline-block;
+  padding: 20px;
+  max-width: 100px;
+  background-color: white;
+  margin: 10px 10px;
+  border: 1px solid #ecbbbb;
+  border-radius: 25px;
+}
 
+.Liked {
+  /* display: inline-block;
+  margin: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 20px 15px;
+  width: 80%;
+  background-color: honeydew; */
 }
 
 .Matched {
-    display: inline-block;
-    margin: 5px 8px;
-    background-color: green;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 30px;
-    width: 60%;
-    cursor: pointer;
+  /* display: inline-block;
+  margin: 5px 8px;
+  background-color: green;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 20px 15px;
+  width: 80%;
+  cursor: pointer; */
 }
 
-
 .Match-AdminView {
-    display: inline-block;
-    margin: 5px 8px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 5px;
-    width: 60%;
-    height: 10vh;
-    cursor: pointer;
+  /* display: inline-block;
+  margin: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 5px;
+  width: 60%;
+  height: 10vh;
+  cursor: pointer; */
 }
 
 .Match-FirstName {
-   margin-top: 1vh;
-   
+  font-size: 1.5rem;
+  padding: 5px;
+  color: rgba(49, 59, 68, 0.637);
+}
+
+.Match-Location {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 5px;
+  color: rgba(49, 59, 68, 0.637);
 }
 
 .FirstName {
-    margin: 30px;
+  margin: 10px;
 }

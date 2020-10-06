@@ -685,12 +685,6 @@ export class UserProfile extends Component {
             </>
           }
         />
-        {/* <button
-          className="UserProfile-Button-Switch"
-          onClick={this.petProfileHandler}
-        >
-          {!petSettings ? "Pet Settings" : "User Settings"}
-        </button> */}
       </div>
     );
   }

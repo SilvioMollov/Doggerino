@@ -1,5 +1,4 @@
 import React from "react";
-import { AttentionSeeker } from "react-awesome-reveal";
 
 import "./ToggleBar.css";
 
@@ -10,6 +9,8 @@ const toggleBar = (props) => {
     width: "100px",
     height: "50px",
     margin: "30px auto",
+    boxShadow: "0 0.3em 1em #000",
+    borderRadius: "25px",
   };
 
   return (

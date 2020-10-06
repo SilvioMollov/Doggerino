@@ -142,7 +142,6 @@ export const fetchAllLikedUsers = (token) => {
         console.log("[FetchAllLikedUsers]", response);
         // figure out where to dispatch this
         dispatch(setLikedBackUsers(response.data));
-        dispatch(setLikedUsersData());
       })
       .catch((error) => {
         console.log("[FetchAllLikedUsers]", error);
@@ -150,15 +149,39 @@ export const fetchAllLikedUsers = (token) => {
   };
 };
 
-export const setLikedUsersData = () => {
-  return {
-    type: actionTypes.SET_LIKED_USERS_DATA,
-  };
-};
-
 export const setLikedBackUsers = (likedUsersId) => {
   return {
     type: actionTypes.SET_MATCHED_USERS_DATA,
     likedUsersId,
+  };
+};
+
+export const deleteLikedUser = (dislikedUserId, userId, token) => {
+  return (dispatch) => {
+    axios
+      .get(
+        `https://doggerino-79ffd.firebaseio.com/userData/${userId}.json/?auth=${token}`
+      )
+      .then((response) => {
+        let dbUserId = null;
+        for (let props in response.data) {
+          response.data[props].likedUserId === dislikedUserId &&
+            (dbUserId = props);
+        }
+        axios
+          .delete(
+            `https://doggerino-79ffd.firebaseio.com/userData/${userId}/${dbUserId}.json/?auth=${token}`
+          )
+          .then((response) => {
+            dispatch(fetchAllLikedUsers(token));
+            console.log("[DeleteLikedUser]", response);
+          })
+          .catch((error) => {
+            console.log("[DeleteLikedUser]", error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };

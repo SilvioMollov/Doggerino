@@ -1,0 +1,15 @@
+.Matched-Wrapper {
+  position: relative;
+  margin: 5px 50px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.Matched-Holder {
+  position: relative;
+  padding: 30px 20px;
+
+  border-radius: 25px;
+  background-color: #ff8a84dc;
+  box-shadow: 0 0.3em 1em #000;
+}

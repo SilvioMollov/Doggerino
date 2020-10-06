@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Spinner from "../../UI/Spinner/Spinner";
 import * as actions from "../../../store/actions/index";
+import "./Matched.css";
 
 export class Matched extends Component {
   state = {
-    likedUsers: [],
     chatPathName: "chat",
   };
 
@@ -24,7 +24,17 @@ export class Matched extends Component {
     );
   }
 
-  onClickHandler = (clickedUser) => {
+ 
+
+  onDislikeHandler = (clickedUser) => {
+    this.props.onDislikeUser(
+      clickedUser.userId,
+      localStorage.getItem("userId"),
+      localStorage.getItem("token")
+    );
+  };
+
+  onMessageUserHandler = (clickedUser) => {
     const { history } = this.props;
 
     history.push(`${this.state.chatPathName}/${clickedUser.userId}`);
@@ -38,8 +48,11 @@ export class Matched extends Component {
     if (likedUsersData.length) {
       matches = likedUsersData.map((user) => (
         <Match
-          clickHandler={() => {
-            this.onClickHandler(user);
+          messageHandler={() => {
+            this.onMessageUserHandler(user);
+          }}
+          dislikeHandler={() => {
+            this.onDislikeHandler(user);
           }}
           key={user.userId}
           id={user.userId}
@@ -51,7 +64,11 @@ export class Matched extends Component {
       ));
     }
 
-    return <div>{matches}</div>;
+    return (
+      <div className={"Matched-Wrapper"}>
+        <div className={"Matched-Holder"}>{matches}</div>
+      </div>
+    );
   }
 }
 
@@ -72,6 +89,8 @@ const mapDispatchToProps = (dispatch) => {
     onMessagedUser: (user, matches) =>
       dispatch(actions.messagedUser(user, matches)),
     onRedirectPath: (path) => dispatch(actions.authRedirectPath(path)),
+    onDislikeUser: (dislikedUserId, userId, token) =>
+      dispatch(actions.deleteLikedUser(dislikedUserId, userId, token)),
   };
 };
 

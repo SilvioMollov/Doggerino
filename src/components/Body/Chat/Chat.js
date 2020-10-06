@@ -91,8 +91,6 @@ export class Chat extends Component {
   render() {
     const { messagedUser, loading, chatData, matches } = this.props;
 
-    console.log();
-
     let chat = null;
 
     if (!loading && matches.length) {

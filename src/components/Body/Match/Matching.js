@@ -228,19 +228,19 @@ export class Match extends Component {
     }
 
     return (
-      <div className="Match-Wrapper">
+      <div className="Matching-Wrapper">
         {!loading ? (
-          <form className="Match-Form">
+          <form className="Matching-Form">
             <ToolTip
               header={"Hey there!"}
               content={
                 "Here is where all the magic happens! Filter Me! provides a couple of filters, later on you will be able to like the user you want.  "
               }
             >
-              <h3 className="Match-Header">Welcome {userData.firstName}</h3>
+              <h3 className="Matching-Header">Welcome {userData.firstName}</h3>
               <button
                 onClick={this.selectFiltersHandler}
-                className={"Match-Filter-Button"}
+                className={"Matching-Filter-Button"}
               >
                 Filter me!
               </button>
@@ -251,7 +251,7 @@ export class Match extends Component {
               >
                 <Select
                   isClearable
-                  className="Match-SelectBar"
+                  className="Matching-SelectBar"
                   options={locationOptions}
                   name={"selectedLocation"}
                   onChange={(event, name) =>
@@ -261,7 +261,7 @@ export class Match extends Component {
                 ></Select>
                 <Select
                   isClearable
-                  className="Match-SelectBar"
+                  className="Matching-SelectBar"
                   options={breedOptions}
                   name={"selectedBreed"}
                   onChange={(event, name) =>
@@ -271,7 +271,7 @@ export class Match extends Component {
                 ></Select>
                 <Select
                   isClearable
-                  className="Match-SelectBar"
+                  className="Matching-SelectBar"
                   options={[
                     { value: "Male", label: "Male" },
                     { value: "Female", label: "Female" },
@@ -297,7 +297,7 @@ export class Match extends Component {
                     timeout={300}
                     classNames={transition}
                   >
-                    <div className={"Match-CardHolderWrapper"}>
+                    <div className={"Matching-CardHolderWrapper"}>
                       <CardHolder
                         isDog={false}
                         filteredMatchesLength={filteredMatches.length}
@@ -376,7 +376,7 @@ export class Match extends Component {
         <div>
           <button
             disabled={!filteredMatches.length}
-            className="Match-Button"
+            className="Matching-Button"
             onClick={this.likeClickHandler}
           >
             <i className="fas fa-heart fa-2x"></i>
@@ -384,7 +384,7 @@ export class Match extends Component {
 
           <button
             disabled={filteredMatches.length <= 1}
-            className="Match-Button"
+            className="Matching-Button"
             onClick={this.nextClickHandler}
           >
             <i className="fas fa-arrow-circle-right fa-2x"></i>

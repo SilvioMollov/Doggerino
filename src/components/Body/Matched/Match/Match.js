@@ -8,14 +8,15 @@ const match = (props) => {
     firstName,
     location,
     matched,
-    clickHandler,
+    messageHandler,
+    dislikeHandler,
   } = props;
 
   let match = null;
 
   if (isAdminView) {
     match = (
-      <div className={"Match-AdminView"} onClick={clickHandler}>
+      <div className={"Match-AdminView"} onClick={messageHandler}>
         <p className={"Match-FirstName"}>{firstName}</p>
         <p>{email}</p>
       </div>
@@ -24,15 +25,21 @@ const match = (props) => {
     match = (
       <div
         className={matched ? "Matched" : "Liked"}
-        onClick={matched ? clickHandler : null}
+        onClick={matched ? messageHandler : null}
       >
-        <span className="FirstName">first Name: {firstName}</span>
-        <span>location: {location}</span>
+        <span className="Match-FirstName">{firstName}</span>
+        <span className='Match-Location'>{location}</span>
       </div>
     );
   }
 
-  return <div>{match}</div>;
+  return (
+    <div className={"Match-Wrapper"}>
+      {match}
+      <button onClick={matched ? messageHandler : null}>Message</button>
+      <button onClick={dislikeHandler}>DisLike</button>
+    </div>
+  );
 };
 
 export default match;
