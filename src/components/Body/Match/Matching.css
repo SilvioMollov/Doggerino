@@ -114,12 +114,12 @@
 
 @media (max-width: 600px) {
   .Matching-Wrapper {
-    padding: 5px;
+    padding: 10px 20px;
   }
 
   .Matching-Form {
     max-height: 650px;
-    padding: 10px 25px;
+    padding: 10px 10%;
     padding-bottom: 30px;
   }
 

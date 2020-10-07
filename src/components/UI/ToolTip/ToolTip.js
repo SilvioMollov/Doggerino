@@ -8,9 +8,7 @@ const toolTip = (props) => {
     <>
       <div className="ToolTip-Inner">
         <AttentionSeeker effect="headShake">
-          <span>
-            <i className="fas fa-question" />
-          </span>
+          <i className="fas fa-question" />
         </AttentionSeeker>
 
         <h1>{props.header}</h1>

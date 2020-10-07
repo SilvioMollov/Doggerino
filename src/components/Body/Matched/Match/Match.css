@@ -1,55 +1,83 @@
 .Match-Wrapper {
+  position: relative;
   display: inline-block;
   padding: 20px;
-  max-width: 100px;
+  width: 100px;
   background-color: white;
-  margin: 10px 10px;
+  margin: 15px 15px;
   border: 1px solid #ecbbbb;
-  border-radius: 25px;
+  border-radius: 20px;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+
 }
 
-.Liked {
-  /* display: inline-block;
-  margin: 5px 8px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  padding: 20px 15px;
-  width: 80%;
-  background-color: honeydew; */
+.Match-Heart {
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 45px;
+  cursor: pointer;
 }
 
-.Matched {
-  /* display: inline-block;
-  margin: 5px 8px;
-  background-color: green;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  padding: 20px 15px;
-  width: 80%;
-  cursor: pointer; */
+.Match-Heart .Dislike {
+  width: 25px;
+  color: #807f7f;
+}
+
+.Match-Message {
+  position: absolute;
+  right: -15px;
+  bottom: -15px;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 35px;
+}
+
+.Match-Heart .Liked {
+  color: #807f7f;
+  width: 25px;
+}
+
+.Match-Heart .Matched {
+  width: 25px;
+  color: #fd4f46;
+  cursor: pointer;
+}
+
+.Match-Message .Matched {
+  color: #51a2ff;
+  cursor: pointer;
+}
+
+.Match-Message .Liked {
+  color: #807f7f;
 }
 
 .Match-AdminView {
-  /* display: inline-block;
+  display: inline-block;
   margin: 5px 8px;
   border: 1px solid #ccc;
   border-radius: 25px;
-  padding: 5px;
+  padding: 5px 0;
   width: 60%;
   height: 10vh;
-  cursor: pointer; */
+  cursor: pointer;
 }
 
 .Match-FirstName {
   font-size: 1.5rem;
-  padding: 5px;
+  padding: 5px 0;
   color: rgba(49, 59, 68, 0.637);
 }
 
 .Match-Location {
   display: inline-block;
   font-size: 1rem;
-  padding: 5px;
+  padding: 5px 0;
+  width: 100%;
   color: rgba(49, 59, 68, 0.637);
 }
 

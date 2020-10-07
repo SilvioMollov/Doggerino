@@ -13,3 +13,15 @@
   background-color: #ff8a84dc;
   box-shadow: 0 0.3em 1em #000;
 }
+
+@media (max-width: 600px) {
+  .Matched-Wrapper {
+    padding: 10px 20px;
+  }
+
+  .Matched-Holder {
+    max-height: 650px;
+    padding: 10px 25px;
+    padding-bottom: 30px;
+  }
+}

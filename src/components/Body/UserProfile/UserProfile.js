@@ -336,8 +336,6 @@ export class UserProfile extends Component {
       },
     } = this.state;
 
-    console.log(this.state.editedPetState);
-
     let dogBreeds = [];
     let countriesSelect = [];
 
@@ -662,7 +660,7 @@ export class UserProfile extends Component {
               "On this page you can edit your own profile, and your dog's profile aswell! Keep in mind that if your dog's profile remains empty, you wont appear as a match!"
             }
           >
-            <h3 className="Match-Header">Welcome {userData.firstName}</h3>
+            <h3 className="UserProfile-Header">Welcome {userData.firstName}</h3>
             <div className={"UserProfile-CardHolder-Wrapper"}>
               {userProfile}
               <button
