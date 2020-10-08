@@ -6,16 +6,22 @@
   border: 1px solid #ccc;
   box-shadow: 1px 1px 1px rgb(73, 66, 66);
   border-radius: 25px;
-  padding: 16px;
   left: 15%;
-  top: 20%;
+  top: 10%;
   box-sizing: border-box;
-  transition: all 0.3s ease-out;
+  transition: all 0.5s ease-in-out;
 }
 
 @media (min-width: 600px) {
   .Modal {
     width: 500px;
     left: calc(50% - 250px);
+  }
+}
+
+@media (max-width: 600px) {
+  .Modal {
+    width: 300px;
+    left: calc(50% - 150px);
   }
 }

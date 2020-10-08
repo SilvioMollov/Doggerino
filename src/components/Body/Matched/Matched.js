@@ -8,6 +8,7 @@ import CardHolder from "../Match/CardHolder/CardHolder";
 import Spinner from "../../UI/Spinner/Spinner";
 import Modal from "../../UI/Modal/Modal";
 import ToolTip from "../../UI/ToolTip/ToolTip";
+import ToggleBar from "../../UI/ToggleBar/ToggleBar";
 import * as actions from "../../../store/actions/index";
 import "./Matched.css";
 
@@ -15,7 +16,8 @@ export class Matched extends Component {
   state = {
     chatPathName: "chat",
     isViewingUser: false,
-    isViewingUserProfile: false,
+    viewMoreInfo: false,
+    viewDogProfile: false,
     viewedUser: {},
   };
 
@@ -53,17 +55,26 @@ export class Matched extends Component {
     history.push(`${this.state.chatPathName}/${clickedUser.userId}`);
   };
 
-  onViewUserHandler = () => {
-    this.setState({ isViewingUserProfile: !this.state.isViewingUserProfile });
+  onViewMoreInfoHandler = () => {
+    this.setState({ viewMoreInfo: !this.state.viewMoreInfo });
+  };
+
+  onViewSwitchHandler = () => {
+    this.setState({ viewDogProfile: !this.state.viewDogProfile });
   };
 
   render() {
-    const { likedUsersData } = this.props;
-    const { viewedUser, isViewingUser, isViewingUserProfile } = this.state;
+    const { likedUsersData, userData } = this.props;
+    const {
+      viewedUser,
+      isViewingUser,
+      viewMoreInfo,
+      viewDogProfile,
+    } = this.state;
 
     let userCardHolderClass = "Ontop";
 
-    if (isViewingUserProfile) {
+    if (viewMoreInfo) {
       userCardHolderClass = "Ontop Open";
     }
 
@@ -94,51 +105,115 @@ export class Matched extends Component {
     return (
       <div className={"Matched-Wrapper"}>
         <div className={"Matched-Holder"}>
+          <h3 className="Matched-Header">Welcome {userData.firstName}</h3>
           <Modal show={isViewingUser} closed={this.onViewUserProfileHandler}>
             {isViewingUser ? (
-              <div className={"Matching-CardHolderWrapper"}>
-                <CardHolder
-                  isDog={false}
-                  matchFirstName={viewedUser.firstName}
-                  matchLastName={viewedUser.lastName}
-                  userAge={viewedUser.userAge}
-                  matchLocation={viewedUser.location.city}
-                />
-                <div className={userCardHolderClass}>
-                  <CardHolder
-                    isDog={true}
-                    petGender={
-                      viewedUser.petData.petGender
-                        ? viewedUser.petData.petGender
-                        : "Your Pet's Gender"
-                    }
-                    petName={
-                      viewedUser.petData.petName
-                        ? viewedUser.petData.petName
-                        : "Your Pet's Name"
-                    }
-                    petBreed={
-                      viewedUser.petData.petBreed
-                        ? viewedUser.petData.petBreed
-                        : "Breed"
-                    }
-                    petAge={
-                      viewedUser.petData.petAge
-                        ? viewedUser.petData.petAge
-                        : "Age"
-                    }
-                    petDescription={viewedUser.petData.petDescription}
-                  />
-                </div>
+              <div className="Matched-Model-Holder">
+                {viewDogProfile ? (
+                  <div className={"Matched-CardHolderWrapper"}>
+                    <div className={userCardHolderClass}>
+                      <CardHolder
+                        isDog={true}
+                        petGender={viewedUser.petData.petGender}
+                        petName={viewedUser.petData.petName}
+                        petBreed={viewedUser.petData.petBreed}
+                        petAge={viewedUser.petData.petAge}
+                        petDescription={viewedUser.petData.petDescription}
+                      />
+                    </div>
+                    <div className={"Matched-Information"}>
+                      <p>{viewedUser.petData.petName}</p>
+                      <p>{viewedUser.petData.petBreed}</p>
+                      <p>{viewedUser.petData.petGender}</p>
+                      <p>{viewedUser.petData.petAge}</p>
+                      <p>{viewedUser.petData.petDescription}</p>
+                    </div>
+
+                    <button
+                      className={"Matching-Button-ViewChange"}
+                      onClick={this.onViewMoreInfoHandler}
+                    >
+                      <AttentionSeeker effect="headShake">
+                        <i className="fas fa-user-cog fa-2x"></i>
+                      </AttentionSeeker>
+                    </button>
+                  </div>
+                ) : (
+                  <div className={"Matching-CardHolderWrapper"}>
+                    <div className={userCardHolderClass}>
+                      <CardHolder
+                        isDog={false}
+                        matchFirstName={viewedUser.firstName}
+                        matchLastName={viewedUser.lastName}
+                        userAge={viewedUser.userAge}
+                        matchLocation={viewedUser.location.city}
+                      />
+                    </div>
+                    <div className={"Matched-Information"}>
+                      <p>{viewedUser.firstName}</p>
+                      <p>{viewedUser.lastName}</p>
+                      <p>{viewedUser.email}</p>
+                      <p>{viewedUser.location.city}</p>
+                      <p>{viewedUser.description}</p>
+                      <p>{viewedUser.userAge}</p>
+                    </div>
+
+                    <button
+                      className={"Matching-Button-ViewChange"}
+                      onClick={this.onViewMoreInfoHandler}
+                    >
+                      <AttentionSeeker effect="headShake">
+                        <i className="fas fa-user-cog fa-2x"></i>
+                      </AttentionSeeker>
+                    </button>
+                  </div>
+                )}
 
                 <button
-                  className={"Matching-Button-ViewChange"}
-                  onClick={this.onViewUserHandler}
+                  onClick={matched ? messageHandler : null}
+                  className={"Match-Message"}
+                  style={
+                    !matched ? { display: "none" } : { display: "inline-block" }
+                  }
                 >
-                  <AttentionSeeker effect="headShake">
-                    <i className="fas fa-user-cog fa-2x"></i>
-                  </AttentionSeeker>
+                  <i
+                    className={
+                      matched
+                        ? "fas fa-comment-dots Matched fa-2x"
+                        : "fas fa-comment-dots Liked fa-2x"
+                    }
+                  ></i>
                 </button>
+                <button
+                  onClick={this.onDislikeHandler(viewedUser)}
+                  onMouseEnter={this.onMouseHoverHandler}
+                  onMouseLeave={this.onMouseHoverHandler}
+                  className={"Match-Heart"}
+                >
+                  {heartHover ? (
+                    <Flip direction="vertical" duration="300">
+                      <i className="fas fa-times Dislike fa-2x"></i>
+                    </Flip>
+                  ) : (
+                    <i
+                      className={
+                        matched
+                          ? "fas fa-heart Matched fa-2x"
+                          : "fas fa-heart Liked fa-2x"
+                      }
+                    ></i>
+                  )}
+                </button>
+
+                <ToggleBar
+                  clicked={this.onViewSwitchHandler}
+                  icons={
+                    <>
+                      <i className="fas fa-dog fa-2x "></i>
+                      <i className="fas fa-user fa-2x "></i>
+                    </>
+                  }
+                ></ToggleBar>
               </div>
             ) : null}
           </Modal>
@@ -159,6 +234,7 @@ const mapStateToProps = (state) => {
     likedUsersData: state.matches.likedUsersData,
     matches: state.matches.matches,
     likedUsers: state.matches.userData.likedUsers,
+    userData: state.matches.userData,
   };
 };
 

@@ -7,8 +7,38 @@
 
 .Matched-Holder {
   position: relative;
-  padding: 30px 20px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #ff8a84dc;
+  box-shadow: 0 0.3em 1em #000;
+}
 
+.Matched-Information {
+  background-color: white;
+  border-radius: 35px;
+  height: 500px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.Matched-CardHolderWrapper {
+  top: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.Matched-Header {
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 10px;
+  color: aliceblue;
+  border-bottom: 1px solid aliceblue;
+}
+
+.Matched-Model-Holder {
+  position: relative;
+  padding: 10px 30px;
   border-radius: 25px;
   background-color: #ff8a84dc;
   box-shadow: 0 0.3em 1em #000;
