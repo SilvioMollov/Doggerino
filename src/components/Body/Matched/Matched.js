@@ -169,41 +169,13 @@ export class Matched extends Component {
                   </div>
                 )}
 
-                <button
-                  onClick={matched ? messageHandler : null}
-                  className={"Match-Message"}
-                  style={
-                    !matched ? { display: "none" } : { display: "inline-block" }
-                  }
-                >
-                  <i
-                    className={
-                      matched
-                        ? "fas fa-comment-dots Matched fa-2x"
-                        : "fas fa-comment-dots Liked fa-2x"
-                    }
-                  ></i>
-                </button>
-                <button
-                  onClick={this.onDislikeHandler(viewedUser)}
-                  onMouseEnter={this.onMouseHoverHandler}
-                  onMouseLeave={this.onMouseHoverHandler}
-                  className={"Match-Heart"}
-                >
-                  {heartHover ? (
-                    <Flip direction="vertical" duration="300">
-                      <i className="fas fa-times Dislike fa-2x"></i>
-                    </Flip>
-                  ) : (
-                    <i
-                      className={
-                        matched
-                          ? "fas fa-heart Matched fa-2x"
-                          : "fas fa-heart Liked fa-2x"
-                      }
-                    ></i>
-                  )}
-                </button>
+               <button>
+                 Message
+               </button>
+
+               <button>
+                 Dislike
+               </button>
 
                 <ToggleBar
                   clicked={this.onViewSwitchHandler}
